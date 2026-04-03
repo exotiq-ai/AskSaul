@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ExternalLink, ImageOff, ArrowRight } from "lucide-react";
+import { ExternalLink, ArrowRight } from "lucide-react";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import Badge from "@/components/ui/Badge";
 import { PORTFOLIO_PROJECTS } from "@/lib/constants";
@@ -30,7 +30,7 @@ export default function PortfolioPreview() {
         </AnimatedSection>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {PORTFOLIO_PROJECTS.filter((p) => !p.comingSoon).map((project, i) => (
+          {PORTFOLIO_PROJECTS.filter((p) => p.images.length > 0).slice(0, 4).map((project, i) => (
             <AnimatedSection
               key={project.id}
               delay={i * 100}
@@ -38,22 +38,13 @@ export default function PortfolioPreview() {
             >
               {/* Screenshot area */}
               <div className="relative aspect-video bg-graphite overflow-hidden">
-                {project.images.length > 0 ? (
-                  <Image
-                    src={project.images[0]}
-                    alt={`${project.title} screenshot`}
-                    fill
-                    className="object-cover object-top group-hover:scale-[1.02] transition-transform duration-500"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                ) : (
-                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-graphite">
-                    <div className="w-12 h-12 rounded-xl bg-wire/60 flex items-center justify-center">
-                      <ImageOff className="w-6 h-6 text-dim" />
-                    </div>
-                    <p className="text-xs text-dim">Screenshot coming soon</p>
-                  </div>
-                )}
+                <Image
+                  src={project.images[0]}
+                  alt={`${project.title} screenshot`}
+                  fill
+                  className="object-cover object-top group-hover:scale-[1.02] transition-transform duration-500"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
 
                 {/* Overlay on hover */}
                 {project.url !== "#" && (

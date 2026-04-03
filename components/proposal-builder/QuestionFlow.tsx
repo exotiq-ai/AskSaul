@@ -114,8 +114,24 @@ function FieldLabel({ children }: { children: React.ReactNode }) {
 function AIQuestions() {
   const { watch, setValue } = useFormContext<ProposalFormData>();
   const aiUserCount = watch("aiUserCount");
-  const aiPlatform = watch("aiPlatform");
-  const aiHelp = watch("aiHelp");
+  const aiPlatform = watch("aiPlatform") ?? [];
+  const aiHelp = watch("aiHelp") ?? [];
+
+  function togglePlatform(opt: (typeof AI_PLATFORM_OPTIONS)[number]) {
+    if (aiPlatform.includes(opt)) {
+      setValue("aiPlatform", aiPlatform.filter((v) => v !== opt));
+    } else {
+      setValue("aiPlatform", [...aiPlatform, opt]);
+    }
+  }
+
+  function toggleHelp(opt: (typeof AI_HELP_OPTIONS)[number]) {
+    if (aiHelp.includes(opt)) {
+      setValue("aiHelp", aiHelp.filter((v) => v !== opt));
+    } else {
+      setValue("aiHelp", [...aiHelp, opt]);
+    }
+  }
 
   return (
     <div className="flex flex-col gap-5">
@@ -139,8 +155,8 @@ function AIQuestions() {
           {AI_PLATFORM_OPTIONS.map((opt) => (
             <OptionButton
               key={opt}
-              selected={aiPlatform === opt}
-              onClick={() => setValue("aiPlatform", opt)}
+              selected={aiPlatform.includes(opt)}
+              onClick={() => togglePlatform(opt)}
             >
               {AI_PLATFORM_LABELS[opt]}
             </OptionButton>
@@ -153,8 +169,8 @@ function AIQuestions() {
           {AI_HELP_OPTIONS.map((opt) => (
             <OptionButton
               key={opt}
-              selected={aiHelp === opt}
-              onClick={() => setValue("aiHelp", opt)}
+              selected={aiHelp.includes(opt)}
+              onClick={() => toggleHelp(opt)}
             >
               {AI_HELP_LABELS[opt]}
             </OptionButton>
@@ -222,7 +238,7 @@ function WebsiteQuestions() {
 function MarketingQuestions() {
   const { watch, setValue } = useFormContext<ProposalFormData>();
   const marketingTools = watch("marketingTools") ?? [];
-  const marketingPain = watch("marketingPain");
+  const marketingPain = watch("marketingPain") ?? [];
 
   function toggleTool(tool: (typeof MARKETING_TOOLS_OPTIONS)[number]) {
     if (marketingTools.includes(tool)) {
@@ -232,6 +248,14 @@ function MarketingQuestions() {
       );
     } else {
       setValue("marketingTools", [...marketingTools, tool]);
+    }
+  }
+
+  function togglePain(pain: (typeof MARKETING_PAIN_OPTIONS)[number]) {
+    if (marketingPain.includes(pain)) {
+      setValue("marketingPain", marketingPain.filter((p) => p !== pain));
+    } else {
+      setValue("marketingPain", [...marketingPain, pain]);
     }
   }
 
@@ -257,8 +281,8 @@ function MarketingQuestions() {
           {MARKETING_PAIN_OPTIONS.map((opt) => (
             <OptionButton
               key={opt}
-              selected={marketingPain === opt}
-              onClick={() => setValue("marketingPain", opt)}
+              selected={marketingPain.includes(opt)}
+              onClick={() => togglePain(opt)}
             >
               {MARKETING_PAIN_LABELS[opt]}
             </OptionButton>

@@ -27,15 +27,16 @@ const BUDGET_LABELS: Record<string, string> = {
 
 interface SummaryRowProps {
   label: string;
-  value: string | undefined;
+  value: string | string[] | undefined;
 }
 
 function SummaryRow({ label, value }: SummaryRowProps) {
-  if (!value) return null;
+  if (!value || (Array.isArray(value) && value.length === 0)) return null;
+  const display = Array.isArray(value) ? value.join(", ") : value;
   return (
     <div className="flex justify-between items-start gap-4 py-2 border-b border-wire/50 last:border-b-0">
       <span className="text-sm text-slate shrink-0">{label}</span>
-      <span className="text-sm text-cloud text-right">{value}</span>
+      <span className="text-sm text-cloud text-right">{display}</span>
     </div>
   );
 }

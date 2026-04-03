@@ -139,44 +139,71 @@ export const PORTFOLIO_PROJECTS = [
     id: "driveexotiq",
     title: "DriveExotiq.com",
     description:
-      "Consumer rental marketplace. Conversion-optimized with AI-powered pricing and a complete search and booking flow.",
+      "Consumer rental marketplace for exotic cars. Conversion-optimized search and booking flow with AI-powered dynamic pricing.",
     url: "https://driveexotiq.com",
     images: [
       "/images/portfolio/driveexotiq-hero.jpg",
       "/images/portfolio/driveexotiq-marketplace.jpg",
     ],
     tags: ["Next.js", "Marketplace", "AI Pricing"],
+    comingSoon: false,
   },
   {
     id: "exotiq",
     title: "Exotiq.ai",
     description:
-      "Marketing site and brand hub. Gulf livery aesthetic, FleetCopilot demo, and AI-optimized blog content.",
+      "Marketing site and brand hub for fleet technology. Gulf livery aesthetic, FleetCopilot product demo, and AI-optimized blog content.",
     url: "https://exotiq.ai",
     images: [
       "/images/portfolio/exotiq-fleetcopilot.jpg",
       "/images/portfolio/exotiq-blog-header.jpg",
     ],
     tags: ["Next.js", "AI", "Brand Hub"],
+    comingSoon: false,
+  },
+  {
+    id: "exotiq-command-center",
+    title: "Exotiq Command Center",
+    description:
+      "Fleet intelligence platform with AI-powered pricing optimization, MotoIQ revenue analytics module, FleetCopilot voice AI assistant, and real-time fleet utilization tracking.",
+    url: "https://app.exotiq.ai",
+    images: [
+      "/images/portfolio/exotiq-command-center.jpg",
+      "/images/portfolio/exotiq-motoriq.jpg",
+      "/images/portfolio/exotiq-dashboard-revenue.jpg",
+      "/images/portfolio/exotiq-fleetcopilot-rari.jpg",
+    ],
+    tags: ["React", "AI", "Dashboard", "Analytics"],
+    comingSoon: false,
   },
   {
     id: "polaris",
     title: "Polaris Estate",
     description:
-      "AI-powered luxury real estate platform designed for ultra-high-net-worth clients. Premium design and advanced search.",
-    url: "#",
-    images: [],
-    tags: ["React", "Real Estate", "AI"],
-    comingSoon: true,
+      "AI-powered luxury real estate platform designed for ultra-high-net-worth clients. Premium design system with advanced property search.",
+    url: "https://polaris.estate",
+    images: ["/images/portfolio/polaris-estate.jpg"],
+    tags: ["React", "Real Estate", "Premium Design"],
+    comingSoon: false,
   },
   {
     id: "lous-hvac",
-    title: "Lou's HVAC",
+    title: "Lou's Heating & Cooling",
     description:
-      "Full business website with SEO optimization, service pages, review integration, bilingual support, and service area mapping.",
+      "Full business website for a local HVAC company. Local SEO optimization, service area mapping, Google Reviews integration, and bilingual support.",
     url: "#",
+    images: ["/images/portfolio/lous-hvac.jpg"],
+    tags: ["Next.js", "Local SEO", "Bilingual"],
+    comingSoon: false,
+  },
+  {
+    id: "exotiq-rent",
+    title: "Exotiq.rent",
+    description:
+      "Operator portal and fleet management dashboard with complex vehicle detail pages, booking system, and multi-location fleet tracking.",
+    url: "https://exotiq.rent",
     images: [],
-    tags: ["Next.js", "SEO", "Local Business"],
+    tags: ["React", "Dashboard", "Fleet Management"],
     comingSoon: true,
   },
 ];

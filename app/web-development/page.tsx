@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, ExternalLink, Check } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -8,6 +9,7 @@ import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 import Accordion from "@/components/ui/Accordion";
+import { PORTFOLIO_PROJECTS } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Web Development",
@@ -43,53 +45,6 @@ const SERVICES = [
   },
 ];
 
-const PORTFOLIO = [
-  {
-    id: "driveexotiq",
-    title: "DriveExotiq.com",
-    description:
-      "Consumer rental marketplace for exotic cars. Conversion-optimized search and booking flow, AI-powered pricing engine, real-time vehicle availability.",
-    url: "https://driveexotiq.com",
-    tags: ["Next.js", "Marketplace", "AI Pricing", "Booking System"],
-    live: true,
-  },
-  {
-    id: "exotiq-ai",
-    title: "Exotiq.ai",
-    description:
-      "Marketing site and brand hub for a fleet technology company. Gulf livery aesthetic, FleetCopilot product demo, SEO-optimized blog.",
-    url: "https://exotiq.ai",
-    tags: ["Next.js", "Brand Hub", "AI Content"],
-    live: true,
-  },
-  {
-    id: "exotiq-rent",
-    title: "Exotiq.rent",
-    description:
-      "Operator portal and fleet management dashboard. Complex vehicle detail pages, booking system, multi-location fleet tracking.",
-    url: "https://exotiq.rent",
-    tags: ["React", "Dashboard", "Fleet Management"],
-    live: true,
-  },
-  {
-    id: "polaris",
-    title: "Polaris Estate",
-    description:
-      "AI-powered luxury real estate platform designed for ultra-high-net-worth clients. Premium design system, advanced property search, private listings.",
-    url: "#",
-    tags: ["React", "Real Estate", "Premium Design"],
-    live: false,
-  },
-  {
-    id: "lous-hvac",
-    title: "Lou's Heating & Cooling",
-    description:
-      "Full business website for a local HVAC company. Local SEO optimization, service area mapping, Google Reviews integration, bilingual support.",
-    url: "#",
-    tags: ["Next.js", "Local SEO", "Bilingual"],
-    live: false,
-  },
-];
 
 const TECH_STACK = [
   "React", "Next.js", "TypeScript", "Tailwind CSS",
@@ -188,50 +143,44 @@ export default function WebDevelopmentPage() {
             </AnimatedSection>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              {PORTFOLIO.filter((p) => p.live).map((project, i) => (
+              {PORTFOLIO_PROJECTS.filter((p) => p.images.length > 0).map((project, i) => (
                 <AnimatedSection key={project.id} delay={i * 80}>
-                  <div className="group h-full bg-graphite border border-wire rounded-2xl p-5 hover:border-ice/30 transition-all duration-300">
-                    {/* Image placeholder */}
-                    <div
-                      className="w-full h-36 rounded-lg mb-4 relative overflow-hidden flex items-end"
-                      style={{ background: "linear-gradient(135deg, #1c1c2e 0%, #0f1520 100%)" }}
-                    >
-                      <div className="absolute inset-0 border border-wire/50 rounded-lg" />
-                      <div
-                        className="absolute inset-0 opacity-10"
-                        style={{
-                          backgroundImage:
-                            "linear-gradient(to right, rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.08) 1px, transparent 1px)",
-                          backgroundSize: "28px 28px",
-                        }}
+                  <div className="group h-full bg-graphite border border-wire rounded-2xl overflow-hidden hover:border-ice/30 transition-all duration-300">
+                    {/* Screenshot */}
+                    <div className="relative w-full aspect-video overflow-hidden">
+                      <Image
+                        src={project.images[0]}
+                        alt={`${project.title} screenshot`}
+                        fill
+                        className="object-cover object-top group-hover:scale-[1.02] transition-transform duration-500"
+                        sizes="(max-width: 768px) 100vw, 50vw"
                       />
-                      <p className="relative z-10 text-cloud font-display font-bold text-lg px-4 pb-3">
-                        {project.title}
-                      </p>
                     </div>
 
-                    <div className="flex flex-wrap gap-1.5 mb-3">
-                      {project.tags.map((tag) => (
-                        <Badge key={tag} variant="muted">{tag}</Badge>
-                      ))}
+                    <div className="p-5">
+                      <div className="flex flex-wrap gap-1.5 mb-3">
+                        {project.tags.map((tag) => (
+                          <Badge key={tag} variant="muted">{tag}</Badge>
+                        ))}
+                      </div>
+
+                      <h3 className="font-display font-bold text-cloud mb-1.5">{project.title}</h3>
+                      <p className="text-base text-slate leading-relaxed mb-4">{project.description}</p>
+
+                      {project.url !== "#" ? (
+                        <a
+                          href={project.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-sm text-ice font-semibold hover:text-ice/80 transition-colors"
+                        >
+                          View live site
+                          <ExternalLink className="w-3.5 h-3.5" />
+                        </a>
+                      ) : (
+                        <span className="text-xs text-dim">Not publicly available</span>
+                      )}
                     </div>
-
-                    <h3 className="font-display font-bold text-cloud mb-1.5">{project.title}</h3>
-                    <p className="text-base text-slate leading-relaxed mb-4">{project.description}</p>
-
-                    {project.live ? (
-                      <a
-                        href={project.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 text-sm text-ice font-semibold hover:text-ice/80 transition-colors"
-                      >
-                        View live site
-                        <ExternalLink className="w-3.5 h-3.5" />
-                      </a>
-                    ) : (
-                      <span className="text-xs text-dim">Not publicly available</span>
-                    )}
                   </div>
                 </AnimatedSection>
               ))}

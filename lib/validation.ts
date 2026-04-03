@@ -110,15 +110,15 @@ export const MARKETING_PAIN_OPTIONS = [
 export const step3Schema = z.object({
   // AI assistant questions
   aiUserCount: z.enum(AI_USER_COUNT_OPTIONS).optional(),
-  aiPlatform: z.enum(AI_PLATFORM_OPTIONS).optional(),
-  aiHelp: z.enum(AI_HELP_OPTIONS).optional(),
+  aiPlatform: z.array(z.enum(AI_PLATFORM_OPTIONS)).optional(),
+  aiHelp: z.array(z.enum(AI_HELP_OPTIONS)).optional(),
   // Website questions
   websiteExisting: z.enum(WEBSITE_EXISTING_OPTIONS).optional(),
   websitePages: z.enum(WEBSITE_PAGES_OPTIONS).optional(),
   websiteEcommerce: z.enum(ECOMMERCE_OPTIONS).optional(),
   // Marketing questions
   marketingTools: z.array(z.enum(MARKETING_TOOLS_OPTIONS)).optional(),
-  marketingPain: z.enum(MARKETING_PAIN_OPTIONS).optional(),
+  marketingPain: z.array(z.enum(MARKETING_PAIN_OPTIONS)).optional(),
   // Automation questions
   automationProcesses: z.string().optional(),
   automationTools: z.string().optional(),
