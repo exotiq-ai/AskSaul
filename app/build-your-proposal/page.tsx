@@ -165,7 +165,7 @@ export default function BuildYourProposalPage() {
   }
 
   return (
-    <>
+    <FormProvider {...methods}>
       <Navbar />
       <main className="flex-1 py-12 px-4">
         <div className="max-w-2xl mx-auto">
@@ -277,6 +277,6 @@ export default function BuildYourProposalPage() {
         </div>
       </main>
       <Footer />
-    </>
+    </FormProvider>
   );
 }
