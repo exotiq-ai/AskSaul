@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Mail, Phone, MapPin, Calendar } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -71,6 +72,20 @@ export default function AboutPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
               {/* Story text */}
               <AnimatedSection>
+                {/* Photo */}
+                <div className="mb-8">
+                  <div className="relative w-40 h-40 rounded-2xl overflow-hidden border-2 border-cyan/30 shadow-[0_0_30px_rgba(0,212,170,0.12)]">
+                    <Image
+                      src="/images/gregory-ringler.jpg"
+                      alt="Gregory Ringler, founder of AskSaul.ai"
+                      fill
+                      className="object-cover object-top"
+                      sizes="160px"
+                      priority
+                    />
+                  </div>
+                </div>
+
                 <p className="text-xs font-semibold tracking-widest uppercase text-cyan mb-3">
                   Gregory's Story
                 </p>
