@@ -87,6 +87,53 @@ export const METRICS = [
   { value: "8 months", label: "idea to full platform" },
 ];
 
+export const OPENCLAW_TIERS = [
+  {
+    id: "starter",
+    name: "Saul Classic",
+    label: "Starter",
+    price: 500,
+    ongoing: "$20 to $80/mo",
+    forWho: "Solopreneurs, individual professionals",
+  },
+  {
+    id: "team",
+    name: "AskSaul Team",
+    label: "Team",
+    price: 1000,
+    ongoing: "$50 to $200/mo",
+    forWho: "Small teams (2 to 10 people)",
+  },
+  {
+    id: "pro",
+    name: "AskSaul Pro",
+    label: "Pro",
+    price: 2500,
+    ongoing: "$100 to $500/mo",
+    forWho: "Businesses with customer-facing needs",
+  },
+  {
+    id: "developer",
+    name: "AskSaul Dev",
+    label: "Developer",
+    price: 1200,
+    ongoing: "$50 to $300/mo",
+    forWho: "Developers, technical teams",
+  },
+];
+
+export const GHL_PRICING = {
+  setup: 3500,
+  monthly: 1000,
+};
+
+export const CONTACT_INFO = {
+  email: "1.gregory.ringler@gmail.com",
+  phone: "970.343.9634",
+  location: "Denver, CO",
+  calendly: "https://calendly.com/gregoryr/discovery",
+};
+
 export const PORTFOLIO_PROJECTS = [
   {
     id: "driveexotiq",

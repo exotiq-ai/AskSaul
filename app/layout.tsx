@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Syne, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import ChatWidget from "@/components/chat/ChatWidget";
+import StructuredData from "@/components/seo/StructuredData";
 
 const syne = Syne({
   subsets: ["latin"],
@@ -74,7 +76,9 @@ export default function RootLayout({
       style={{ backgroundColor: "#0A0A0F" }}
     >
       <body className="min-h-full flex flex-col bg-obsidian text-cloud antialiased">
+        <StructuredData />
         {children}
+        <ChatWidget />
       </body>
     </html>
   );
