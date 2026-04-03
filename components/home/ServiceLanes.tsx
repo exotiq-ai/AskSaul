@@ -34,7 +34,7 @@ export default function ServiceLanes() {
           </p>
         </AnimatedSection>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
           {SERVICE_LANES.map((lane, i) => {
             const Icon = iconMap[lane.icon];
             return (
@@ -88,6 +88,32 @@ export default function ServiceLanes() {
               </AnimatedSection>
             );
           })}
+        </div>
+        {/* Industry badges */}
+        <div className="text-center">
+          <p className="text-xs font-semibold tracking-widest uppercase text-dim mb-4">
+            Built for businesses like yours
+          </p>
+          <div className="flex flex-wrap justify-center gap-2">
+            {[
+              "Service Businesses",
+              "Real Estate",
+              "Legal & Consulting",
+              "HVAC & Home Services",
+              "Marketing Agencies",
+              "Med Spas & Dental",
+              "E-Commerce",
+              "Restaurants & Hospitality",
+              "Tech Startups",
+            ].map((industry) => (
+              <span
+                key={industry}
+                className="px-3 py-1.5 rounded-full bg-graphite border border-wire text-sm text-slate hover:border-cyan/30 hover:text-cloud transition-colors duration-200"
+              >
+                {industry}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
     </section>

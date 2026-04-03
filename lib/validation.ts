@@ -149,7 +149,11 @@ export const BUDGET_OPTIONS = [
 export const step4Schema = z.object({
   name: z.string().min(2, "Name is required"),
   email: z.string().email("Valid email is required"),
-  phone: z.string().optional(),
+  phone: z.string().min(1, "Phone number is required"),
+  smsConsent: z
+    .boolean()
+    .refine((v) => v === true, { message: "SMS consent is required to continue" }),
+  marketingSmsOptIn: z.boolean().optional(),
   preferredContact: z.enum(PREFERRED_CONTACT_OPTIONS),
   timeline: z.enum(TIMELINE_OPTIONS),
   budget: z.enum(BUDGET_OPTIONS).optional(),
@@ -171,7 +175,11 @@ export const contactSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
   email: z.string().email("Valid email is required"),
-  phone: z.string().optional(),
+  phone: z.string().min(1, "Phone number is required"),
+  smsConsent: z
+    .boolean()
+    .refine((v) => v === true, { message: "SMS consent is required to continue" }),
+  marketingSmsOptIn: z.boolean().optional(),
   message: z.string().min(10, "Please tell us a bit more"),
   referralSource: z.string().optional(),
 });
@@ -183,6 +191,7 @@ export type ContactFormData = z.infer<typeof contactSchema>;
 export const chatLeadSchema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Valid email is required"),
+  phone: z.string().optional(),
   chatTranscript: z.array(
     z.object({
       role: z.enum(["user", "assistant"]),

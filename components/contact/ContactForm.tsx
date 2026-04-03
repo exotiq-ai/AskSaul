@@ -18,9 +18,19 @@ const SOURCE_OPTIONS = [
 export default function ContactForm() {
   const [formState, setFormState] = useState<FormState>("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const [smsConsent, setSmsConsent] = useState(false);
+  const [marketingOptIn, setMarketingOptIn] = useState(false);
+  const [smsConsentError, setSmsConsentError] = useState("");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    if (!smsConsent) {
+      setSmsConsentError("SMS consent is required to continue");
+      return;
+    }
+    setSmsConsentError("");
+
     setFormState("loading");
     setErrorMsg("");
 
@@ -37,6 +47,8 @@ export default function ContactForm() {
       phone: (form.elements.namedItem("phone") as HTMLInputElement).value.trim(),
       message: (form.elements.namedItem("message") as HTMLTextAreaElement).value.trim(),
       referralSource: (form.elements.namedItem("source") as HTMLSelectElement).value,
+      smsConsent,
+      marketingSmsOptIn: marketingOptIn,
     };
 
     try {
@@ -55,6 +67,8 @@ export default function ContactForm() {
 
       setFormState("success");
       form.reset();
+      setSmsConsent(false);
+      setMarketingOptIn(false);
     } catch {
       setErrorMsg("Network error. Check your connection and try again.");
       setFormState("error");
@@ -76,7 +90,7 @@ export default function ContactForm() {
         </div>
         <h3 className="font-display text-xl font-bold text-cloud mb-2">Message sent.</h3>
         <p className="text-slate text-sm">
-          Gregory will get back to you within 24 hours. If it's urgent, call 970.343.9634.
+          We will get back to you within 24 hours. If it is urgent, call 970.343.9634.
         </p>
         <button
           className="mt-5 text-xs text-dim hover:text-slate transition-colors"
@@ -114,10 +128,55 @@ export default function ContactForm() {
         id="phone"
         name="phone"
         type="tel"
-        label="Phone (optional)"
+        label="Phone"
         placeholder="555.555.5555"
+        required
         disabled={formState === "loading"}
       />
+
+      <div className="flex flex-col gap-3 pt-1">
+        <div className="flex items-start gap-3">
+          <input
+            id="smsConsent"
+            type="checkbox"
+            checked={smsConsent}
+            onChange={(e) => {
+              setSmsConsent(e.target.checked);
+              if (e.target.checked) setSmsConsentError("");
+            }}
+            disabled={formState === "loading"}
+            className="mt-0.5 w-4 h-4 rounded border-wire bg-graphite text-cyan focus:ring-cyan/40 shrink-0 cursor-pointer"
+          />
+          <label htmlFor="smsConsent" className="text-xs text-slate leading-relaxed cursor-pointer">
+            <span className="text-error mr-1">*</span>
+            By providing your phone number, you consent to receive transactional SMS messages from AskSaul related to your inquiry. Message frequency varies. Message and data rates may apply. Reply STOP to opt out. Reply HELP for help.
+          </label>
+        </div>
+        {smsConsentError && (
+          <p className="text-xs text-error ml-7">{smsConsentError}</p>
+        )}
+
+        <div className="flex items-start gap-3">
+          <input
+            id="marketingOptIn"
+            type="checkbox"
+            checked={marketingOptIn}
+            onChange={(e) => setMarketingOptIn(e.target.checked)}
+            disabled={formState === "loading"}
+            className="mt-0.5 w-4 h-4 rounded border-wire bg-graphite text-cyan focus:ring-cyan/40 shrink-0 cursor-pointer"
+          />
+          <label htmlFor="marketingOptIn" className="text-xs text-slate leading-relaxed cursor-pointer">
+            I also want to receive occasional tips, updates, and offers from AskSaul via SMS. You can opt out anytime by replying STOP.
+          </label>
+        </div>
+
+        <p className="text-xs text-dim ml-7">
+          View our{" "}
+          <a href="/privacy" className="underline hover:text-slate transition-colors">Privacy Policy</a>
+          {" "}and{" "}
+          <a href="/terms" className="underline hover:text-slate transition-colors">Terms of Service</a>
+        </p>
+      </div>
 
       <div className="flex flex-col gap-1.5">
         <label htmlFor="message" className="text-sm font-medium text-slate">
@@ -129,7 +188,7 @@ export default function ContactForm() {
           required
           rows={5}
           disabled={formState === "loading"}
-          placeholder="Tell me what you're working on and what you need..."
+          placeholder="Tell us what you are working on and what you need..."
           className="w-full bg-graphite border border-wire rounded-lg px-4 py-3 text-cloud placeholder:text-dim focus:outline-none focus:border-cyan/60 focus:ring-1 focus:ring-cyan/30 transition-colors duration-200 resize-none disabled:opacity-50"
         />
       </div>

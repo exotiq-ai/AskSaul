@@ -61,17 +61,17 @@ export default function ContactPreferences() {
         </div>
         <div>
           <label className="block text-sm font-medium text-cloud mb-1.5" htmlFor="phone">
-            Phone{" "}
-            <span className="text-dim font-normal">(optional)</span>
+            Phone <span className="text-error">*</span>
           </label>
           <input
             id="phone"
             type="tel"
             autoComplete="tel"
             placeholder="(555) 867-5309"
-            className="w-full px-4 py-3 rounded-lg bg-graphite border border-wire text-cloud placeholder:text-dim focus:outline-none focus:ring-2 focus:ring-cyan/40 focus:border-cyan/60 transition-colors"
+            className={`w-full px-4 py-3 rounded-lg bg-graphite border text-cloud placeholder:text-dim focus:outline-none focus:ring-2 focus:ring-cyan/40 focus:border-cyan/60 transition-colors ${errors.phone ? "border-error" : "border-wire"}`}
             {...register("phone")}
           />
+          {errors.phone && <p className="mt-1 text-xs text-error">{errors.phone.message}</p>}
         </div>
       </div>
 
@@ -151,6 +151,44 @@ export default function ContactPreferences() {
             </button>
           ))}
         </div>
+      </div>
+
+      {/* SMS Consent */}
+      <div className="flex flex-col gap-3 pt-2">
+        <div className="flex items-start gap-3">
+          <input
+            id="smsConsent"
+            type="checkbox"
+            className="mt-0.5 w-4 h-4 rounded border-wire bg-graphite text-cyan focus:ring-cyan/40 shrink-0 cursor-pointer"
+            {...register("smsConsent")}
+          />
+          <label htmlFor="smsConsent" className="text-xs text-slate leading-relaxed cursor-pointer">
+            <span className="text-error mr-1">*</span>
+            By providing your phone number, you consent to receive transactional SMS messages from AskSaul related to your inquiry. Message frequency varies. Message and data rates may apply. Reply STOP to opt out. Reply HELP for help.
+          </label>
+        </div>
+        {errors.smsConsent && (
+          <p className="text-xs text-error ml-7">{errors.smsConsent.message}</p>
+        )}
+
+        <div className="flex items-start gap-3">
+          <input
+            id="marketingSmsOptIn"
+            type="checkbox"
+            className="mt-0.5 w-4 h-4 rounded border-wire bg-graphite text-cyan focus:ring-cyan/40 shrink-0 cursor-pointer"
+            {...register("marketingSmsOptIn")}
+          />
+          <label htmlFor="marketingSmsOptIn" className="text-xs text-slate leading-relaxed cursor-pointer">
+            I also want to receive occasional tips, updates, and offers from AskSaul via SMS. You can opt out anytime by replying STOP.
+          </label>
+        </div>
+
+        <p className="text-xs text-dim ml-7">
+          View our{" "}
+          <a href="/privacy" className="underline hover:text-slate transition-colors">Privacy Policy</a>
+          {" "}and{" "}
+          <a href="/terms" className="underline hover:text-slate transition-colors">Terms of Service</a>
+        </p>
       </div>
 
       {/* Notes */}

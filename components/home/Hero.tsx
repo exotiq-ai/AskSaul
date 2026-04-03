@@ -51,9 +51,9 @@ export default function Hero() {
 
         {/* Subheadline */}
         <p className="text-lg sm:text-xl text-slate max-w-2xl mx-auto mb-10 leading-relaxed">
-          Gregory Ringler builds done-for-you AI assistants, high-converting
-          websites, and marketing automation systems for businesses that are
-          serious about growth. No fluff. No outsourcing. Just results.
+          Done-for-you AI assistants, high-converting websites, and marketing
+          automation for businesses that are done wasting time on tools that do
+          not talk to each other.
         </p>
 
         {/* CTAs */}
@@ -74,9 +74,11 @@ export default function Hero() {
 
         {/* Social proof strip */}
         <div className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 text-sm text-dim">
-          <span>1,120+ commits shipped</span>
+          <span>5 live platforms built and running</span>
           <span className="hidden sm:block w-px h-4 bg-wire" />
-          <span>5 production platforms</span>
+          <span>Weeks to launch, not months</span>
+          <span className="hidden sm:block w-px h-4 bg-wire" />
+          <span>Your data, your infrastructure</span>
           <span className="hidden sm:block w-px h-4 bg-wire" />
           <span>Denver, CO</span>
         </div>

@@ -22,16 +22,15 @@ export default function PortfolioPreview() {
             className="text-3xl sm:text-4xl font-bold text-cloud mb-4"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Built from scratch. Shipped to production.
+            Recent work
           </h2>
           <p className="text-slate max-w-xl mx-auto">
-            Every project below is live, maintained, and built by Gregory
-            alone. No outsourcing. No templates. No shortcuts.
+            Live projects. Real businesses. Full builds.
           </p>
         </AnimatedSection>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {PORTFOLIO_PROJECTS.map((project, i) => (
+          {PORTFOLIO_PROJECTS.filter((p) => !p.comingSoon).map((project, i) => (
             <AnimatedSection
               key={project.id}
               delay={i * 100}

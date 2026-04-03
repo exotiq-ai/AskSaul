@@ -81,10 +81,10 @@ export const SERVICE_LANES = [
 ];
 
 export const METRICS = [
-  { value: "1,120+", label: "commits shipped" },
-  { value: "5", label: "production platforms built" },
-  { value: "Solo", label: "founder, zero outsourced dev" },
-  { value: "8 months", label: "idea to full platform" },
+  { value: "5", label: "live platforms built and running" },
+  { value: "2-4 wks", label: "average launch timeline" },
+  { value: "Zero", label: "monthly subscription to AskSaul" },
+  { value: "Denver", label: "CO" },
 ];
 
 export const OPENCLAW_TIERS = [

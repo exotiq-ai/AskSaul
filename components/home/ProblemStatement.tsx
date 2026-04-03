@@ -5,7 +5,7 @@ const painPoints = [
   {
     icon: AlertTriangle,
     headline: "The demos looked great. The reality did not.",
-    body: "You have tried the chatbots. You have watched the AI demos. None of it actually works for your specific business. Generic tools give generic results. Your business is not generic.",
+    body: "You keep hearing about AI but nothing you have seen actually fits how your business works. The generic tools feel like toys. The enterprise solutions cost more than your rent.",
   },
   {
     icon: DollarSign,

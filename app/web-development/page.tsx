@@ -117,7 +117,7 @@ const FAQ_ITEMS = [
   {
     question: "Will my site rank on Google?",
     answer:
-      "Every site is built with technical SEO as a requirement, not an afterthought. That means semantic HTML, fast load times, proper heading structure, mobile-first design, schema markup, and meta optimization. What happens after launch depends on your content strategy and domain authority, which takes time. We build the right foundation.",
+      "Every site is built with technical SEO as a requirement, not an afterthought. That means semantic HTML, fast load times, proper heading structure, mobile-first design, schema markup, and meta optimization. What happens after launch depends on your content strategy and domain authority, which takes time. We build the right foundation. We also offer ongoing SEO retainers specifically designed to accelerate that process. Most clients who pair a new site with a 6-month SEO retainer see meaningful organic traffic growth.",
   },
   {
     question: "What happens after the site launches?",
@@ -188,7 +188,7 @@ export default function WebDevelopmentPage() {
             </AnimatedSection>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              {PORTFOLIO.map((project, i) => (
+              {PORTFOLIO.filter((p) => p.live).map((project, i) => (
                 <AnimatedSection key={project.id} delay={i * 80}>
                   <div className="group h-full bg-graphite border border-wire rounded-2xl p-5 hover:border-ice/30 transition-all duration-300">
                     {/* Image placeholder */}

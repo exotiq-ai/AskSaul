@@ -11,6 +11,123 @@ import Accordion from "@/components/ui/Accordion";
 import TierCards from "./TierCards";
 import SecuritySection from "./SecuritySection";
 
+const INDUSTRIES = [
+  {
+    name: "Real Estate / Brokerage",
+    tasks: [
+      "Responds to property inquiries on WhatsApp around the clock",
+      "Drafts listing descriptions from property details and photos",
+      "Sends automated follow-ups to leads who went quiet",
+      "Prepares market briefings before client meetings",
+      "Coordinates showing schedules across your team",
+    ],
+  },
+  {
+    name: "Legal / Consulting",
+    tasks: [
+      "Summarizes documents and case materials",
+      "Drafts client memos from meeting notes",
+      "Manages billable hour tracking reminders",
+      "Researches precedents and regulatory updates",
+      "Handles intake form processing for new clients",
+    ],
+  },
+  {
+    name: "HVAC / Home Services",
+    tasks: [
+      "Answers scheduling and service area questions 24/7",
+      "Sends appointment reminders and follow-ups automatically",
+      "Drafts review request messages after completed jobs",
+      "Routes emergency service requests to on-call staff",
+      "Manages seasonal promotion outreach",
+    ],
+  },
+  {
+    name: "Marketing Agencies",
+    tasks: [
+      "Generates content briefs and social media drafts",
+      "Monitors client campaign performance and flags issues",
+      "Drafts client reporting summaries",
+      "Manages project timelines and task reminders",
+      "Handles internal team coordination across Slack channels",
+    ],
+  },
+  {
+    name: "Med Spas / Dental / Healthcare",
+    tasks: [
+      "Handles appointment booking and rescheduling via text",
+      "Sends treatment follow-up care instructions",
+      "Manages new patient intake questionnaires",
+      "Responds to FAQ and insurance questions",
+      "Coordinates referral thank-you sequences",
+    ],
+  },
+  {
+    name: "E-Commerce / Retail",
+    tasks: [
+      "Answers product questions and checks availability",
+      "Sends abandoned cart recovery messages",
+      "Handles order status inquiries",
+      "Drafts product descriptions from specifications",
+      "Manages return and exchange communication",
+    ],
+  },
+  {
+    name: "Restaurants / Hospitality",
+    tasks: [
+      "Handles reservation inquiries and confirmations",
+      "Answers menu and dietary restriction questions",
+      "Manages event and catering inquiry responses",
+      "Sends post-visit review requests",
+      "Coordinates staff scheduling reminders",
+    ],
+  },
+  {
+    name: "Tech Startups / Dev Teams",
+    tasks: [
+      "Triages GitHub issues and assigns priority",
+      "Reviews pull requests and flags concerns",
+      "Monitors CI/CD pipelines and alerts on failures",
+      "Drafts technical documentation from code changes",
+      "Manages sprint standup summaries",
+    ],
+  },
+];
+
+function IndustryUseCases() {
+  return (
+    <section className="py-20 px-4 bg-carbon/40">
+      <div className="max-w-6xl mx-auto">
+        <AnimatedSection>
+          <div className="text-center mb-12">
+            <h2 className="font-display text-2xl font-bold text-cloud mb-3">What Saul does in your industry</h2>
+            <p className="text-slate max-w-xl mx-auto">
+              Real tasks, running in real deployments today.
+            </p>
+          </div>
+        </AnimatedSection>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {INDUSTRIES.map((industry, i) => (
+            <AnimatedSection key={industry.name} delay={i * 50}>
+              <div className="bg-graphite border border-wire rounded-xl p-5 h-full hover:border-cyan/30 transition-colors duration-200">
+                <h3 className="font-semibold text-cloud text-sm mb-3 leading-snug">{industry.name}</h3>
+                <ul className="flex flex-col gap-2">
+                  {industry.tasks.map((task) => (
+                    <li key={task} className="flex items-start gap-2 text-xs text-slate leading-relaxed">
+                      <span className="mt-1.5 w-1 h-1 rounded-full bg-cyan shrink-0" />
+                      {task}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </AnimatedSection>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export const metadata: Metadata = {
   title: "AI & Automation",
   description:
@@ -214,6 +331,26 @@ export default function AIAutomationPage() {
               </div>
             </AnimatedSection>
 
+            {/* Tier simplifier */}
+            <AnimatedSection>
+              <div className="max-w-xl mx-auto mb-10 bg-graphite border border-wire rounded-xl p-6">
+                <p className="text-sm font-semibold text-cloud mb-4 text-center">Not sure which tier? Start here.</p>
+                <div className="flex flex-col gap-3">
+                  {[
+                    { qualifier: "Just you?", tier: "Starter", price: "$500" },
+                    { qualifier: "Small team, 2 to 10 people?", tier: "Team", price: "$1,000" },
+                    { qualifier: "Customers will talk to the bot?", tier: "Pro", price: "$2,500" },
+                    { qualifier: "Developer or technical team?", tier: "Dev", price: "$1,200" },
+                  ].map(({ qualifier, tier, price }) => (
+                    <div key={tier} className="flex items-center justify-between gap-4 py-2 border-b border-wire last:border-0">
+                      <span className="text-sm text-slate">{qualifier}</span>
+                      <span className="text-sm font-semibold text-cyan shrink-0">{tier} ({price})</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </AnimatedSection>
+
             <TierCards tiers={TIERS} />
           </div>
         </section>
@@ -233,6 +370,61 @@ export default function AIAutomationPage() {
                     <p className="text-sm font-semibold text-cyan shrink-0">{addon.price}</p>
                   </div>
                 ))}
+              </div>
+            </AnimatedSection>
+          </div>
+        </section>
+
+        {/* Industry use cases */}
+        <IndustryUseCases />
+
+        {/* Team demo */}
+        <section className="py-16 px-4">
+          <div className="max-w-3xl mx-auto">
+            <AnimatedSection>
+              <h2 className="font-display text-2xl font-bold text-cloud mb-2">Saul in a team context</h2>
+              <p className="text-slate mb-8">This is the kind of thing that happens in a real AskSaul Team deployment.</p>
+              <div className="bg-graphite border border-wire rounded-2xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.5)]">
+                <div className="flex items-center gap-3 px-4 py-3 bg-carbon border-b border-wire">
+                  <div className="w-8 h-8 rounded-full bg-cyan/20 border border-cyan/30 flex items-center justify-center">
+                    <span className="text-xs font-bold text-cyan">S</span>
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-cloud">Saul</p>
+                    <p className="text-xs text-success flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-success inline-block" />
+                      Online
+                    </p>
+                  </div>
+                </div>
+                <div className="p-4 space-y-3">
+                  <div className="flex justify-end">
+                    <div className="bg-cyan/15 border border-cyan/20 rounded-2xl rounded-tr-sm px-4 py-3 text-sm text-cloud max-w-sm">
+                      @Saul can you check if the Johnson proposal was sent yesterday?
+                    </div>
+                  </div>
+                  <div className="flex gap-3">
+                    <div className="w-7 h-7 rounded-full bg-cyan/20 border border-cyan/30 flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="text-xs font-bold text-cyan">S</span>
+                    </div>
+                    <div className="bg-carbon border border-wire rounded-2xl rounded-tl-sm px-4 py-3 text-sm text-cloud max-w-sm leading-relaxed">
+                      The Johnson proposal was drafted on March 28 but has not been sent yet. It is sitting in your drafts folder. Want me to send it now or flag it for your review first?
+                    </div>
+                  </div>
+                  <div className="flex gap-2 pl-10">
+                    {["Flag for review", "Send it now"].map((label) => (
+                      <span
+                        key={label}
+                        className="text-xs text-ice border border-ice/30 rounded-full px-3 py-1.5 cursor-pointer hover:bg-ice/10 transition-colors"
+                      >
+                        {label}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div className="px-4 py-3 border-t border-wire">
+                  <p className="text-xs text-center text-dim">Powered by AskSaul.ai</p>
+                </div>
               </div>
             </AnimatedSection>
           </div>

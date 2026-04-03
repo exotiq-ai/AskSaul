@@ -90,7 +90,7 @@ export default function ServicesPage() {
                 <span className="text-slate font-normal">Pick what fits.</span>
               </h1>
               <p className="text-slate text-lg max-w-2xl mx-auto mb-8">
-                Each service is built, not bought. No templates, no offshore teams, no mystery. Gregory builds it, Saul helps run it.
+                Each service is built, not bought. No templates, no offshore teams, no mystery. We build it, Saul helps run it.
               </p>
               <Link href="/build-your-proposal">
                 <Button variant="primary" size="lg">
