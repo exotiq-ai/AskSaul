@@ -7,7 +7,7 @@
 
 ---
 
-## SITE RATING: 7.5 / 10
+## SITE RATING: 9 / 10 (updated post-fixes, was 7.5)
 
 ### Story & Copy: 8 / 10
 
@@ -74,25 +74,25 @@
 
 ### 🔴 Blockers (Must have before deploy)
 
+- [x] ~~**Favicon + App Icons**~~ — DONE: icon.tsx (32x32) + apple-icon.tsx (180x180), branded cyan S on obsidian
+- [x] ~~**Open Graph Images**~~ — DONE: opengraph-image.tsx + twitter-image.tsx (1200x630, branded)
+- [x] ~~**Privacy Policy page**~~ — DONE: /privacy with G & G Holdings MT, SMS/TCPA, data retention, state rights
+- [x] ~~**Terms of Service page**~~ — DONE: /terms with Montana law, IP ownership, SMS terms, project terms
+- [x] ~~**FAQSchema integration**~~ — DONE: imported on /ai-automation, /web-development, /marketing-engine
+- [x] ~~**Fix chat widget "I build" voice**~~ — DONE: changed to "We build" / "we'll" / "we've"
+- [x] ~~**Fix em dashes in blog-data.ts**~~ — DONE: replaced with periods/restructured sentences
 - [ ] **GHL_WEBHOOK_URL** — Get the webhook URL from GoHighLevel and set as environment variable in Netlify
-- [ ] **Favicon + App Icons** — Create and add /app/icon.tsx or static favicon.ico, apple-touch-icon.png
-- [ ] **Open Graph Images** — Generate branded OG images for homepage and key pages. Critical for LinkedIn/Twitter link previews.
-- [ ] **Privacy Policy page** (/privacy) — Required by SMS compliance checkboxes. Must cover data collection, SMS terms, cookie usage.
-- [ ] **Terms of Service page** (/terms) — Required by SMS compliance checkboxes.
-- [ ] **FAQSchema integration** — Import FAQSchema component on /ai-automation, /web-development, /marketing-engine pages. This is free SEO.
-- [ ] **Fix chat widget "I build" voice** — Change to "We build" for consistency
-- [ ] **Fix em dashes in blog-data.ts** — Replace all instances with commas or restructured sentences
 - [ ] **Domain setup** — Point asksaul.ai DNS to Netlify
 - [ ] **SSL certificate** — Verify after domain setup (Netlify auto-provisions)
 - [ ] **Environment variables in Netlify** — GHL_WEBHOOK_URL, NOTIFICATION_EMAIL, SITE_URL
 
 ### 🟡 Should Have (First week post-launch)
 
-- [ ] **Skip navigation link** — Add to layout.tsx for accessibility
-- [ ] **Contact form double-submit prevention** — Add submitting state like proposal builder
-- [ ] **Blog "Related posts"** — Add 2-3 related posts at bottom of each blog post
-- [ ] **RSS feed** — Add /blog/feed.xml generation
-- [ ] **Loading spinner on form submit** — Better UX than just "Submitting..." text
+- [x] ~~**Skip navigation link**~~ — DONE: added to layout.tsx with sr-only focus styling
+- [x] ~~**Contact form double-submit prevention**~~ — ALREADY IN PLACE: loading state + disabled + spinner
+- [x] ~~**Blog "Related posts"**~~ — ALREADY IN PLACE: getRelatedPosts() renders 2 related posts
+- [x] ~~**RSS feed**~~ — DONE: /blog/feed.xml with all posts, linked in layout metadata
+- [x] ~~**Loading spinner on form submit**~~ — ALREADY IN PLACE: animated SVG spinner on contact form
 - [ ] **Exotiq.rent screenshot** — Capture and add to portfolio when ready
 - [ ] **Calendly/GHL calendar embed** — Replace the mailto fallback on contact page
 - [ ] **Google Analytics / Plausible** — Add analytics tracking
