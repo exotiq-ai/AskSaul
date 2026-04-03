@@ -106,7 +106,7 @@ function MessageBubble({ message }: { message: Message }) {
     >
       <div
         className={`
-          max-w-[85%] px-4 py-3 text-sm leading-relaxed
+          max-w-[85%] px-4 py-3 text-base leading-relaxed
           ${
             isAssistant
               ? "bg-graphite text-cloud rounded-2xl rounded-tl-none"

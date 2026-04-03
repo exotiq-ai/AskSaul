@@ -134,7 +134,7 @@ export default function ContactPage() {
                         Book a Call
                       </p>
                     </div>
-                    <p className="text-sm text-slate mb-4 leading-relaxed">
+                    <p className="text-base text-slate mb-4 leading-relaxed">
                       Want to talk through your project before committing to anything? Email Gregory
                       directly to request a discovery call. No pitch deck. Just a real conversation
                       about what you need.
@@ -156,7 +156,7 @@ export default function ContactPage() {
                     <p className="text-xs font-semibold uppercase tracking-widest text-dim mb-2">
                       Know what you want?
                     </p>
-                    <p className="text-sm text-slate mb-4">
+                    <p className="text-base text-slate mb-4">
                       Skip the back and forth. Build a scoped proposal and get a quote in your
                       inbox within 24 hours.
                     </p>

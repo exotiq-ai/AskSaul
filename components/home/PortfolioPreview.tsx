@@ -93,7 +93,7 @@ export default function PortfolioPreview() {
                     </a>
                   ) : null}
                 </div>
-                <p className="text-sm text-slate leading-relaxed mb-4">
+                <p className="text-base text-slate leading-relaxed mb-4">
                   {project.description}
                 </p>
                 <div className="flex flex-wrap gap-2">

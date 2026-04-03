@@ -59,7 +59,7 @@ export default function ProblemStatement() {
                 <h3 className="text-base font-semibold text-cloud mb-3 leading-snug">
                   {point.headline}
                 </h3>
-                <p className="text-sm text-slate leading-relaxed">
+                <p className="text-base text-slate leading-relaxed">
                   {point.body}
                 </p>
               </AnimatedSection>

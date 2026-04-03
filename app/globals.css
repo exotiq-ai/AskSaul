@@ -12,8 +12,8 @@
 
   /* Text Colors */
   --color-cloud: #E8E8ED;
-  --color-slate: #8888A0;
-  --color-dim: #555566;
+  --color-slate: #A0A0B8;
+  --color-dim: #707085;
 
   /* Border */
   --color-wire: #2A2A38;
@@ -38,6 +38,8 @@ body {
   background-color: #0A0A0F;
   color: #E8E8ED;
   font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

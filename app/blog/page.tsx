@@ -62,7 +62,7 @@ export default function BlogPage() {
                         {post.title}
                       </h2>
 
-                      <p className="text-slate text-sm line-clamp-3 leading-relaxed mb-4 flex-1">
+                      <p className="text-slate text-base line-clamp-3 leading-relaxed mb-4 flex-1">
                         {post.excerpt}
                       </p>
 

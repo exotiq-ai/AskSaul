@@ -109,7 +109,7 @@ export default function PortfolioPage() {
                         </div>
 
                         {/* Description */}
-                        <p className="text-slate text-sm leading-relaxed mb-5 flex-1">
+                        <p className="text-slate text-base leading-relaxed mb-5 flex-1">
                           {project.description}
                         </p>
 

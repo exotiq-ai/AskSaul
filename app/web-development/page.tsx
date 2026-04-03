@@ -165,7 +165,7 @@ export default function WebDevelopmentPage() {
                 <AnimatedSection key={service.name} delay={i * 70}>
                   <Card glow className="p-5 h-full flex flex-col">
                     <h3 className="font-semibold text-cloud mb-2">{service.name}</h3>
-                    <p className="text-sm text-slate leading-relaxed flex-1 mb-4">{service.desc}</p>
+                    <p className="text-base text-slate leading-relaxed flex-1 mb-4">{service.desc}</p>
                     <p className="text-sm font-semibold text-ice">{service.price}</p>
                   </Card>
                 </AnimatedSection>
@@ -192,8 +192,22 @@ export default function WebDevelopmentPage() {
                 <AnimatedSection key={project.id} delay={i * 80}>
                   <div className="group h-full bg-graphite border border-wire rounded-2xl p-5 hover:border-ice/30 transition-all duration-300">
                     {/* Image placeholder */}
-                    <div className="w-full h-36 rounded-lg bg-obsidian border border-wire/50 mb-4 flex items-center justify-center">
-                      <p className="text-dim text-xs font-mono">{project.title}</p>
+                    <div
+                      className="w-full h-36 rounded-lg mb-4 relative overflow-hidden flex items-end"
+                      style={{ background: "linear-gradient(135deg, #1c1c2e 0%, #0f1520 100%)" }}
+                    >
+                      <div className="absolute inset-0 border border-wire/50 rounded-lg" />
+                      <div
+                        className="absolute inset-0 opacity-10"
+                        style={{
+                          backgroundImage:
+                            "linear-gradient(to right, rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.08) 1px, transparent 1px)",
+                          backgroundSize: "28px 28px",
+                        }}
+                      />
+                      <p className="relative z-10 text-cloud font-display font-bold text-lg px-4 pb-3">
+                        {project.title}
+                      </p>
                     </div>
 
                     <div className="flex flex-wrap gap-1.5 mb-3">
@@ -203,7 +217,7 @@ export default function WebDevelopmentPage() {
                     </div>
 
                     <h3 className="font-display font-bold text-cloud mb-1.5">{project.title}</h3>
-                    <p className="text-sm text-slate leading-relaxed mb-4">{project.description}</p>
+                    <p className="text-base text-slate leading-relaxed mb-4">{project.description}</p>
 
                     {project.live ? (
                       <a
@@ -260,7 +274,7 @@ export default function WebDevelopmentPage() {
                   "Deployment to Vercel, Netlify, or your host",
                   "30-day post-launch support",
                 ].map((item) => (
-                  <div key={item} className="flex items-center gap-2 text-sm text-slate">
+                  <div key={item} className="flex items-center gap-2 text-base text-slate">
                     <Check className="w-4 h-4 text-ice shrink-0" />
                     {item}
                   </div>

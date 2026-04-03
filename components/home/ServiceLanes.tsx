@@ -59,7 +59,7 @@ export default function ServiceLanes() {
                   >
                     {lane.title}
                   </h3>
-                  <p className="text-sm text-slate leading-relaxed mb-6">
+                  <p className="text-base text-slate leading-relaxed mb-6">
                     {lane.description}
                   </p>
 
@@ -68,7 +68,7 @@ export default function ServiceLanes() {
                     {lane.features.map((feature) => (
                       <li
                         key={feature}
-                        className="flex items-center gap-2 text-sm text-slate"
+                        className="flex items-center gap-2 text-base text-slate"
                       >
                         <Check className="w-4 h-4 text-cyan/60 shrink-0" />
                         {feature}

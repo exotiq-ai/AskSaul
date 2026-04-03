@@ -37,7 +37,7 @@ export default function Accordion({ items, className = "" }: AccordionProps) {
               open === i ? "max-h-96 pb-4" : "max-h-0"
             }`}
           >
-            <p className="text-slate leading-relaxed">{item.answer}</p>
+            <p className="text-base text-slate leading-relaxed">{item.answer}</p>
           </div>
         </div>
       ))}

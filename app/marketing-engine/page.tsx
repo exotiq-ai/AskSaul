@@ -150,10 +150,10 @@ export default function MarketingEnginePage() {
                     <span className="text-slate ml-1">/mo</span>
                   </div>
                 </div>
-                <p className="text-slate text-sm mb-8">All-in. No hidden software license. No support add-ons.</p>
+                <p className="text-slate text-base mb-8">All-in. No hidden software license. No support add-ons.</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-left">
                   {GHL_FEATURES.map((feature) => (
-                    <div key={feature} className="flex items-start gap-2 text-sm text-slate">
+                    <div key={feature} className="flex items-start gap-2 text-base text-slate">
                       <Check className="w-4 h-4 text-cyan shrink-0 mt-0.5" />
                       {feature}
                     </div>
@@ -180,7 +180,7 @@ export default function MarketingEnginePage() {
                   <div key={row.tool} className="flex items-center justify-between py-3">
                     <div className="flex items-center gap-2">
                       <X className="w-4 h-4 text-error shrink-0" />
-                      <span className="text-sm text-slate">{row.tool}</span>
+                      <span className="text-base text-slate">{row.tool}</span>
                     </div>
                     <span className="text-sm font-semibold text-error">{row.cost}</span>
                   </div>
@@ -194,7 +194,7 @@ export default function MarketingEnginePage() {
               <div className="bg-graphite border border-cyan/20 rounded-xl p-5 flex items-center justify-between">
                 <div>
                   <p className="text-sm font-semibold text-cloud">AskSaul Marketing Engine</p>
-                  <p className="text-xs text-slate mt-0.5">All of the above, in one system, set up and managed for you</p>
+                  <p className="text-sm text-slate mt-0.5">All of the above, in one system, set up and managed for you</p>
                 </div>
                 <span className="text-sm font-bold text-cyan shrink-0">$1,000/mo</span>
               </div>
@@ -215,8 +215,8 @@ export default function MarketingEnginePage() {
               {WHO_ITS_FOR.map((item, i) => (
                 <AnimatedSection key={item.type} delay={i * 70}>
                   <Card glow className="p-5">
-                    <h3 className="font-semibold text-cloud mb-2 text-sm">{item.type}</h3>
-                    <p className="text-xs text-slate leading-relaxed">{item.desc}</p>
+                    <h3 className="font-semibold text-cloud mb-2 text-base">{item.type}</h3>
+                    <p className="text-sm text-slate leading-relaxed">{item.desc}</p>
                   </Card>
                 </AnimatedSection>
               ))}
@@ -256,7 +256,7 @@ export default function MarketingEnginePage() {
                     </div>
                     <div>
                       <p className="font-semibold text-cloud text-sm mb-1">{phase.title}</p>
-                      <p className="text-sm text-slate leading-relaxed">{phase.desc}</p>
+                      <p className="text-base text-slate leading-relaxed">{phase.desc}</p>
                     </div>
                   </div>
                 ))}

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Shield, Check, Bot, Workflow, Mic } from "lucide-react";
+import { ArrowRight, Shield, Bot, Workflow, Mic } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import AnimatedSection from "@/components/ui/AnimatedSection";
@@ -8,6 +8,8 @@ import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 import Accordion from "@/components/ui/Accordion";
+import TierCards from "./TierCards";
+import SecuritySection from "./SecuritySection";
 
 export const metadata: Metadata = {
   title: "AI & Automation",
@@ -212,56 +214,7 @@ export default function AIAutomationPage() {
               </div>
             </AnimatedSection>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
-              {TIERS.map((tier, i) => (
-                <AnimatedSection key={tier.id} delay={i * 80}>
-                  <div
-                    className={`relative h-full flex flex-col rounded-2xl border p-5 transition-all duration-300 ${
-                      tier.popular
-                        ? "border-cyan/40 bg-cyan/5 shadow-[0_0_40px_rgba(0,212,170,0.08)]"
-                        : "border-wire bg-carbon/80 hover:border-wire/80"
-                    }`}
-                  >
-                    {tier.popular && (
-                      <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                        <Badge variant="cyan">Most popular</Badge>
-                      </div>
-                    )}
-
-                    <div className="mb-4">
-                      <p className="text-xs font-semibold uppercase tracking-widest text-dim mb-1">{tier.label}</p>
-                      <h3 className="font-display text-lg font-bold text-cloud mb-1">{tier.name}</h3>
-                      <p className="text-xs text-slate">{tier.forWho}</p>
-                    </div>
-
-                    <div className="mb-5">
-                      <p className="text-2xl font-display font-bold text-cloud">{tier.price}</p>
-                      <p className="text-xs text-dim">{tier.priceNote}</p>
-                      <p className="text-xs text-slate mt-1">{tier.ongoing}</p>
-                    </div>
-
-                    <ul className="flex flex-col gap-2 flex-1 mb-5">
-                      {tier.features.map((f) => (
-                        <li key={f} className="flex items-start gap-2 text-xs text-slate">
-                          <Check className="w-3.5 h-3.5 text-cyan shrink-0 mt-0.5" />
-                          {f}
-                        </li>
-                      ))}
-                    </ul>
-
-                    <Link href="/build-your-proposal">
-                      <Button
-                        variant={tier.popular ? "primary" : "ghost"}
-                        size="sm"
-                        className="w-full"
-                      >
-                        Get started
-                      </Button>
-                    </Link>
-                  </div>
-                </AnimatedSection>
-              ))}
-            </div>
+            <TierCards tiers={TIERS} />
           </div>
         </section>
 
@@ -275,7 +228,7 @@ export default function AIAutomationPage() {
                   <div key={addon.name} className="py-4 flex items-start justify-between gap-4">
                     <div>
                       <p className="text-sm font-semibold text-cloud mb-0.5">{addon.name}</p>
-                      <p className="text-xs text-slate">{addon.desc}</p>
+                      <p className="text-sm text-slate">{addon.desc}</p>
                     </div>
                     <p className="text-sm font-semibold text-cyan shrink-0">{addon.price}</p>
                   </div>
@@ -300,23 +253,11 @@ export default function AIAutomationPage() {
               </p>
             </AnimatedSection>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {SECURITY_POINTS.map((point, i) => (
-                <AnimatedSection key={point.title} delay={i * 70}>
-                  <Card glow className="p-5">
-                    <div className="w-8 h-8 rounded-lg bg-cyan/10 flex items-center justify-center mb-3">
-                      <Shield className="w-4 h-4 text-cyan" />
-                    </div>
-                    <h3 className="text-sm font-semibold text-cloud mb-1.5">{point.title}</h3>
-                    <p className="text-xs text-slate leading-relaxed">{point.desc}</p>
-                  </Card>
-                </AnimatedSection>
-              ))}
-            </div>
+            <SecuritySection points={SECURITY_POINTS} />
 
             <AnimatedSection delay={400}>
               <div className="mt-8 p-5 rounded-xl border border-wire bg-graphite">
-                <p className="text-sm text-slate">
+                <p className="text-base text-slate">
                   <span className="text-cloud font-semibold">What the $50 version skips:</span> Access control configuration. Security audit. Credential hygiene. Tool safety review. Network hardening. Documentation. Ongoing support. Everything that makes the difference between a bot that runs and a bot you can trust.
                 </p>
               </div>
@@ -337,7 +278,7 @@ export default function AIAutomationPage() {
                 <Card glow className="p-5">
                   <Bot className="w-6 h-6 text-cyan mb-3" />
                   <h3 className="font-semibold text-cloud mb-2">Website AI Chatbot</h3>
-                  <p className="text-sm text-slate mb-4 leading-relaxed">
+                  <p className="text-base text-slate mb-4 leading-relaxed">
                     A standalone AI chatbot embedded on your website. Qualifies leads, answers FAQs, books appointments. Not OpenClaw, but purpose-built for customer-facing use.
                   </p>
                   <p className="text-sm font-semibold text-cyan">$3,500 setup + $500/mo</p>
@@ -348,7 +289,7 @@ export default function AIAutomationPage() {
                 <Card glow className="p-5">
                   <Workflow className="w-6 h-6 text-cyan mb-3" />
                   <h3 className="font-semibold text-cloud mb-2">Workflow Automation</h3>
-                  <p className="text-sm text-slate mb-4 leading-relaxed">
+                  <p className="text-base text-slate mb-4 leading-relaxed">
                     CRM automation, data enrichment, lead routing, and back-office process automation. Every project is scoped to your specific workflows.
                   </p>
                   <p className="text-sm font-semibold text-cyan">$2,500 to $7,500 / project</p>
@@ -364,7 +305,7 @@ export default function AIAutomationPage() {
                       <Badge variant="muted">Coming Soon</Badge>
                     </div>
                     <h3 className="font-semibold text-cloud mb-2">Voice Agent</h3>
-                    <p className="text-sm text-slate mb-4 leading-relaxed">
+                    <p className="text-base text-slate mb-4 leading-relaxed">
                       AI that answers your business calls, qualifies leads, and books appointments. Powered by ElevenLabs. Currently in development.
                     </p>
                     <p className="text-xs text-dim">Email capture for early access coming soon.</p>

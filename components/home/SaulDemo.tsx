@@ -68,7 +68,7 @@ export default function SaulDemo() {
                       <p className="text-sm font-semibold text-cloud">
                         {cap.label}
                       </p>
-                      <p className="text-sm text-slate">{cap.description}</p>
+                      <p className="text-base text-slate">{cap.description}</p>
                     </div>
                   </div>
                 );

@@ -125,14 +125,14 @@ export default function ServicesPage() {
                       <h2 className="font-display text-xl font-bold text-cloud mb-3">
                         {lane.title}
                       </h2>
-                      <p className="text-slate text-sm leading-relaxed">
+                      <p className="text-slate text-base leading-relaxed">
                         {lane.description}
                       </p>
                     </div>
 
                     <ul className="flex flex-col gap-2 mb-6 flex-1">
                       {lane.features.map((f) => (
-                        <li key={f} className="flex items-start gap-2 text-sm text-slate">
+                        <li key={f} className="flex items-start gap-2 text-base text-slate">
                           <span className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 ${lane.accentClass === "text-cyan" ? "bg-cyan" : "bg-ice"}`} />
                           {f}
                         </li>
