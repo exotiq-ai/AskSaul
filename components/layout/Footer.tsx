@@ -104,11 +104,25 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="mt-12 pt-8 border-t border-wire flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-dim">
-            &copy; 2026 AskSaul.ai. All rights reserved.
+            &copy; 2026 AskSaul.ai, a subsidiary of G &amp; G Holdings MT. All rights reserved.
           </p>
-          <p className="text-xs text-dim">
-            Built by Gregory Ringler &mdash; Denver, CO
-          </p>
+          <div className="flex items-center gap-4">
+            <Link
+              href="/privacy"
+              className="text-xs text-dim hover:text-slate transition-colors"
+            >
+              Privacy
+            </Link>
+            <Link
+              href="/terms"
+              className="text-xs text-dim hover:text-slate transition-colors"
+            >
+              Terms
+            </Link>
+            <span className="text-xs text-dim">
+              Built by Gregory Ringler, Denver, CO
+            </span>
+          </div>
         </div>
       </div>
     </footer>

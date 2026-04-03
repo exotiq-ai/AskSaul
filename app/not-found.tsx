@@ -13,7 +13,7 @@ export default function NotFound() {
     <div className="bg-obsidian text-cloud min-h-screen flex flex-col">
       <Navbar />
 
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
         <section className="dot-pattern min-h-[70vh] flex items-center justify-center px-4">
           <div className="text-center max-w-lg mx-auto">
             <p className="font-display text-8xl font-bold text-cyan leading-none mb-6">

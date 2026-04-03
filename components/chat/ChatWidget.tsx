@@ -28,13 +28,13 @@ const QUICK_REPLIES: { label: string; intent: Intent }[] = [
 
 const RESPONSES: Record<Intent, string> = {
   website:
-    "Nice. I build custom websites from $5,000, mobile-first and SEO-optimized. Typically 2-4 weeks to launch. Want to walk through what you actually need? [Build Your Proposal](/build-your-proposal)",
+    "Nice. We build custom websites from $5,000, mobile-first and SEO-optimized. Typically 2-4 weeks to launch. Want to walk through what you actually need? [Build Your Proposal](/build-your-proposal)",
   "ai-setup":
     "OpenClaw deployments, self-hosted on your infrastructure. Starter at $500, Pro at $2,500. Your data stays yours, not on a third-party server. [See AI packages](/ai-automation)",
   pricing:
-    "Depends on what you need. Websites from $5K, AI setups from $500, full marketing engine at $3,500 setup plus $1,000/mo. Build a proposal and I'll give you an exact number. [Build Your Proposal](/build-your-proposal)",
+    "Depends on what you need. Websites from $5K, AI setups from $500, full marketing engine at $3,500 setup plus $1,000/mo. Build a proposal and we'll give you an exact number. [Build Your Proposal](/build-your-proposal)",
   browsing:
-    "No problem. Poke around. If something sparks a question, I'm here. Check out the [portfolio](/portfolio) if you want to see what gets built.",
+    "No problem. Poke around. If something sparks a question, I'm here. Check out the [portfolio](/portfolio) to see what we've built.",
 };
 
 // ─── Markdown link parser ─────────────────────────────────────────────────────

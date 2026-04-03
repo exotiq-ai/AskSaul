@@ -10,6 +10,7 @@ import Badge from "@/components/ui/Badge";
 import Accordion from "@/components/ui/Accordion";
 import TierCards from "./TierCards";
 import SecuritySection from "./SecuritySection";
+import FAQSchema from "@/components/seo/FAQSchema";
 
 const INDUSTRIES = [
   {
@@ -294,8 +295,9 @@ const FAQ_ITEMS = [
 export default function AIAutomationPage() {
   return (
     <>
+      <FAQSchema questions={FAQ_ITEMS} />
       <Navbar />
-      <main>
+      <main id="main-content">
         {/* Hero */}
         <section className="pt-24 pb-16 px-4 dot-pattern">
           <div className="max-w-4xl mx-auto text-center">

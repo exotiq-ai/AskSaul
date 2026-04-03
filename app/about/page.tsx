@@ -45,7 +45,7 @@ export default function AboutPage() {
   return (
     <>
       <Navbar />
-      <main>
+      <main id="main-content">
         {/* Hero */}
         <section className="pt-24 pb-16 px-4 dot-pattern">
           <div className="max-w-4xl mx-auto">

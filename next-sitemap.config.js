@@ -11,7 +11,7 @@ module.exports = {
       { userAgent: 'PerplexityBot', allow: '/' },
     ],
   },
-  exclude: ['/api/*'],
+  exclude: ['/api/*', '/opengraph-image', '/twitter-image', '/icon', '/apple-icon'],
   changefreq: 'weekly',
   priority: 0.7,
   transform: async (config, path) => {

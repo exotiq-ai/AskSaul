@@ -9,6 +9,7 @@ import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 import Accordion from "@/components/ui/Accordion";
+import FAQSchema from "@/components/seo/FAQSchema";
 import { PORTFOLIO_PROJECTS } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -84,8 +85,9 @@ const FAQ_ITEMS = [
 export default function WebDevelopmentPage() {
   return (
     <>
+      <FAQSchema questions={FAQ_ITEMS} />
       <Navbar />
-      <main>
+      <main id="main-content">
         {/* Hero */}
         <section className="pt-24 pb-16 px-4 dot-pattern">
           <div className="max-w-4xl mx-auto text-center">

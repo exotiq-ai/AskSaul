@@ -681,11 +681,11 @@ export const BLOG_POSTS: BlogPost[] = [
         type: 'list',
         content: 'Example FAQ patterns that work well for AI extraction:',
         items: [
-          '"What is [your service]?" — define what you do in plain language',
-          '"How much does [your service] cost?" — give a real range, not just "contact us for pricing"',
-          '"How long does [your service] take?" — be specific',
-          '"Who is [your service] for?" — describe your ideal client',
-          '"What do I need to get started?" — practical, low-friction answer',
+          '"What is [your service]?" Define what you do in plain language.',
+          '"How much does [your service] cost?" Give a real range, not just "contact us for pricing."',
+          '"How long does [your service] take?" Be specific.',
+          '"Who is [your service] for?" Describe your ideal client.',
+          '"What do I need to get started?" Practical, low-friction answer.',
         ],
       },
       {

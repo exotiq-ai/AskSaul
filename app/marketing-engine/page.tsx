@@ -8,6 +8,7 @@ import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 import Accordion from "@/components/ui/Accordion";
+import FAQSchema from "@/components/seo/FAQSchema";
 
 export const metadata: Metadata = {
   title: "Marketing Engine",
@@ -101,8 +102,9 @@ const FAQ_ITEMS = [
 export default function MarketingEnginePage() {
   return (
     <>
+      <FAQSchema questions={FAQ_ITEMS} />
       <Navbar />
-      <main>
+      <main id="main-content">
         {/* Hero */}
         <section className="pt-24 pb-16 px-4 dot-pattern">
           <div className="max-w-4xl mx-auto text-center">
