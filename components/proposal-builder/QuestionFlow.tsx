@@ -61,7 +61,7 @@ const MARKETING_TOOLS_LABELS: Record<string, string> = {
   mailchimp: "Mailchimp",
   hubspot: "HubSpot",
   activecampaign: "ActiveCampaign",
-  gohighlevel: "GoHighLevel",
+  gohighlevel: "Existing marketing platform",
   spreadsheets: "Spreadsheets",
   nothing: "Nothing yet",
   other: "Other",

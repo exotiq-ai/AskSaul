@@ -26,9 +26,9 @@ export const SERVICES_DROPDOWN = [
     description: "Custom sites and web apps that convert",
   },
   {
-    label: "Marketing Engine",
+    label: "Saul Marketing",
     href: "/marketing-engine",
-    description: "Full GoHighLevel stack, managed for you",
+    description: "Your entire marketing stack, managed for you",
   },
 ];
 
@@ -65,17 +65,17 @@ export const SERVICE_LANES = [
   },
   {
     id: "marketing",
-    title: "Marketing Engine",
+    title: "Saul Marketing",
     tagline: "Your entire marketing stack, handled",
     description:
-      "Full GoHighLevel white-label setup. CRM, email and SMS sequences, funnels, pipelines, and reputation management.",
+      "CRM, email and SMS sequences, funnels, pipelines, and reputation management. One platform with AI built in.",
     href: "/marketing-engine",
     icon: "TrendingUp",
     features: [
-      "GHL white-label",
+      "CRM + pipeline management",
       "Email + SMS sequences",
       "Lead gen funnels",
-      "Pipeline management",
+      "AI-powered follow-up",
     ],
   },
 ];
@@ -122,7 +122,7 @@ export const OPENCLAW_TIERS = [
   },
 ];
 
-export const GHL_PRICING = {
+export const SAUL_MARKETING_PRICING = {
   setup: 3500,
   monthly: 1000,
 };

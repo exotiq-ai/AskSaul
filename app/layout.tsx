@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     "AI assistant",
     "web development Denver",
     "marketing automation",
-    "GoHighLevel",
+    "marketing automation platform",
     "custom AI chatbot",
   ],
   authors: [{ name: "Gregory Ringler" }],

@@ -34,7 +34,7 @@ const SKILLS = [
   "Vercel",
   "Netlify",
   "OpenClaw",
-  "GoHighLevel",
+  "Marketing Automation",
   "Framer Motion",
   "REST APIs",
   "Zod",

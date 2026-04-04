@@ -8,7 +8,7 @@ const footerSections = [
     links: [
       { label: "AI & Automation", href: "/ai-automation" },
       { label: "Websites & Apps", href: "/web-development" },
-      { label: "Marketing Engine", href: "/marketing-engine" },
+      { label: "Saul Marketing", href: "/marketing-engine" },
       { label: "Build Your Proposal", href: "/build-your-proposal" },
     ],
   },
