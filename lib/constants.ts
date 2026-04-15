@@ -202,10 +202,10 @@ export const PORTFOLIO_PROJECTS = [
     id: "exotiq-rent",
     title: "Exotiq.rent",
     description:
-      "Operator portal and fleet management dashboard with complex vehicle detail pages, booking system, and multi-location fleet tracking.",
+      "Consumer marketplace for exotic car rentals. Filterable search, instant-book flow, multi-location inventory, and conversion-focused vehicle cards.",
     url: "https://exotiq.rent",
-    images: [],
-    tags: ["React", "Dashboard", "Fleet Management"],
-    comingSoon: true,
+    images: ["/images/portfolio/exotiq-rent-marketplace.png"],
+    tags: ["Next.js", "Marketplace", "Instant Book"],
+    comingSoon: false,
   },
 ];
