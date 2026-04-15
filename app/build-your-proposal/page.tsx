@@ -10,8 +10,9 @@ import Footer from "@/components/layout/Footer";
 import StepIndicator from "@/components/proposal-builder/StepIndicator";
 import ServiceSelector from "@/components/proposal-builder/ServiceSelector";
 import BusinessInfo from "@/components/proposal-builder/BusinessInfo";
-import QuestionFlow from "@/components/proposal-builder/QuestionFlow";
-import ContactPreferences from "@/components/proposal-builder/ContactPreferences";
+import CommonDetails from "@/components/proposal-builder/CommonDetails";
+import ServiceDeepDiscovery from "@/components/proposal-builder/ServiceDeepDiscovery";
+import TimelineAndContact from "@/components/proposal-builder/TimelineAndContact";
 import SummaryReview from "@/components/proposal-builder/SummaryReview";
 import SubmissionConfirmation from "@/components/proposal-builder/SubmissionConfirmation";
 import Button from "@/components/ui/Button";
@@ -24,26 +25,39 @@ import {
 import type { ProposalFormData, ServiceOption } from "@/lib/validation";
 
 const STEP_LABELS = [
-  "What do you need?",
-  "About your business",
-  "A few more questions",
-  "Contact & preferences",
-  "Review & submit",
+  "Services",
+  "About you",
+  "Stack + industry",
+  "Project details",
+  "Timeline + contact",
+  "Review + submit",
 ];
 
-const STORAGE_KEY = "asksaul_proposal_draft";
+const STORAGE_KEY = "asksaul_proposal_draft_v2";
 
 const slideVariants = {
-  enter: (dir: number) => ({
-    x: dir > 0 ? 40 : -40,
-    opacity: 0,
-  }),
+  enter: (dir: number) => ({ x: dir > 0 ? 40 : -40, opacity: 0 }),
   center: { x: 0, opacity: 1 },
-  exit: (dir: number) => ({
-    x: dir > 0 ? -40 : 40,
-    opacity: 0,
-  }),
+  exit: (dir: number) => ({ x: dir > 0 ? -40 : 40, opacity: 0 }),
 };
+
+function readUtmAndReferrer(): Record<string, string> {
+  if (typeof window === "undefined") return {};
+  const params = new URLSearchParams(window.location.search);
+  const utm: Record<string, string> = {};
+  for (const key of [
+    "utm_source",
+    "utm_medium",
+    "utm_campaign",
+    "utm_content",
+    "utm_term",
+  ]) {
+    const v = params.get(key);
+    if (v) utm[key] = v;
+  }
+  if (document.referrer) utm.referrer = document.referrer;
+  return utm;
+}
 
 export default function BuildYourProposalPage() {
   const [step, setStep] = useState(1);
@@ -51,7 +65,9 @@ export default function BuildYourProposalPage() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [proposalId, setProposalId] = useState<string | null>(null);
   const topRef = useRef<HTMLDivElement>(null);
+  const utmRef = useRef<Record<string, string>>({});
 
   const methods = useForm<ProposalFormData>({
     resolver: zodResolver(proposalSchema),
@@ -60,7 +76,10 @@ export default function BuildYourProposalPage() {
       teamSize: "1",
       preferredContact: "email",
       timeline: "1-2-months",
-      marketingTools: [],
+      currentTools: [],
+      complianceNeeds: [],
+      smsConsent: false,
+      marketingSmsOptIn: false,
     },
     mode: "onTouched",
   });
@@ -68,8 +87,9 @@ export default function BuildYourProposalPage() {
   const { watch, setValue, getValues, trigger, handleSubmit } = methods;
   const services = watch("services") as ServiceOption[];
 
-  // Restore from sessionStorage, then apply URL-param overrides (?industry=, ?service=)
   useEffect(() => {
+    utmRef.current = readUtmAndReferrer();
+
     try {
       const saved = sessionStorage.getItem(STORAGE_KEY);
       if (saved) {
@@ -79,7 +99,7 @@ export default function BuildYourProposalPage() {
         });
       }
     } catch {
-      // Ignore parse errors
+      /* ignore */
     }
 
     try {
@@ -93,7 +113,7 @@ export default function BuildYourProposalPage() {
         serviceParam &&
         (SERVICE_OPTIONS as readonly string[]).includes(serviceParam)
       ) {
-        const current = (methods.getValues("services") ?? []) as ServiceOption[];
+        const current = (getValues("services") ?? []) as ServiceOption[];
         if (!current.includes(serviceParam as ServiceOption)) {
           setValue("services", [...current, serviceParam as ServiceOption], {
             shouldValidate: true,
@@ -101,18 +121,17 @@ export default function BuildYourProposalPage() {
         }
       }
     } catch {
-      // Ignore URL parse errors
+      /* ignore */
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setValue]);
 
-  // Persist to sessionStorage on change
   useEffect(() => {
     const sub = watch((values) => {
       try {
         sessionStorage.setItem(STORAGE_KEY, JSON.stringify(values));
       } catch {
-        // Ignore storage errors
+        /* ignore */
       }
     });
     return () => sub.unsubscribe();
@@ -127,9 +146,16 @@ export default function BuildYourProposalPage() {
     if (step === 1) valid = await trigger("services");
     else if (step === 2)
       valid = await trigger(["businessName", "industry", "teamSize"]);
-    else if (step === 3) valid = true; // optional questions
-    else if (step === 4)
-      valid = await trigger(["name", "email", "preferredContact", "timeline"]);
+    else if (step === 3) valid = true;
+    else if (step === 4) valid = true;
+    else if (step === 5)
+      valid = await trigger([
+        "firstName",
+        "email",
+        "phone",
+        "preferredContact",
+        "timeline",
+      ]);
     else valid = true;
 
     if (valid) {
@@ -159,13 +185,25 @@ export default function BuildYourProposalPage() {
       const res = await fetch("/api/proposal", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ data, utm: utmRef.current }),
       });
-      if (!res.ok) throw new Error("Submission failed");
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(
+          body?.error === "validation"
+            ? "Some fields need another look. Scroll up and check the highlighted ones."
+            : "Something went wrong. Please try again or email us directly.",
+        );
+      }
       sessionStorage.removeItem(STORAGE_KEY);
+      setProposalId(body?.proposalId ?? null);
       setSubmitted(true);
-    } catch {
-      setSubmitError("Something went wrong. Please try again or email us directly.");
+    } catch (err) {
+      setSubmitError(
+        err instanceof Error
+          ? err.message
+          : "Something went wrong. Please try again.",
+      );
     } finally {
       setSubmitting(false);
     }
@@ -177,7 +215,7 @@ export default function BuildYourProposalPage() {
         <Navbar />
         <main className="flex-1 flex items-center justify-center py-24 px-4">
           <div className="w-full max-w-lg">
-            <SubmissionConfirmation />
+            <SubmissionConfirmation proposalId={proposalId ?? undefined} />
           </div>
         </main>
         <Footer />
@@ -190,7 +228,6 @@ export default function BuildYourProposalPage() {
       <Navbar />
       <main className="flex-1 py-12 px-4">
         <div className="max-w-2xl mx-auto">
-          {/* Header */}
           <div ref={topRef} className="text-center mb-8">
             <p className="text-xs font-semibold uppercase tracking-widest text-cyan mb-2">
               Proposal Builder
@@ -199,25 +236,22 @@ export default function BuildYourProposalPage() {
               Build Your Proposal
             </h1>
             <p className="text-slate text-base max-w-md mx-auto">
-              Answer a few questions and Saul will put together a real, scoped proposal. Takes about 3 minutes.
+              Six short steps. Saul reads what you submit, writes a real scoped proposal, and sends it within 24 hours.
             </p>
           </div>
 
           <StepIndicator
             currentStep={step}
-            totalSteps={5}
+            totalSteps={STEP_LABELS.length}
             labels={STEP_LABELS}
           />
 
-          {/* Card */}
           <div className="bg-carbon/80 backdrop-blur-sm border border-wire rounded-2xl overflow-hidden">
             <div className="p-6 sm:p-8">
-              {/* Step title */}
               <h2 className="font-display text-lg font-semibold text-cloud mb-6">
                 {STEP_LABELS[step - 1]}
               </h2>
 
-              {/* Step content */}
               <AnimatePresence mode="wait" custom={direction}>
                 <motion.div
                   key={step}
@@ -234,20 +268,24 @@ export default function BuildYourProposalPage() {
                       onChange={(s) =>
                         setValue("services", s, { shouldValidate: true })
                       }
-                      error={methods.formState.errors.services?.message as string | undefined}
+                      error={
+                        methods.formState.errors.services?.message as
+                          | string
+                          | undefined
+                      }
                     />
                   )}
                   {step === 2 && <BusinessInfo />}
-                  {step === 3 && <QuestionFlow services={services} />}
-                  {step === 4 && <ContactPreferences />}
-                  {step === 5 && (
+                  {step === 3 && <CommonDetails />}
+                  {step === 4 && <ServiceDeepDiscovery services={services} />}
+                  {step === 5 && <TimelineAndContact />}
+                  {step === 6 && (
                     <SummaryReview data={getValues()} onEdit={goToStep} />
                   )}
                 </motion.div>
               </AnimatePresence>
             </div>
 
-            {/* Nav buttons */}
             <div className="px-6 sm:px-8 pb-6 sm:pb-8 flex items-center justify-between gap-4 border-t border-wire/50 pt-5">
               {step > 1 ? (
                 <Button
@@ -263,13 +301,8 @@ export default function BuildYourProposalPage() {
                 <div />
               )}
 
-              {step < 5 ? (
-                <Button
-                  type="button"
-                  variant="primary"
-                  size="md"
-                  onClick={goNext}
-                >
+              {step < STEP_LABELS.length ? (
+                <Button type="button" variant="primary" size="md" onClick={goNext}>
                   Continue
                 </Button>
               ) : (

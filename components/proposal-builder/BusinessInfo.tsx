@@ -6,6 +6,8 @@ import {
   TEAM_SIZE_OPTIONS,
   REVENUE_RANGE_OPTIONS,
   MONTHLY_SPEND_OPTIONS,
+  ROLE_IN_COMPANY_OPTIONS,
+  DECISION_MAKER_OPTIONS,
 } from "@/lib/validation";
 import type { ProposalFormData } from "@/lib/validation";
 
@@ -23,7 +25,7 @@ const REVENUE_LABELS: Record<string, string> = {
   "250k-plus": "$250K+ / mo",
 };
 
-const MONTHLY_SPEND_LABELS: Record<string, string> = {
+const SPEND_LABELS: Record<string, string> = {
   "under-1k": "Under $1K",
   "1k-2.5k": "$1K to $2.5K",
   "2.5k-5k": "$2.5K to $5K",
@@ -32,6 +34,52 @@ const MONTHLY_SPEND_LABELS: Record<string, string> = {
   "25k-plus": "$25K+",
   "not-sure": "Not sure",
 };
+
+const ROLE_LABELS: Record<string, string> = {
+  founder: "Founder",
+  ceo: "CEO",
+  "marketing-lead": "Marketing lead",
+  ops: "Operations",
+  "sales-lead": "Sales lead",
+  "engineering-lead": "Engineering lead",
+  assistant: "Assistant",
+  other: "Other",
+};
+
+const DECISION_LABELS: Record<string, string> = {
+  yes: "Yes, I'm the one",
+  shared: "Shared decision",
+  no: "I'm researching",
+};
+
+function Toggle({
+  selected,
+  onClick,
+  children,
+}: {
+  selected: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      aria-pressed={selected}
+      onClick={onClick}
+      className={`
+        py-2.5 px-3 rounded-lg border text-sm font-medium transition-all duration-200
+        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan/60
+        ${
+          selected
+            ? "border-cyan bg-cyan/10 text-cyan"
+            : "border-wire bg-graphite text-slate hover:border-cyan/30 hover:text-cloud"
+        }
+      `}
+    >
+      {children}
+    </button>
+  );
+}
 
 export default function BusinessInfo() {
   const {
@@ -44,10 +92,12 @@ export default function BusinessInfo() {
   const teamSize = watch("teamSize");
   const revenueRange = watch("revenueRange");
   const monthlySpend = watch("monthlySpend");
+  const roleInCompany = watch("roleInCompany");
+  const decisionMaker = watch("decisionMaker");
 
   return (
     <div className="flex flex-col gap-5">
-      {/* Industry (first, drives downstream personalization) */}
+      {/* Industry */}
       <div>
         <label className="block text-sm font-medium text-cloud mb-1.5" htmlFor="industry">
           Industry
@@ -73,26 +123,51 @@ export default function BusinessInfo() {
         )}
       </div>
 
-      {/* Business name */}
-      <div>
-        <label className="block text-sm font-medium text-cloud mb-1.5" htmlFor="businessName">
-          Business name
-        </label>
-        <input
-          id="businessName"
-          type="text"
-          autoComplete="organization"
-          placeholder="Acme Corp"
-          className={`
-            w-full px-4 py-3 rounded-lg bg-graphite border text-cloud placeholder:text-dim
-            focus:outline-none focus:ring-2 focus:ring-cyan/40 focus:border-cyan/60 transition-colors
-            ${errors.businessName ? "border-error" : "border-wire"}
-          `}
-          {...register("businessName")}
-        />
-        {errors.businessName && (
-          <p className="mt-1 text-xs text-error">{errors.businessName.message}</p>
-        )}
+      {/* Business name + website */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm font-medium text-cloud mb-1.5" htmlFor="businessName">
+            Business name
+          </label>
+          <input
+            id="businessName"
+            type="text"
+            autoComplete="organization"
+            placeholder="Acme Corp"
+            className={`
+              w-full px-4 py-3 rounded-lg bg-graphite border text-cloud placeholder:text-dim
+              focus:outline-none focus:ring-2 focus:ring-cyan/40 focus:border-cyan/60 transition-colors
+              ${errors.businessName ? "border-error" : "border-wire"}
+            `}
+            {...register("businessName")}
+          />
+          {errors.businessName && (
+            <p className="mt-1 text-xs text-error">{errors.businessName.message}</p>
+          )}
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-cloud mb-1.5" htmlFor="businessWebsite">
+            Website <span className="text-dim font-normal">(optional)</span>
+          </label>
+          <input
+            id="businessWebsite"
+            type="text"
+            inputMode="url"
+            autoComplete="url"
+            placeholder="acme.com"
+            className={`
+              w-full px-4 py-3 rounded-lg bg-graphite border text-cloud placeholder:text-dim
+              focus:outline-none focus:ring-2 focus:ring-cyan/40 focus:border-cyan/60 transition-colors
+              ${errors.businessWebsite ? "border-error" : "border-wire"}
+            `}
+            {...register("businessWebsite")}
+          />
+          {errors.businessWebsite && (
+            <p className="mt-1 text-xs text-error">
+              {errors.businessWebsite.message as string}
+            </p>
+          )}
+        </div>
       </div>
 
       {/* Team size */}
@@ -100,22 +175,13 @@ export default function BusinessInfo() {
         <p className="text-sm font-medium text-cloud mb-2">Team size</p>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
           {TEAM_SIZE_OPTIONS.map((opt) => (
-            <button
+            <Toggle
               key={opt}
-              type="button"
+              selected={teamSize === opt}
               onClick={() => setValue("teamSize", opt, { shouldValidate: true })}
-              className={`
-                py-2.5 px-3 rounded-lg border text-sm font-medium transition-all duration-200
-                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan/60
-                ${
-                  teamSize === opt
-                    ? "border-cyan bg-cyan/10 text-cyan"
-                    : "border-wire bg-graphite text-slate hover:border-cyan/30 hover:text-cloud"
-                }
-              `}
             >
               {TEAM_LABELS[opt]}
-            </button>
+            </Toggle>
           ))}
         </div>
         {errors.teamSize && (
@@ -123,66 +189,99 @@ export default function BusinessInfo() {
         )}
       </div>
 
-      {/* Revenue range - optional */}
+      {/* Role + Decision maker */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div>
+          <p className="text-sm font-medium text-cloud mb-2">
+            Your role <span className="text-dim font-normal">(optional)</span>
+          </p>
+          <div className="grid grid-cols-2 gap-2">
+            {ROLE_IN_COMPANY_OPTIONS.map((opt) => (
+              <Toggle
+                key={opt}
+                selected={roleInCompany === opt}
+                onClick={() =>
+                  setValue(
+                    "roleInCompany",
+                    roleInCompany === opt ? undefined : opt,
+                    { shouldValidate: true },
+                  )
+                }
+              >
+                {ROLE_LABELS[opt]}
+              </Toggle>
+            ))}
+          </div>
+        </div>
+        <div>
+          <p className="text-sm font-medium text-cloud mb-2">
+            Decision maker? <span className="text-dim font-normal">(optional)</span>
+          </p>
+          <div className="grid grid-cols-1 gap-2">
+            {DECISION_MAKER_OPTIONS.map((opt) => (
+              <Toggle
+                key={opt}
+                selected={decisionMaker === opt}
+                onClick={() =>
+                  setValue(
+                    "decisionMaker",
+                    decisionMaker === opt ? undefined : opt,
+                    { shouldValidate: true },
+                  )
+                }
+              >
+                {DECISION_LABELS[opt]}
+              </Toggle>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Revenue range */}
       <div>
-        <p className="text-sm font-medium text-cloud mb-1">
-          Monthly revenue range{" "}
-          <span className="text-dim font-normal">(optional, helps with scoping)</span>
+        <p className="text-sm font-medium text-cloud mb-2">
+          Monthly revenue range <span className="text-dim font-normal">(optional)</span>
         </p>
         <div className="grid grid-cols-2 gap-2">
           {REVENUE_RANGE_OPTIONS.map((opt) => (
-            <button
+            <Toggle
               key={opt}
-              type="button"
+              selected={revenueRange === opt}
               onClick={() =>
-                setValue("revenueRange", revenueRange === opt ? undefined : opt, {
-                  shouldValidate: true,
-                })
+                setValue(
+                  "revenueRange",
+                  revenueRange === opt ? undefined : opt,
+                  { shouldValidate: true },
+                )
               }
-              className={`
-                py-2.5 px-3 rounded-lg border text-sm font-medium transition-all duration-200
-                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan/60
-                ${
-                  revenueRange === opt
-                    ? "border-cyan bg-cyan/10 text-cyan"
-                    : "border-wire bg-graphite text-slate hover:border-cyan/30 hover:text-cloud"
-                }
-              `}
             >
               {REVENUE_LABELS[opt]}
-            </button>
+            </Toggle>
           ))}
         </div>
       </div>
 
-      {/* Monthly sales/marketing spend - optional */}
+      {/* Monthly spend */}
       <div>
-        <p className="text-sm font-medium text-cloud mb-1">
+        <p className="text-sm font-medium text-cloud mb-2">
           Monthly spend on sales and marketing tools{" "}
           <span className="text-dim font-normal">(optional, helps size the opportunity)</span>
         </p>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
           {MONTHLY_SPEND_OPTIONS.map((opt) => (
-            <button
+            <Toggle
               key={opt}
-              type="button"
+              selected={monthlySpend === opt}
               onClick={() =>
-                setValue("monthlySpend", monthlySpend === opt ? undefined : opt, {
-                  shouldValidate: true,
-                })
+                setValue(
+                  "monthlySpend",
+                  monthlySpend === opt ? undefined : opt,
+                  { shouldValidate: true },
+                )
               }
-              className={`
-                py-2.5 px-3 rounded-lg border text-sm font-medium transition-all duration-200
-                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan/60
-                ${
-                  monthlySpend === opt
-                    ? "border-cyan bg-cyan/10 text-cyan"
-                    : "border-wire bg-graphite text-slate hover:border-cyan/30 hover:text-cloud"
-                }
-              `}
             >
-              {MONTHLY_SPEND_LABELS[opt]}
-            </button>
+              {SPEND_LABELS[opt]}
+            </Toggle>
           ))}
         </div>
       </div>

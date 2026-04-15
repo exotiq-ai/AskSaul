@@ -1,7 +1,11 @@
 import Link from "next/link";
 import Button from "@/components/ui/Button";
 
-export default function SubmissionConfirmation() {
+export default function SubmissionConfirmation({
+  proposalId,
+}: {
+  proposalId?: string;
+}) {
   return (
     <div className="flex flex-col items-center text-center gap-6 py-4">
       {/* Success icon */}
@@ -42,6 +46,12 @@ export default function SubmissionConfirmation() {
           ))}
         </div>
       </div>
+
+      {proposalId && (
+        <p className="text-xs text-dim">
+          Reference #: <span className="font-mono text-slate">{proposalId.slice(0, 8)}</span>
+        </p>
+      )}
 
       {/* CTAs */}
       <div className="flex flex-col sm:flex-row gap-3 w-full max-w-sm">
