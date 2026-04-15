@@ -10,6 +10,7 @@ import Badge from "@/components/ui/Badge";
 import Accordion from "@/components/ui/Accordion";
 import TierCards from "./TierCards";
 import SecuritySection from "./SecuritySection";
+import PlanComparison from "@/components/ai-automation/PlanComparison";
 import FAQSchema from "@/components/seo/FAQSchema";
 
 const INDUSTRIES = [
@@ -93,6 +94,46 @@ const INDUSTRIES = [
       "Manages sprint standup summaries",
     ],
   },
+  {
+    name: "Managed IT Services (MSPs)",
+    tasks: [
+      "Runs 24/7 outbound to new-logo targets in your ICP",
+      "Enriches and scores inbound leads before they hit PSA",
+      "Automates QBR prep with account usage data",
+      "Routes ticket escalations to the right engineer",
+      "Reports MRR and churn trends in plain English",
+    ],
+  },
+  {
+    name: "Property Management",
+    tasks: [
+      "Handles tenant acquisition and leasing inquiries 24/7",
+      "Coordinates maintenance requests across vendors",
+      "Drafts owner updates from property and leasing data",
+      "Runs BD outreach for new portfolio wins",
+      "Automates renewal reminders and rent collection follow-ups",
+    ],
+  },
+  {
+    name: "Title Insurance",
+    tasks: [
+      "Runs outreach sequences to real estate agents and loan officers",
+      "Tracks referral partnership activity across offices",
+      "Drafts closing status updates for all parties",
+      "Monitors competitive listings and order trends",
+      "Surfaces pipeline risk before it closes",
+    ],
+  },
+  {
+    name: "PE Portfolio Companies",
+    tasks: [
+      "Deploys a standardized GTM playbook across the portfolio",
+      "Rolls up KPIs into one consistent reporting layer",
+      "Runs cross-portfolio benchmarks on outbound and pipeline",
+      "Automates post-close 100-day plan tracking",
+      "Coordinates talent and tooling consolidation initiatives",
+    ],
+  },
 ];
 
 function IndustryUseCases() {
@@ -107,7 +148,7 @@ function IndustryUseCases() {
             </p>
           </div>
         </AnimatedSection>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {INDUSTRIES.map((industry, i) => (
             <AnimatedSection key={industry.name} delay={i * 50}>
               <div className="bg-graphite border border-wire rounded-xl p-5 h-full hover:border-cyan/30 transition-colors duration-200">
@@ -132,7 +173,7 @@ function IndustryUseCases() {
 export const metadata: Metadata = {
   title: "AI & Automation",
   description:
-    "Self-hosted AI assistants built on OpenClaw. Security-hardened, custom-tuned, and done for you. Starter from $500. Compare tiers and see what's included.",
+    "Self-hosted AI assistants built on OpenClaw. Security-hardened, custom-tuned, and done for you. Compare capability tiers and build your proposal for a scoped quote.",
 };
 
 const TIERS = [
@@ -142,9 +183,7 @@ const TIERS = [
     label: "Starter",
     emoji: "Starter",
     forWho: "Solopreneurs and individual professionals",
-    price: "$500",
-    priceNote: "one-time setup",
-    ongoing: "~$20 to $80/mo API costs only",
+    summary: "One messaging channel. Custom personality. Security-hardened.",
     popular: false,
     features: [
       "OpenClaw installation on your machine or VPS",
@@ -162,9 +201,7 @@ const TIERS = [
     label: "Team",
     emoji: "Team",
     forWho: "Small teams, agencies, small offices (2 to 10 people)",
-    price: "$1,000",
-    priceNote: "one-time setup",
-    ongoing: "~$50 to $200/mo API costs only",
+    summary: "Multi-user access. Group channels. Access control.",
     popular: true,
     features: [
       "Everything in Starter",
@@ -184,9 +221,7 @@ const TIERS = [
     label: "Pro",
     emoji: "Pro",
     forWho: "Businesses with customer-facing needs or complex workflows",
-    price: "$2,500",
-    priceNote: "one-time setup",
-    ongoing: "~$100 to $500/mo API costs only",
+    summary: "Internal + customer channels. Custom knowledge base. Brand voice tuning.",
     popular: false,
     features: [
       "Everything in Team",
@@ -208,9 +243,7 @@ const TIERS = [
     label: "Developer",
     emoji: "Dev",
     forWho: "Developers, technical teams, DevOps",
-    price: "$1,200",
-    priceNote: "one-time setup",
-    ongoing: "~$50 to $300/mo API costs only",
+    summary: "GitHub integration. Coding agent. Multi-model fallbacks.",
     popular: false,
     features: [
       "Everything in Team",
@@ -225,11 +258,11 @@ const TIERS = [
 ];
 
 const ADDONS = [
-  { name: "Additional messaging channel", desc: "Add WhatsApp, Discord, Slack, etc.", price: "$150" },
-  { name: "Custom skill development", desc: "Build a specialized capability for your bot", price: "$350 / skill" },
-  { name: "Monthly managed care", desc: "Updates, security audits, config changes", price: "$200 to $500/mo" },
-  { name: "Quarterly security audit + optimization", desc: "Deep audit, personality tuning, optimization", price: "$250 / quarter" },
-  { name: "VPS setup and management", desc: "We provision and manage the server", price: "$75/mo + hosting" },
+  { name: "Additional messaging channel", desc: "Add WhatsApp, Discord, Slack, etc." },
+  { name: "Custom skill development", desc: "Build a specialized capability for your bot" },
+  { name: "Monthly managed care", desc: "Updates, security audits, config changes" },
+  { name: "Quarterly security audit + optimization", desc: "Deep audit, personality tuning, optimization" },
+  { name: "VPS setup and management", desc: "We provision and manage the server" },
 ];
 
 const SECURITY_POINTS = [
@@ -278,7 +311,7 @@ const FAQ_ITEMS = [
   {
     question: "What if I need help after setup?",
     answer:
-      "Every tier includes post-setup support (1 to 4 weeks depending on tier). After that, managed care add-ons are available for ongoing updates, security audits, and config changes. Emergency support is available at $100 per incident or $75/mo retainer.",
+      "Every tier includes post-setup support (1 to 4 weeks depending on tier). After that, managed care add-ons are available for ongoing updates, security audits, and config changes. Emergency support is available as part of managed care plans.",
   },
   {
     question: "Can my customers interact with the bot?",
@@ -328,7 +361,7 @@ export default function AIAutomationPage() {
                 <p className="text-xs font-semibold uppercase tracking-widest text-dim mb-2">OpenClaw Deployments</p>
                 <h2 className="font-display text-3xl font-bold text-cloud mb-3">Pick your tier</h2>
                 <p className="text-slate max-w-xl mx-auto">
-                  One-time setup fee. No monthly subscription to AskSaul. You pay API costs directly to the model provider.
+                  Built, not bought. No monthly subscription to AskSaul. You pay API costs directly to the model provider. Build your proposal for a scoped quote.
                 </p>
               </div>
             </AnimatedSection>
@@ -339,14 +372,14 @@ export default function AIAutomationPage() {
                 <p className="text-sm font-semibold text-cloud mb-4 text-center">Not sure which tier? Start here.</p>
                 <div className="flex flex-col gap-3">
                   {[
-                    { qualifier: "Just you?", tier: "Starter", price: "$500" },
-                    { qualifier: "Small team, 2 to 10 people?", tier: "Team", price: "$1,000" },
-                    { qualifier: "Customers will talk to the bot?", tier: "Pro", price: "$2,500" },
-                    { qualifier: "Developer or technical team?", tier: "Dev", price: "$1,200" },
-                  ].map(({ qualifier, tier, price }) => (
+                    { qualifier: "Just you?", tier: "Starter" },
+                    { qualifier: "Small team, 2 to 10 people?", tier: "Team" },
+                    { qualifier: "Customers will talk to the bot?", tier: "Pro" },
+                    { qualifier: "Developer or technical team?", tier: "Dev" },
+                  ].map(({ qualifier, tier }) => (
                     <div key={tier} className="flex items-center justify-between gap-4 py-2 border-b border-wire last:border-0">
                       <span className="text-sm text-slate">{qualifier}</span>
-                      <span className="text-sm font-semibold text-cyan shrink-0">{tier} ({price})</span>
+                      <span className="text-sm font-semibold text-cyan shrink-0">{tier}</span>
                     </div>
                   ))}
                 </div>
@@ -364,18 +397,29 @@ export default function AIAutomationPage() {
               <h2 className="font-display text-2xl font-bold text-cloud mb-8 text-center">Add-ons</h2>
               <div className="flex flex-col divide-y divide-wire">
                 {ADDONS.map((addon) => (
-                  <div key={addon.name} className="py-4 flex items-start justify-between gap-4">
-                    <div>
-                      <p className="text-sm font-semibold text-cloud mb-0.5">{addon.name}</p>
-                      <p className="text-sm text-slate">{addon.desc}</p>
-                    </div>
-                    <p className="text-sm font-semibold text-cyan shrink-0">{addon.price}</p>
+                  <div key={addon.name} className="py-4">
+                    <p className="text-sm font-semibold text-cloud mb-0.5">{addon.name}</p>
+                    <p className="text-sm text-slate">{addon.desc}</p>
                   </div>
                 ))}
+              </div>
+              <div className="mt-10 text-center">
+                <p className="text-sm text-slate mb-4">
+                  Pricing for all add-ons included in your custom proposal.
+                </p>
+                <Link href="/build-your-proposal">
+                  <Button variant="primary" size="md">
+                    Build Your Proposal
+                    <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </Link>
               </div>
             </AnimatedSection>
           </div>
         </section>
+
+        {/* Plan A vs Plan B */}
+        <PlanComparison />
 
         {/* Industry use cases */}
         <IndustryUseCases />
@@ -475,7 +519,7 @@ export default function AIAutomationPage() {
                   <p className="text-base text-slate mb-4 leading-relaxed">
                     A standalone AI chatbot embedded on your website. Qualifies leads, answers FAQs, books appointments. Not OpenClaw, but purpose-built for customer-facing use.
                   </p>
-                  <p className="text-sm font-semibold text-cyan">$3,500 setup + $500/mo</p>
+                  <p className="text-sm font-semibold text-cyan">Custom pricing based on scope</p>
                 </Card>
               </AnimatedSection>
 
@@ -486,7 +530,7 @@ export default function AIAutomationPage() {
                   <p className="text-base text-slate mb-4 leading-relaxed">
                     CRM automation, data enrichment, lead routing, and back-office process automation. Every project is scoped to your specific workflows.
                   </p>
-                  <p className="text-sm font-semibold text-cyan">$2,500 to $7,500 / project</p>
+                  <p className="text-sm font-semibold text-cyan">Scoped per project</p>
                 </Card>
               </AnimatedSection>
 
@@ -507,6 +551,16 @@ export default function AIAutomationPage() {
                 </Card>
               </AnimatedSection>
             </div>
+            <AnimatedSection delay={220}>
+              <div className="mt-10 text-center">
+                <Link href="/build-your-proposal">
+                  <Button variant="primary" size="md">
+                    Build Your Proposal for a Custom Quote
+                    <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </Link>
+              </div>
+            </AnimatedSection>
           </div>
         </section>
 

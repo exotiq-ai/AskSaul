@@ -1,7 +1,12 @@
 "use client";
 
 import { useFormContext } from "react-hook-form";
-import { INDUSTRY_OPTIONS, TEAM_SIZE_OPTIONS, REVENUE_RANGE_OPTIONS } from "@/lib/validation";
+import {
+  INDUSTRY_OPTIONS,
+  TEAM_SIZE_OPTIONS,
+  REVENUE_RANGE_OPTIONS,
+  MONTHLY_SPEND_OPTIONS,
+} from "@/lib/validation";
 import type { ProposalFormData } from "@/lib/validation";
 
 const TEAM_LABELS: Record<string, string> = {
@@ -18,6 +23,16 @@ const REVENUE_LABELS: Record<string, string> = {
   "250k-plus": "$250K+ / mo",
 };
 
+const MONTHLY_SPEND_LABELS: Record<string, string> = {
+  "under-1k": "Under $1K",
+  "1k-2.5k": "$1K to $2.5K",
+  "2.5k-5k": "$2.5K to $5K",
+  "5k-10k": "$5K to $10K",
+  "10k-25k": "$10K to $25K",
+  "25k-plus": "$25K+",
+  "not-sure": "Not sure",
+};
+
 export default function BusinessInfo() {
   const {
     register,
@@ -28,32 +43,11 @@ export default function BusinessInfo() {
 
   const teamSize = watch("teamSize");
   const revenueRange = watch("revenueRange");
+  const monthlySpend = watch("monthlySpend");
 
   return (
     <div className="flex flex-col gap-5">
-      {/* Business name */}
-      <div>
-        <label className="block text-sm font-medium text-cloud mb-1.5" htmlFor="businessName">
-          Business name
-        </label>
-        <input
-          id="businessName"
-          type="text"
-          autoComplete="organization"
-          placeholder="Acme Corp"
-          className={`
-            w-full px-4 py-3 rounded-lg bg-graphite border text-cloud placeholder:text-dim
-            focus:outline-none focus:ring-2 focus:ring-cyan/40 focus:border-cyan/60 transition-colors
-            ${errors.businessName ? "border-error" : "border-wire"}
-          `}
-          {...register("businessName")}
-        />
-        {errors.businessName && (
-          <p className="mt-1 text-xs text-error">{errors.businessName.message}</p>
-        )}
-      </div>
-
-      {/* Industry */}
+      {/* Industry (first, drives downstream personalization) */}
       <div>
         <label className="block text-sm font-medium text-cloud mb-1.5" htmlFor="industry">
           Industry
@@ -76,6 +70,28 @@ export default function BusinessInfo() {
         </select>
         {errors.industry && (
           <p className="mt-1 text-xs text-error">{errors.industry.message}</p>
+        )}
+      </div>
+
+      {/* Business name */}
+      <div>
+        <label className="block text-sm font-medium text-cloud mb-1.5" htmlFor="businessName">
+          Business name
+        </label>
+        <input
+          id="businessName"
+          type="text"
+          autoComplete="organization"
+          placeholder="Acme Corp"
+          className={`
+            w-full px-4 py-3 rounded-lg bg-graphite border text-cloud placeholder:text-dim
+            focus:outline-none focus:ring-2 focus:ring-cyan/40 focus:border-cyan/60 transition-colors
+            ${errors.businessName ? "border-error" : "border-wire"}
+          `}
+          {...register("businessName")}
+        />
+        {errors.businessName && (
+          <p className="mt-1 text-xs text-error">{errors.businessName.message}</p>
         )}
       </div>
 
@@ -134,6 +150,38 @@ export default function BusinessInfo() {
               `}
             >
               {REVENUE_LABELS[opt]}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Monthly sales/marketing spend - optional */}
+      <div>
+        <p className="text-sm font-medium text-cloud mb-1">
+          Monthly spend on sales and marketing tools{" "}
+          <span className="text-dim font-normal">(optional, helps size the opportunity)</span>
+        </p>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          {MONTHLY_SPEND_OPTIONS.map((opt) => (
+            <button
+              key={opt}
+              type="button"
+              onClick={() =>
+                setValue("monthlySpend", monthlySpend === opt ? undefined : opt, {
+                  shouldValidate: true,
+                })
+              }
+              className={`
+                py-2.5 px-3 rounded-lg border text-sm font-medium transition-all duration-200
+                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan/60
+                ${
+                  monthlySpend === opt
+                    ? "border-cyan bg-cyan/10 text-cyan"
+                    : "border-wire bg-graphite text-slate hover:border-cyan/30 hover:text-cloud"
+                }
+              `}
+            >
+              {MONTHLY_SPEND_LABELS[opt]}
             </button>
           ))}
         </div>

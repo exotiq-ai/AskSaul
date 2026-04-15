@@ -5,7 +5,7 @@ import Footer from "@/components/layout/Footer";
 export const metadata: Metadata = {
   title: "Terms of Service",
   description:
-    "Terms governing access to asksaul.ai and related services. AskSaul.ai is a subsidiary of G & G Holdings MT.",
+    "Terms governing access to asksaul.ai and related services. AskSaul.ai is a subsidiary of Ask Saul Inc..",
 };
 
 export default function TermsPage() {
@@ -15,7 +15,7 @@ export default function TermsPage() {
       <main className="pt-24 pb-16 px-4">
         <div className="max-w-3xl mx-auto">
           <p className="text-xs font-mono text-dim uppercase tracking-widest mb-3">
-            AskSaul.ai, a subsidiary of G &amp; G Holdings MT
+            AskSaul.ai, a subsidiary of Ask Saul Inc.
           </p>
           <h1 className="font-display text-4xl font-bold text-cloud mb-2">
             Terms of Service
@@ -39,8 +39,8 @@ export default function TermsPage() {
               These Terms of Service (&quot;Terms&quot;) govern your access to
               and use of asksaul.ai (the &quot;Website&quot;) and all services
               provided by AskSaul.ai (&quot;AskSaul,&quot; &quot;we,&quot;
-              &quot;us,&quot; or &quot;our&quot;), a subsidiary of G &amp; G
-              Holdings MT. By accessing or using the Website, you agree to be
+              &quot;us,&quot; or &quot;our&quot;), a subsidiary of Ask Saul
+              Inc. By accessing or using the Website, you agree to be
               bound by these Terms. If you do not agree, do not use the Website.
             </p>
 
@@ -124,7 +124,7 @@ export default function TermsPage() {
             </h3>
             <p>
               All Website content, including text, design, graphics, logos, and
-              software, is property of AskSaul.ai and G &amp; G Holdings MT.
+              software, is property of AskSaul.ai and Ask Saul Inc..
               Trademarks include: AskSaul, AskSaul.ai, and the AskSaul logo.
               You may not reproduce, distribute, scrape, or create derivative
               works from Website content without written permission.
@@ -223,10 +223,10 @@ export default function TermsPage() {
             <p>
               <strong className="text-cloud">Email:</strong>{" "}
               <a
-                href="mailto:1.gregory.ringler@gmail.com"
+                href="mailto:saul3000bot@gmail.com"
                 className="text-cyan hover:text-cyan/80 transition-colors"
               >
-                1.gregory.ringler@gmail.com
+                saul3000bot@gmail.com
               </a>
             </p>
             <p>
@@ -245,7 +245,7 @@ export default function TermsPage() {
           </article>
 
           <p className="text-xs text-dim mt-10">
-            &copy; 2026 AskSaul.ai, a subsidiary of G &amp; G Holdings MT. All
+            &copy; 2026 AskSaul.ai, a subsidiary of Ask Saul Inc.. All
             rights reserved.
           </p>
         </div>

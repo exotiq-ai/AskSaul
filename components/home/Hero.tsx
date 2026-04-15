@@ -51,9 +51,9 @@ export default function Hero() {
 
         {/* Subheadline */}
         <p className="text-lg sm:text-xl text-slate max-w-2xl mx-auto mb-10 leading-relaxed">
-          Done-for-you AI assistants, high-converting websites, and marketing
-          automation for businesses that are done wasting time on tools that do
-          not talk to each other.
+          Done-for-you AI assistants, websites that convert, and marketing
+          automation that actually works. For businesses done wasting time on
+          tools that do not talk to each other.
         </p>
 
         {/* CTAs */}
@@ -72,8 +72,17 @@ export default function Hero() {
           </Link>
         </div>
 
+        {/* Results strip */}
+        <div className="mt-14 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 text-sm">
+          <span className="text-cloud font-semibold">4 demos booked in 24 hours.</span>
+          <span className="hidden sm:block w-px h-4 bg-wire" />
+          <span className="text-cloud font-semibold">Full CRM built in 48 hours.</span>
+          <span className="hidden sm:block w-px h-4 bg-wire" />
+          <span className="text-cloud font-semibold">Pipeline live in under a week.</span>
+        </div>
+
         {/* Social proof strip */}
-        <div className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 text-sm text-dim">
+        <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 text-sm text-dim">
           <span>5 live platforms built and running</span>
           <span className="hidden sm:block w-px h-4 bg-wire" />
           <span>Weeks to launch, not months</span>

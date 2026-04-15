@@ -15,18 +15,18 @@ import { PORTFOLIO_PROJECTS } from "@/lib/constants";
 export const metadata: Metadata = {
   title: "Web Development",
   description:
-    "Custom websites and web apps built mobile-first, SEO-optimized, and engineered to convert. From $5,000. Portfolio includes DriveExotiq, Exotiq.ai, and more.",
+    "Custom websites and web apps built mobile-first, SEO-optimized, and engineered to convert. Every project scoped and priced per spec. Portfolio includes DriveExotiq, Exotiq.ai, and more.",
 };
 
 const SERVICES = [
   {
     name: "Custom business website",
     desc: "Mobile-first, SEO-optimized from day one. Built in Next.js with Tailwind CSS. Not a template, not a theme.",
-    price: "$5,000 to $15,000",
+    price: "Scoped and priced per project",
   },
   {
     name: "Web application development",
-    desc: "Custom functionality, user authentication, dashboards, booking systems, marketplaces. Scoped per project.",
+    desc: "Custom functionality, user authentication, dashboards, booking systems, marketplaces.",
     price: "Scoped per project",
   },
   {
@@ -37,12 +37,12 @@ const SERVICES = [
   {
     name: "Redesign or migration",
     desc: "Take an existing site and make it fast, modern, and conversion-focused. Same URL, new results.",
-    price: "From $3,500",
+    price: "Scoped per project",
   },
   {
     name: "SEO and maintenance retainer",
-    desc: "Monthly updates, performance monitoring, content publishing, technical SEO. Ongoing partnership.",
-    price: "$500 to $1,500/mo",
+    desc: "Monthly updates, performance monitoring, content publishing, technical SEO.",
+    price: "Monthly partnership, scoped to your needs",
   },
 ];
 
@@ -58,7 +58,7 @@ const FAQ_ITEMS = [
   {
     question: "How much does a custom website cost?",
     answer:
-      "Most business websites fall between $5,000 and $15,000. Simple marketing sites with 5 to 10 pages land at the lower end. Complex web apps, marketplaces, or sites requiring custom backend functionality land higher. Every project gets a scoped proposal with a fixed price before we start.",
+      "Every project gets a scoped proposal with a fixed price before we start. Pricing depends on the number of pages, complexity of functionality, integrations needed, and timeline. The fastest way to get a real number is to build your proposal. It takes 3 minutes and we will have a scoped quote back to you within 24 hours.",
   },
   {
     question: "How long does a website build take?",
@@ -78,7 +78,7 @@ const FAQ_ITEMS = [
   {
     question: "What happens after the site launches?",
     answer:
-      "You can manage it yourself or retain us for ongoing updates, performance monitoring, and SEO. Maintenance retainers run $500 to $1,500/mo depending on scope. Either way, you get full ownership of the code and hosting.",
+      "You can manage it yourself or retain us for ongoing updates, performance monitoring, and SEO. Maintenance retainers are scoped to your needs. Either way, you get full ownership of the code and hosting.",
   },
 ];
 
@@ -98,8 +98,11 @@ export default function WebDevelopmentPage() {
                 <br className="hidden sm:block" />
                 <span className="text-ice">Built, not assembled.</span>
               </h1>
-              <p className="text-slate text-lg max-w-2xl mx-auto mb-8">
+              <p className="text-slate text-lg max-w-2xl mx-auto mb-6">
                 Mobile-first, fast, SEO-ready on day one, and engineered around your actual conversion goals. Not a template. Not a theme. Code written to spec.
+              </p>
+              <p className="text-cloud text-base font-semibold max-w-2xl mx-auto mb-8">
+                Average launch: 2-4 weeks. Not 6 months. Not &quot;we will get back to you.&quot;
               </p>
               <Link href="/build-your-proposal">
                 <Button variant="secondary" size="lg">

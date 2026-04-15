@@ -23,20 +23,38 @@ export const step1Schema = z.object({
 // ─── Step 2: Business Info ───────────────────────────────────────────────────
 
 export const INDUSTRY_OPTIONS = [
+  "Managed IT Services (MSPs)",
+  "Property Management",
+  "Home Services (HVAC, Plumbing, Pool, Roofing)",
+  "Title Insurance",
+  "Professional Services (Legal, Consulting, Accounting)",
   "Real Estate",
-  "Law / Legal",
+  "Sales-Led Startup",
+  "PE Portfolio Company",
+  "E-Commerce / Retail",
   "Marketing / Advertising",
   "Healthcare",
-  "E-Commerce / Retail",
   "Restaurant / Food & Beverage",
   "Construction / Trades",
   "Finance / Accounting",
   "Technology",
-  "Consulting",
   "Education",
   "Non-Profit",
   "Other",
 ] as const;
+
+// Slug-to-label map for query-param preselection from /industries and homepage CTAs
+export const VERTICAL_SLUG_TO_INDUSTRY: Record<string, string> = {
+  msp: "Managed IT Services (MSPs)",
+  "property-mgmt": "Property Management",
+  "home-services": "Home Services (HVAC, Plumbing, Pool, Roofing)",
+  "title-insurance": "Title Insurance",
+  "professional-services": "Professional Services (Legal, Consulting, Accounting)",
+  "real-estate": "Real Estate",
+  startup: "Sales-Led Startup",
+  "pe-portfolio": "PE Portfolio Company",
+  ecommerce: "E-Commerce / Retail",
+};
 
 export const TEAM_SIZE_OPTIONS = ["1", "2-5", "6-20", "20+"] as const;
 
@@ -47,11 +65,22 @@ export const REVENUE_RANGE_OPTIONS = [
   "250k-plus",
 ] as const;
 
+export const MONTHLY_SPEND_OPTIONS = [
+  "under-1k",
+  "1k-2.5k",
+  "2.5k-5k",
+  "5k-10k",
+  "10k-25k",
+  "25k-plus",
+  "not-sure",
+] as const;
+
 export const step2Schema = z.object({
   businessName: z.string().min(1, "Business name is required"),
   industry: z.string().min(1, "Industry is required"),
   teamSize: z.enum(TEAM_SIZE_OPTIONS),
   revenueRange: z.enum(REVENUE_RANGE_OPTIONS).optional(),
+  monthlySpend: z.enum(MONTHLY_SPEND_OPTIONS).optional(),
 });
 
 // ─── Step 3: Dynamic Questions ───────────────────────────────────────────────
@@ -107,6 +136,22 @@ export const MARKETING_PAIN_OPTIONS = [
   "all",
 ] as const;
 
+export const CURRENT_TOOLS_OPTIONS = [
+  "apollo",
+  "hubspot",
+  "salesforce",
+  "instantly",
+  "mailchimp",
+  "linkedin-automation",
+  "calendly",
+  "gohighlevel",
+  "podium",
+  "connectwise",
+  "autotask",
+  "none",
+  "other",
+] as const;
+
 export const step3Schema = z.object({
   // AI assistant questions
   aiUserCount: z.enum(AI_USER_COUNT_OPTIONS).optional(),
@@ -125,6 +170,8 @@ export const step3Schema = z.object({
   // Not sure questions
   notSureHeadache: z.string().optional(),
   notSureAutomate: z.string().optional(),
+  // Common: current tools stack
+  currentTools: z.array(z.enum(CURRENT_TOOLS_OPTIONS)).optional(),
 });
 
 // ─── Step 4: Contact & Preferences ──────────────────────────────────────────

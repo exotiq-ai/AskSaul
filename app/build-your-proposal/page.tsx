@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence, motion } from "framer-motion";
-import type { Metadata } from "next";
 
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -18,10 +17,9 @@ import SubmissionConfirmation from "@/components/proposal-builder/SubmissionConf
 import Button from "@/components/ui/Button";
 
 import {
-  step1Schema,
-  step2Schema,
-  step4Schema,
   proposalSchema,
+  SERVICE_OPTIONS,
+  VERTICAL_SLUG_TO_INDUSTRY,
 } from "@/lib/validation";
 import type { ProposalFormData, ServiceOption } from "@/lib/validation";
 
@@ -70,7 +68,7 @@ export default function BuildYourProposalPage() {
   const { watch, setValue, getValues, trigger, handleSubmit } = methods;
   const services = watch("services") as ServiceOption[];
 
-  // Restore from sessionStorage
+  // Restore from sessionStorage, then apply URL-param overrides (?industry=, ?service=)
   useEffect(() => {
     try {
       const saved = sessionStorage.getItem(STORAGE_KEY);
@@ -83,6 +81,29 @@ export default function BuildYourProposalPage() {
     } catch {
       // Ignore parse errors
     }
+
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const industrySlug = params.get("industry");
+      if (industrySlug && VERTICAL_SLUG_TO_INDUSTRY[industrySlug]) {
+        setValue("industry", VERTICAL_SLUG_TO_INDUSTRY[industrySlug]);
+      }
+      const serviceParam = params.get("service");
+      if (
+        serviceParam &&
+        (SERVICE_OPTIONS as readonly string[]).includes(serviceParam)
+      ) {
+        const current = (methods.getValues("services") ?? []) as ServiceOption[];
+        if (!current.includes(serviceParam as ServiceOption)) {
+          setValue("services", [...current, serviceParam as ServiceOption], {
+            shouldValidate: true,
+          });
+        }
+      }
+    } catch {
+      // Ignore URL parse errors
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setValue]);
 
   // Persist to sessionStorage on change
