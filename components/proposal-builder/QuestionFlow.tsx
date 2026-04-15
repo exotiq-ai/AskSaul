@@ -11,6 +11,7 @@ import {
   ECOMMERCE_OPTIONS,
   MARKETING_TOOLS_OPTIONS,
   MARKETING_PAIN_OPTIONS,
+  CURRENT_TOOLS_OPTIONS,
 } from "@/lib/validation";
 
 // ─── Label maps ──────────────────────────────────────────────────────────────
@@ -75,6 +76,22 @@ const MARKETING_PAIN_LABELS: Record<string, string> = {
   all: "All of the above",
 };
 
+const CURRENT_TOOLS_LABELS: Record<string, string> = {
+  apollo: "Apollo",
+  hubspot: "HubSpot",
+  salesforce: "Salesforce",
+  instantly: "Instantly",
+  mailchimp: "Mailchimp",
+  "linkedin-automation": "LinkedIn automation",
+  calendly: "Calendly",
+  gohighlevel: "GoHighLevel",
+  podium: "Podium",
+  connectwise: "ConnectWise",
+  autotask: "Autotask",
+  none: "None",
+  other: "Other",
+};
+
 // ─── Sub-components ──────────────────────────────────────────────────────────
 
 function OptionButton({
@@ -107,6 +124,42 @@ function OptionButton({
 
 function FieldLabel({ children }: { children: React.ReactNode }) {
   return <p className="text-sm font-medium text-cloud mb-2">{children}</p>;
+}
+
+function CurrentToolsQuestions() {
+  const { watch, setValue } = useFormContext<ProposalFormData>();
+  const currentTools = watch("currentTools") ?? [];
+
+  function toggle(tool: (typeof CURRENT_TOOLS_OPTIONS)[number]) {
+    if (currentTools.includes(tool)) {
+      setValue(
+        "currentTools",
+        currentTools.filter((t) => t !== tool),
+      );
+    } else {
+      setValue("currentTools", [...currentTools, tool]);
+    }
+  }
+
+  return (
+    <div>
+      <FieldLabel>
+        What tools are you currently using for sales and marketing?{" "}
+        <span className="text-dim font-normal">(select any that apply)</span>
+      </FieldLabel>
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+        {CURRENT_TOOLS_OPTIONS.map((opt) => (
+          <OptionButton
+            key={opt}
+            selected={currentTools.includes(opt)}
+            onClick={() => toggle(opt)}
+          >
+            {CURRENT_TOOLS_LABELS[opt]}
+          </OptionButton>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 // ─── Section components ──────────────────────────────────────────────────────
@@ -394,6 +447,7 @@ export default function QuestionFlow({ services }: QuestionFlowProps) {
 
   return (
     <div className="flex flex-col gap-8">
+      <CurrentToolsQuestions />
       {activeServices.map((service) => (
         <div key={service}>
           {activeServices.length > 1 && (

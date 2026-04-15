@@ -25,8 +25,8 @@ const CONTACT_DETAILS = [
   {
     icon: Mail,
     label: "Email",
-    value: "1.gregory.ringler@gmail.com",
-    href: "mailto:1.gregory.ringler@gmail.com",
+    value: "saul3000bot@gmail.com",
+    href: "mailto:saul3000bot@gmail.com",
   },
   {
     icon: Phone,
@@ -140,7 +140,7 @@ export default function ContactPage() {
                       about what you need.
                     </p>
                     <a
-                      href="mailto:1.gregory.ringler@gmail.com?subject=Discovery%20Call%20Request&body=Hi%20Gregory%2C%20I'd%20like%20to%20book%20a%20discovery%20call."
+                      href="mailto:saul3000bot@gmail.com?subject=Discovery%20Call%20Request&body=Hi%20Gregory%2C%20I'd%20like%20to%20book%20a%20discovery%20call."
                     >
                       <Button variant="secondary" size="sm" className="w-full">
                         Request a Discovery Call

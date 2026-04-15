@@ -5,7 +5,7 @@ import Footer from "@/components/layout/Footer";
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
-    "How AskSaul.ai collects, uses, and protects your information. A subsidiary of G & G Holdings MT.",
+    "How AskSaul.ai collects, uses, and protects your information. A subsidiary of Ask Saul Inc..",
 };
 
 export default function PrivacyPage() {
@@ -15,7 +15,7 @@ export default function PrivacyPage() {
       <main className="pt-24 pb-16 px-4">
         <div className="max-w-3xl mx-auto">
           <p className="text-xs font-mono text-dim uppercase tracking-widest mb-3">
-            AskSaul.ai, a subsidiary of G &amp; G Holdings MT
+            AskSaul.ai, a subsidiary of Ask Saul Inc.
           </p>
           <h1 className="font-display text-4xl font-bold text-cloud mb-2">
             Privacy Policy
@@ -37,7 +37,7 @@ export default function PrivacyPage() {
           <article className="prose-custom space-y-6 text-slate text-[15px] leading-relaxed">
             <p>
               AskSaul.ai (&quot;AskSaul,&quot; &quot;we,&quot; &quot;us,&quot;
-              or &quot;our&quot;), a subsidiary of G &amp; G Holdings MT, is
+              or &quot;our&quot;), a subsidiary of Ask Saul Inc., is
               committed to protecting the privacy and security of information
               collected through asksaul.ai (the &quot;Website&quot;) and related
               services. This Privacy Policy explains what information we collect,
@@ -259,10 +259,10 @@ export default function PrivacyPage() {
             <p>
               You may update or correct your information by contacting{" "}
               <a
-                href="mailto:1.gregory.ringler@gmail.com"
+                href="mailto:saul3000bot@gmail.com"
                 className="text-cyan hover:text-cyan/80 transition-colors"
               >
-                1.gregory.ringler@gmail.com
+                saul3000bot@gmail.com
               </a>
               .
             </p>
@@ -273,10 +273,10 @@ export default function PrivacyPage() {
             <p>
               You may request deletion by contacting{" "}
               <a
-                href="mailto:1.gregory.ringler@gmail.com"
+                href="mailto:saul3000bot@gmail.com"
                 className="text-cyan hover:text-cyan/80 transition-colors"
               >
-                1.gregory.ringler@gmail.com
+                saul3000bot@gmail.com
               </a>
               . Requests processed within 30 days, subject to legal retention
               requirements.
@@ -297,10 +297,10 @@ export default function PrivacyPage() {
               California, Colorado, Virginia, and Connecticut residents may have
               additional rights. Contact{" "}
               <a
-                href="mailto:1.gregory.ringler@gmail.com"
+                href="mailto:saul3000bot@gmail.com"
                 className="text-cyan hover:text-cyan/80 transition-colors"
               >
-                1.gregory.ringler@gmail.com
+                saul3000bot@gmail.com
               </a>{" "}
               with your request and state of residence.
             </p>
@@ -327,10 +327,10 @@ export default function PrivacyPage() {
             <p>
               <strong className="text-cloud">Email:</strong>{" "}
               <a
-                href="mailto:1.gregory.ringler@gmail.com"
+                href="mailto:saul3000bot@gmail.com"
                 className="text-cyan hover:text-cyan/80 transition-colors"
               >
-                1.gregory.ringler@gmail.com
+                saul3000bot@gmail.com
               </a>
             </p>
             <p>
@@ -349,7 +349,7 @@ export default function PrivacyPage() {
           </article>
 
           <p className="text-xs text-dim mt-10">
-            &copy; 2026 AskSaul.ai, a subsidiary of G &amp; G Holdings MT. All
+            &copy; 2026 AskSaul.ai, a subsidiary of Ask Saul Inc.. All
             rights reserved.
           </p>
         </div>

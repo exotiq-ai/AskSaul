@@ -11,7 +11,7 @@ export async function GET() {
       <guid isPermaLink="true">${baseUrl}/blog/${post.slug}</guid>
       <description><![CDATA[${post.excerpt}]]></description>
       <pubDate>${new Date(post.date).toUTCString()}</pubDate>
-      <author>1.gregory.ringler@gmail.com (Gregory Ringler)</author>
+      <author>saul3000bot@gmail.com (Gregory Ringler)</author>
       <category>${post.category}</category>
     </item>`
   ).join("");
@@ -23,8 +23,8 @@ export async function GET() {
     <link>${baseUrl}/blog</link>
     <description>AI automation, web development, and marketing insights for businesses ready to stop duct-taping their tech together.</description>
     <language>en-us</language>
-    <managingEditor>1.gregory.ringler@gmail.com (Gregory Ringler)</managingEditor>
-    <webMaster>1.gregory.ringler@gmail.com (Gregory Ringler)</webMaster>
+    <managingEditor>saul3000bot@gmail.com (Gregory Ringler)</managingEditor>
+    <webMaster>saul3000bot@gmail.com (Gregory Ringler)</webMaster>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     <atom:link href="${baseUrl}/blog/feed.xml" rel="self" type="application/rss+xml" />
     ${items}

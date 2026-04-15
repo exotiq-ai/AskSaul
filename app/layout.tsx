@@ -28,7 +28,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://asksaul.ai"),
   title: {
-    default: "AskSaul.ai — AI, Automation & Web Development",
+    default: "AskSaul.ai | AI, Automation & Web Development",
     template: "%s | AskSaul.ai",
   },
   description:
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://asksaul.ai",
     siteName: "AskSaul.ai",
-    title: "AskSaul.ai — AI, Automation & Web Development",
+    title: "AskSaul.ai | AI, Automation & Web Development",
     description:
       "Done-for-you AI assistants, custom websites, and marketing automation. Your competitors are automating. You're still doing it manually.",
     images: [
@@ -57,13 +57,13 @@ export const metadata: Metadata = {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "AskSaul.ai — AI, Automation & Web Development",
+        alt: "AskSaul.ai | AI, Automation & Web Development",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "AskSaul.ai — AI, Automation & Web Development",
+    title: "AskSaul.ai | AI, Automation & Web Development",
     description:
       "Done-for-you AI assistants, custom websites, and marketing automation.",
     images: ["/twitter-image"],

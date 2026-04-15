@@ -64,6 +64,20 @@ export function calculateEstimatedValue(data: ProposalFormData): number {
     estimate = budgetMap[data.budget];
   }
 
+  // Monthly sales/marketing spend signal: bump high-spend leads up, floor low-spend leads down
+  const spendMultiplier: Record<string, number> = {
+    "under-1k": 0.85,
+    "1k-2.5k": 1,
+    "2.5k-5k": 1.1,
+    "5k-10k": 1.25,
+    "10k-25k": 1.5,
+    "25k-plus": 1.75,
+    "not-sure": 1,
+  };
+  if (data.monthlySpend && spendMultiplier[data.monthlySpend]) {
+    estimate = Math.round(estimate * spendMultiplier[data.monthlySpend]);
+  }
+
   return estimate;
 }
 
@@ -112,6 +126,7 @@ export function buildProposalPayload(data: ProposalFormData) {
       industry: data.industry,
       teamSize: data.teamSize,
       revenueRange: data.revenueRange ?? "",
+      monthlySpend: data.monthlySpend ?? "",
     },
     services_requested: data.services,
     service_details: {
@@ -132,13 +147,29 @@ export function buildProposalPayload(data: ProposalFormData) {
       // Not sure
       notSureHeadache: data.notSureHeadache,
       notSureAutomate: data.notSureAutomate,
+      // Common: current stack
+      currentTools: data.currentTools,
     },
     timeline: data.timeline,
     budget: data.budget ?? "",
     notes: data.notes ?? "",
-    tags: ["proposal-builder", "website-lead", valueTag, ...serviceTags],
+    tags: [
+      "proposal-builder",
+      "website-lead",
+      valueTag,
+      ...serviceTags,
+      ...(data.industry ? [`industry:${slugifyIndustry(data.industry)}`] : []),
+      ...(data.monthlySpend ? [`spend:${data.monthlySpend}`] : []),
+    ],
     estimated_value: estimatedValue,
   };
+}
+
+function slugifyIndustry(industry: string): string {
+  return industry
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
 }
 
 export function buildContactPayload(data: ContactFormData) {

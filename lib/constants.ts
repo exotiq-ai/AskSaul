@@ -2,13 +2,15 @@ export const BRAND = {
   name: "AskSaul",
   domain: "asksaul.ai",
   tagline: "Your competitors are automating. You are still doing it manually.",
-  email: "1.gregory.ringler@gmail.com",
+  email: "saul3000bot@gmail.com",
   phone: "970.343.9634",
   location: "Denver, CO",
 };
 
 export const NAV_LINKS = [
   { label: "Services", href: "/services", hasDropdown: true },
+  { label: "Industries", href: "/industries" },
+  { label: "Case Studies", href: "/case-studies" },
   { label: "Portfolio", href: "/portfolio" },
   { label: "About", href: "/about" },
   { label: "Blog", href: "/blog" },
@@ -128,7 +130,7 @@ export const SAUL_MARKETING_PRICING = {
 };
 
 export const CONTACT_INFO = {
-  email: "1.gregory.ringler@gmail.com",
+  email: "saul3000bot@gmail.com",
   phone: "970.343.9634",
   location: "Denver, CO",
   calendly: "https://calendly.com/gregoryr/discovery",

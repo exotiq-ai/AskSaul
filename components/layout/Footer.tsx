@@ -16,6 +16,8 @@ const footerSections = [
     title: "Company",
     links: [
       { label: "About", href: "/about" },
+      { label: "Industries", href: "/industries" },
+      { label: "Case Studies", href: "/case-studies" },
       { label: "Portfolio", href: "/portfolio" },
       { label: "Blog", href: "/blog" },
       { label: "Contact", href: "/contact" },
@@ -104,7 +106,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="mt-12 pt-8 border-t border-wire flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-dim">
-            &copy; 2026 AskSaul.ai, a subsidiary of G &amp; G Holdings MT. All rights reserved.
+            &copy; 2026 AskSaul.ai, a subsidiary of Ask Saul Inc. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
             <Link

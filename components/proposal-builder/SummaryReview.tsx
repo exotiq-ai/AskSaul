@@ -25,6 +25,16 @@ const BUDGET_LABELS: Record<string, string> = {
   "25k-plus": "$25K+",
 };
 
+const SPEND_LABELS: Record<string, string> = {
+  "under-1k": "Under $1K / mo",
+  "1k-2.5k": "$1K to $2.5K / mo",
+  "2.5k-5k": "$2.5K to $5K / mo",
+  "5k-10k": "$5K to $10K / mo",
+  "10k-25k": "$10K to $25K / mo",
+  "25k-plus": "$25K+ / mo",
+  "not-sure": "Not sure",
+};
+
 interface SummaryRowProps {
   label: string;
   value: string | string[] | undefined;
@@ -91,6 +101,11 @@ export default function SummaryReview({ data, onEdit }: SummaryReviewProps) {
         {data.revenueRange && (
           <SummaryRow label="Revenue" value={data.revenueRange.replace(/-/g, " ")} />
         )}
+        <SummaryRow
+          label="Monthly sales/marketing spend"
+          value={data.monthlySpend ? SPEND_LABELS[data.monthlySpend] : undefined}
+        />
+        <SummaryRow label="Current tools" value={data.currentTools} />
       </div>
 
       {/* Contact */}

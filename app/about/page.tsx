@@ -159,11 +159,11 @@ export default function AboutPage() {
 
                     <div className="space-y-3 mb-6">
                       <a
-                        href="mailto:1.gregory.ringler@gmail.com"
+                        href="mailto:saul3000bot@gmail.com"
                         className="flex items-center gap-3 text-sm text-slate hover:text-cloud transition-colors"
                       >
                         <Mail className="w-4 h-4 text-cyan shrink-0" />
-                        1.gregory.ringler@gmail.com
+                        saul3000bot@gmail.com
                       </a>
                       <a
                         href="tel:+19703439634"
@@ -317,7 +317,7 @@ export default function AboutPage() {
             name: "Gregory Ringler",
             jobTitle: "Founder",
             url: "https://asksaul.ai/about",
-            email: "1.gregory.ringler@gmail.com",
+            email: "saul3000bot@gmail.com",
             telephone: "+19703439634",
             address: {
               "@type": "PostalAddress",

@@ -28,7 +28,7 @@ export default function StructuredData({
       contactPoint: {
         "@type": "ContactPoint",
         telephone: "+19703439634",
-        email: "1.gregory.ringler@gmail.com",
+        email: "saul3000bot@gmail.com",
         contactType: "customer service",
       },
     },
@@ -38,7 +38,7 @@ export default function StructuredData({
       name: "AskSaul.ai",
       url: "https://asksaul.ai",
       telephone: "+19703439634",
-      email: "1.gregory.ringler@gmail.com",
+      email: "saul3000bot@gmail.com",
       address: {
         "@type": "PostalAddress",
         addressLocality: "Denver",
@@ -80,17 +80,8 @@ export default function StructuredData({
         name: "AskSaul.ai",
       },
       description:
-        "Self-hosted AI assistant deployments and workflow automation for small businesses.",
+        "Self-hosted AI assistant deployments and workflow automation for small businesses. Every project scoped and priced per spec.",
       areaServed: "United States",
-      offers: {
-        "@type": "Offer",
-        priceSpecification: {
-          "@type": "PriceSpecification",
-          minPrice: "500",
-          maxPrice: "2500",
-          priceCurrency: "USD",
-        },
-      },
     });
   }
 

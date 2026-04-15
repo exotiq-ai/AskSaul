@@ -11,9 +11,7 @@ interface Tier {
   name: string;
   label: string;
   forWho: string;
-  price: string;
-  priceNote: string;
-  ongoing: string;
+  summary: string;
   popular: boolean;
   features: string[];
 }
@@ -44,9 +42,7 @@ function TierCard({ tier }: { tier: Tier }) {
       </div>
 
       <div className="mb-5">
-        <p className="text-2xl font-display font-bold text-cloud">{tier.price}</p>
-        <p className="text-xs text-dim">{tier.priceNote}</p>
-        <p className="text-sm text-slate mt-1">{tier.ongoing}</p>
+        <p className="text-sm text-cloud leading-relaxed">{tier.summary}</p>
       </div>
 
       {/* Collapsible features */}
@@ -80,13 +76,13 @@ function TierCard({ tier }: { tier: Tier }) {
         </div>
       </div>
 
-      <Link href="/build-your-proposal">
+      <Link href={`/build-your-proposal?service=ai-assistant&tier=${tier.id}`}>
         <Button
           variant={tier.popular ? "primary" : "ghost"}
           size="sm"
           className="w-full"
         >
-          Get started
+          Build Your Proposal for Pricing
         </Button>
       </Link>
     </div>
