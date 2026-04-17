@@ -5,11 +5,26 @@ export interface KbDocument {
   name: string;
 }
 
+export interface KbAttachment {
+  type: "file" | "url" | "text";
+  id: string;
+  name?: string;
+}
+
 export interface AgentConfig {
   name: string;
   conversation_config: {
     agent: {
-      prompt: { prompt: string; llm: string; temperature?: number };
+      prompt: {
+        prompt: string;
+        llm: string;
+        temperature?: number;
+        // ElevenLabs attaches KB docs here (verified via GET /v1/convai/agents/{id}),
+        // not at the top level of the agent config.
+        knowledge_base?: KbAttachment[];
+        tool_ids?: string[];
+        tools?: unknown[];
+      };
       first_message: string;
       language?: string;
     };
@@ -23,8 +38,6 @@ export interface AgentConfig {
     };
     conversation?: { max_duration_seconds?: number };
   };
-  knowledge_base?: { id: string }[];
-  tools?: unknown[];
 }
 
 export class ElevenLabsClient {

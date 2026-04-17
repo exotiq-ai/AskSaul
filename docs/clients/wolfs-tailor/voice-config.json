@@ -3,7 +3,7 @@
   "agent_name": "Sawyer — Wolf's Tailor Reservationist",
   "voice_id": "cgSgspJ2msm6clMCkdW9",
   "voice_name": "Jessica",
-  "tts_model_id": "eleven_flash_v2_5",
+  "tts_model_id": "eleven_flash_v2",
   "llm": "gpt-4o-mini",
   "temperature": 0.3,
   "voice_settings": {
