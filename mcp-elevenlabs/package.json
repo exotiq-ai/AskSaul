@@ -4,12 +4,12 @@
   "private": true,
   "description": "MCP server for provisioning and managing ElevenLabs Conversational AI agents from repo source-of-truth files.",
   "type": "module",
-  "main": "dist/index.js",
-  "bin": { "asksaul-elevenlabs": "dist/index.js" },
+  "main": "dist/src/index.js",
+  "bin": { "asksaul-elevenlabs": "dist/src/index.js" },
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
-    "start": "node dist/index.js",
+    "start": "node dist/src/index.js",
     "test": "vitest run"
   },
   "dependencies": {
