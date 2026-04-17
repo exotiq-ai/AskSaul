@@ -10,9 +10,12 @@
     "postbuild": "next-sitemap",
     "test": "vitest run",
     "test:watch": "vitest",
-    "voice:verify-key": "node --env-file=.env.local --import tsx scripts/voice/verify-key.ts",
-    "voice:sync-kb": "tsx mcp-elevenlabs/scripts/sync-kb.ts",
-    "voice:provision": "tsx mcp-elevenlabs/scripts/provision.ts"
+    "voice:verify-key": "node --env-file-if-exists=.env.local --import tsx scripts/voice/verify-key.ts",
+    "voice:sync-kb": "node --env-file-if-exists=.env.local --import tsx mcp-elevenlabs/scripts/sync-kb.ts",
+    "voice:provision": "node --env-file-if-exists=.env.local --import tsx mcp-elevenlabs/scripts/provision.ts"
+  },
+  "engines": {
+    "node": ">=20.12"
   },
   "dependencies": {
     "@elevenlabs/react": "^0.1.5",
