@@ -5,6 +5,7 @@ import { CallToolRequestSchema, ListToolsRequestSchema } from "@modelcontextprot
 
 import { syncKnowledgeBaseTool } from "./tools/sync-knowledge-base.js";
 import { provisionAgentTool } from "./tools/provision-agent.js";
+import { runQaRegressionTool } from "./tools/run-qa-regression.js";
 
 interface ToolDef {
   name: string;
@@ -13,7 +14,7 @@ interface ToolDef {
   run(input: unknown): Promise<unknown>;
 }
 
-const TOOLS: ToolDef[] = [syncKnowledgeBaseTool, provisionAgentTool];
+const TOOLS: ToolDef[] = [syncKnowledgeBaseTool, provisionAgentTool, runQaRegressionTool];
 
 async function main() {
   if (!process.env.ELEVENLABS_API_KEY) {
