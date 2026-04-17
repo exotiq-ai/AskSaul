@@ -7,10 +7,18 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "postbuild": "next-sitemap"
+    "postbuild": "next-sitemap",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "voice:verify-key": "tsx scripts/voice/verify-key.ts",
+    "voice:sync-kb": "tsx mcp-elevenlabs/scripts/sync-kb.ts",
+    "voice:provision": "tsx mcp-elevenlabs/scripts/provision.ts"
   },
   "dependencies": {
+    "@elevenlabs/react": "^0.1.5",
     "@hookform/resolvers": "^5.2.2",
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "@supabase/supabase-js": "^2.103.2",
     "framer-motion": "^12.38.0",
     "lucide-react": "^1.7.0",
     "next": "16.2.2",
@@ -18,6 +26,7 @@
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-hook-form": "^7.72.0",
+    "resend": "^6.12.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {
@@ -25,9 +34,12 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitest/ui": "^2.1.0",
     "eslint": "^9",
     "eslint-config-next": "16.2.2",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "tsx": "^4.19.0",
+    "typescript": "^5",
+    "vitest": "^2.1.0"
   }
 }
