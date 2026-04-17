@@ -7,8 +7,7 @@ describe("ElevenLabsClient", () => {
 
   beforeEach(() => {
     process.env.ELEVENLABS_API_KEY = "sk_test_fake";
-    // @ts-expect-error override global fetch
-    global.fetch = fetchSpy;
+    global.fetch = fetchSpy as unknown as typeof fetch;
     fetchSpy.mockReset();
   });
 
