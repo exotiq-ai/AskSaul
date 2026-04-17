@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 /**
  * Simple admin auth: shared-secret cookie check. Good enough for a solo-founder
@@ -31,4 +32,10 @@ export async function setAdminCookie(password: string): Promise<boolean> {
 export async function clearAdminCookie(): Promise<void> {
   const store = await cookies();
   store.delete(COOKIE_NAME);
+}
+
+export async function requireAdmin(): Promise<void> {
+  if (!(await isAdminAuthed())) {
+    redirect("/admin/login");
+  }
 }
