@@ -2,6 +2,7 @@ import { z } from "zod";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ElevenLabsClient, type AgentConfig, type KbAttachment } from "../elevenlabs-client.js";
+import { buildAgentTools } from "../tool-definitions.js";
 
 export const provisionAgentInput = z.object({
   client_dir: z.string().default("docs/clients/wolfs-tailor"),
@@ -37,7 +38,6 @@ export async function runProvisionAgent(input: ProvisionInput) {
           llm: cfg.llm,
           temperature: cfg.temperature,
           // KB attaches on prompt per live API shape.
-          // Tools attached in Task 2.14 after the endpoints exist.
           knowledge_base: kbDocs,
         },
         first_message: cfg.first_message,
@@ -54,6 +54,16 @@ export async function runProvisionAgent(input: ProvisionInput) {
       conversation: { max_duration_seconds: cfg.max_duration_seconds },
     },
   };
+
+  // Attach webhook tools so the agent can call our deployed routes during a conversation.
+  // Tool names match the outcome inference in app/api/voice/webhook/route.ts.
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://asksaul.ai";
+  const toolSecret = process.env.VOICE_TOOL_SHARED_SECRET;
+  if (toolSecret) {
+    agentConfig.conversation_config.agent.prompt.tools = buildAgentTools(siteUrl, toolSecret);
+  } else {
+    console.warn("[provision-agent] VOICE_TOOL_SHARED_SECRET not set — agent will have no tools");
+  }
 
   if (input.existing_agent_id) {
     await client.updateAgent(input.existing_agent_id, agentConfig);
