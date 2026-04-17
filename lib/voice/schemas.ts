@@ -6,7 +6,7 @@ export const createLeadInput = z
   .object({
     conversation_id: z.string().min(1),
     name: z.string().min(1),
-    phone: z.string().min(1),
+    phone: z.string().min(7),
     email: z.string().email().optional(),
     date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
     time: z.string().regex(/^\d{2}:\d{2}$/).optional(),
@@ -25,7 +25,7 @@ export type CreateLeadInput = z.infer<typeof createLeadInput>;
 export const privateDiningInput = z.object({
   conversation_id: z.string().min(1),
   name: z.string().min(1),
-  phone: z.string().min(1),
+  phone: z.string().min(7),
   email: z.string().email().optional(),
   party_size: z.number().int().min(7),
   requested_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
@@ -38,7 +38,7 @@ export type PrivateDiningInput = z.infer<typeof privateDiningInput>;
 export const messageForTeamInput = z.object({
   conversation_id: z.string().min(1),
   name: z.string().min(1),
-  phone: z.string().min(1),
+  phone: z.string().min(7),
   reason: z.enum(["refund_dispute", "past_experience", "media", "employment", "other"]),
   notes: z.string().min(1),
 });

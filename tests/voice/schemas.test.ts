@@ -35,7 +35,7 @@ describe("createLeadInput", () => {
     const r = createLeadInput.safeParse({
       conversation_id: "c",
       name: "A",
-      phone: "+1",
+      phone: "+17205551234",
       date: "2026-05-01",
       party_size: 2,
       allergies: "tree nuts",
@@ -55,14 +55,14 @@ describe("privateDiningInput", () => {
     const ok = privateDiningInput.safeParse({
       conversation_id: "c",
       name: "B",
-      phone: "+1",
+      phone: "+17205551234",
       party_size: 8,
     });
     expect(ok.success).toBe(true);
     const bad = privateDiningInput.safeParse({
       conversation_id: "c",
       name: "B",
-      phone: "+1",
+      phone: "+17205551234",
       party_size: 4,
     });
     expect(bad.success).toBe(false);
@@ -74,7 +74,7 @@ describe("messageForTeamInput", () => {
     const r = messageForTeamInput.safeParse({
       conversation_id: "c",
       name: "B",
-      phone: "+1",
+      phone: "+17205551234",
       reason: "not_a_reason",
       notes: "hi",
     });
@@ -84,7 +84,7 @@ describe("messageForTeamInput", () => {
   it("accepts valid reasons", () => {
     for (const reason of ["refund_dispute","past_experience","media","employment","other"]) {
       const r = messageForTeamInput.safeParse({
-        conversation_id: "c", name: "B", phone: "+1", reason, notes: "hi",
+        conversation_id: "c", name: "B", phone: "+17205551234", reason, notes: "hi",
       });
       expect(r.success, `reason=${reason}`).toBe(true);
     }
