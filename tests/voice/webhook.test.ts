@@ -18,10 +18,14 @@ describe("voice webhook", () => {
 
   function signed(payload: object) {
     const body = JSON.stringify(payload);
-    const sig = createHmac("sha256", "whsec").update(body).digest("hex");
+    const ts = Math.floor(Date.now() / 1000);
+    const hex = createHmac("sha256", "whsec").update(`${ts}.${body}`).digest("hex");
     return new Request("http://x", {
       method: "POST",
-      headers: { "elevenlabs-signature": sig, "content-type": "application/json" },
+      headers: {
+        "elevenlabs-signature": `t=${ts},v0=${hex}`,
+        "content-type": "application/json",
+      },
       body,
     });
   }

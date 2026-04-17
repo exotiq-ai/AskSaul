@@ -22,7 +22,7 @@ export default function AdminLoginPage() {
         setError("Wrong password");
         return;
       }
-      router.push("/admin/proposals");
+      router.push("/admin/voice");
       router.refresh();
     });
   }

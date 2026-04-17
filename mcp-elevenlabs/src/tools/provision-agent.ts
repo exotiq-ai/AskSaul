@@ -38,7 +38,8 @@ export async function runProvisionAgent(input: ProvisionInput) {
           llm: cfg.llm,
           temperature: cfg.temperature,
           // KB attaches on prompt per live API shape.
-          knowledge_base: kbDocs,
+          // Only set when attaching — an empty array on PATCH would wipe the agent's KB.
+          ...(input.attach_kb_docs ? { knowledge_base: kbDocs } : {}),
         },
         first_message: cfg.first_message,
         language: cfg.language,
