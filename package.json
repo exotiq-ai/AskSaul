@@ -10,7 +10,7 @@
     "postbuild": "next-sitemap",
     "test": "vitest run",
     "test:watch": "vitest",
-    "voice:verify-key": "tsx scripts/voice/verify-key.ts",
+    "voice:verify-key": "node --env-file=.env.local --import tsx scripts/voice/verify-key.ts",
     "voice:sync-kb": "tsx mcp-elevenlabs/scripts/sync-kb.ts",
     "voice:provision": "tsx mcp-elevenlabs/scripts/provision.ts"
   },
