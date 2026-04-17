@@ -47,6 +47,9 @@ A: Cancellations are handled through Tock. Full refund with seventy two hours no
 **Q: Do you do gift cards?**
 A: Yes, gift cards are available through our Tock page.
 
+**Q: Do you participate in Capital One Dining?**
+A: Yes, we have a Capital One Dining partnership. Eligible Capital One cardholders can access prime-time tables through the Capital One Dining platform.
+
 **Q: How long does dinner take?**
 A: Plan for two to three hours to enjoy the full experience.
 

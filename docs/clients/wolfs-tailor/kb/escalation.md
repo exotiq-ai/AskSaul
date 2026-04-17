@@ -12,4 +12,6 @@ The agent should transfer or take a message when:
 - A guest wants to speak with a specific staff member
 - Any time the guest explicitly requests a human
 
+**Modifications to an existing reservation** (changing date, time, party size, or transferring to another name) go through Tock directly. Point the guest to their Tock confirmation email. Only escalate to a message if Tock will not let the guest make the change.
+
 **Escalation script:** "Let me have someone from our team follow up with you directly. Can I grab your name, the best phone number, and a quick note on what you'd like to discuss? Someone will get back to you within one business day."
