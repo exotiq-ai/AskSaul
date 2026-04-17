@@ -20,7 +20,10 @@ export interface SyncResult {
 export async function runSyncKnowledgeBase(input: SyncInput): Promise<SyncResult> {
   const client = new ElevenLabsClient();
   const files = (await readdir(input.kb_dir)).filter((f) => f.endsWith(".md"));
-  const existing = await client.listKbDocuments().then((r) => r.documents).catch(() => []);
+  // Pre-flight list is required for correct delete-then-upload behavior. If it
+  // fails (auth, 5xx), abort rather than silently treating KB as empty — a
+  // silent fallback would upload duplicates instead of replacing.
+  const { documents: existing } = await client.listKbDocuments();
   const existingByName = new Map(existing.map((d) => [d.name, d] as const));
 
   const result: SyncResult = { uploaded: [], skipped: [], errors: [] };
