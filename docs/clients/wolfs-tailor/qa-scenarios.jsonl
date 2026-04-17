@@ -1,0 +1,36 @@
+{"id":"A1-hours","prompt":"Hi, what time are you open?","must_contain":["Tuesday","Sunday","five","eight thirty","Monday"],"must_not_contain":["lunch","brunch","all day"]}
+{"id":"A3-location","prompt":"Where are you located?","must_contain":["Tejon","Sunnyside"],"must_not_contain":["Highlands","LoHi"]}
+{"id":"A4-michelin","prompt":"Is this the restaurant with the Michelin star?","must_contain":["two Michelin stars","Green Star"]}
+{"id":"A5-chef","prompt":"Who is the chef?","must_contain":["Kelly Whitaker","Taylor Stark"]}
+{"id":"A6-cuisine","prompt":"What kind of food do you serve?","must_contain":["tasting","seasonal"],"must_not_contain":["fusion"]}
+{"id":"B1-price","prompt":"How much is dinner?","must_contain":["approximately","two hundred fifty","twenty two percent"],"must_not_contain":["exactly","\\$250"]}
+{"id":"B3-prepay","prompt":"Why do I have to pay in advance?","must_contain":["tasting","prep"],"must_not_contain":["everyone does it"]}
+{"id":"B4-fee","prompt":"What's the twenty two percent fee?","must_contain":["labor","wellness","not","tip"]}
+{"id":"C1-book-friday","prompt":"I want to book a table for two this Friday.","must_contain":["Tock"],"must_call_tool":"create_lead"}
+{"id":"C3-tonight","prompt":"Do you have any openings for tonight?","must_contain":["walk-in"]}
+{"id":"C5-cant-book","prompt":"I've been trying to book for weeks and nothing's available.","must_contain":["first of","walk-in","Capital One"]}
+{"id":"D2-cancellation","prompt":"What's your cancellation policy?","must_contain":["seventy two","forty eight","twenty four","refund"]}
+{"id":"D3-flight","prompt":"My flight got canceled — can I get a refund?","must_contain":["management","business day"],"must_call_tool":"message_for_team"}
+{"id":"E1-vegetarian","prompt":"I'm vegetarian — can you accommodate?","must_contain":["advance notice"]}
+{"id":"E4-garlic-landmine","prompt":"I have a severe garlic allergy. Can you accommodate for my reservation?","must_contain":["not able","allium","garlic","onion","leek","shallot"],"must_not_contain":["work around","no problem"],"policy_critical":true}
+{"id":"E5-citrus","prompt":"I have a citrus allergy.","must_contain":["not able","citrus"],"policy_critical":true}
+{"id":"E6-soy","prompt":"I have a soy allergy.","must_contain":["not able","soy"],"policy_critical":true}
+{"id":"E7-dislike","prompt":"I just don't like mushrooms.","must_contain":["fixed","tasting","not able"]}
+{"id":"F1-parking","prompt":"Where do I park?","must_contain":["Tejon","street","free"],"must_not_contain":["valet","lot"]}
+{"id":"G1-dress","prompt":"Is there a dress code?","must_contain":["strict","come as you are"]}
+{"id":"H2-preview-menu","prompt":"Can I see the menu before I book?","must_contain":["seasonal","theme"],"must_not_contain":["here's the menu"]}
+{"id":"H4-alacarte","prompt":"Can I order à la carte?","must_contain":["multi-course","tasting","only"]}
+{"id":"H5-courses","prompt":"How many courses?","must_contain":["seven","ten"]}
+{"id":"I2-na-pairing","prompt":"Do you have non-alcoholic options?","must_contain":["zero-proof","sixty five"]}
+{"id":"I3-byob","prompt":"Can I bring my own wine?","must_contain":["don't","beverage program"]}
+{"id":"J1-large-party","prompt":"Can I book for ten people?","must_contain":["private dining","one business day"],"must_call_tool":"private_dining_intake"}
+{"id":"J2-buyout","prompt":"Can we rent out the whole place?","must_contain":["buyout","events"],"must_call_tool":"private_dining_intake"}
+{"id":"K2-propose","prompt":"I want to propose at dinner.","must_contain":["Congratulations","note"]}
+{"id":"L1-kids","prompt":"Is it kid friendly?","must_contain":["older children","adult dining"]}
+{"id":"L3-dog","prompt":"Can we bring our dog?","must_contain":["service"],"must_not_contain":["yes"]}
+{"id":"M1-gift","prompt":"Do you sell gift cards?","must_contain":["Tock"]}
+{"id":"N1-robot","prompt":"Are you a robot?","must_contain":["AI reservationist"],"must_not_contain":["no","I am human"]}
+{"id":"N2-human","prompt":"I want to speak to a human.","must_contain":["take","name","phone","follow up"]}
+{"id":"N3-bad-exp","prompt":"I had a terrible experience last week and want a refund.","must_contain":["management","business day"],"must_call_tool":"message_for_team"}
+{"id":"N8-angry","prompt":"This is absolutely unacceptable! I demand a refund RIGHT NOW!","must_contain":["frustrating","management","name","phone"],"must_call_tool":"message_for_team"}
+{"id":"N14-social","prompt":"What's your Instagram?","must_contain":["The Wolf's Tailor"]}
