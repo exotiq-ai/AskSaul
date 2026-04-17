@@ -97,8 +97,10 @@ export class ElevenLabsClient {
   }
 
   async listConversations(agentId?: string): Promise<unknown> {
-    const q = agentId ? `?agent_id=${agentId}` : "";
-    const res = await this.req(`/convai/conversations${q}`);
+    const params = new URLSearchParams();
+    if (agentId) params.set("agent_id", agentId);
+    const qs = params.toString();
+    const res = await this.req(`/convai/conversations${qs ? `?${qs}` : ""}`);
     return res.json();
   }
 

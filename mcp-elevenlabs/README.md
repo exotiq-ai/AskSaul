@@ -2,7 +2,9 @@
 
 MCP server for managing ElevenLabs Conversational AI agents from repo files.
 
-## Tools
+> **Status (Phase 1b):** REST client only. MCP server entrypoint and tools land in Tasks 1.10–1.12. `npm run dev` / `npm run build` / `npm run start` will not work until then.
+
+## Tools (planned)
 
 - `provision_agent` — create/update an agent from `docs/clients/<slug>/voice-config.json` + `system-prompt.md`.
 - `sync_knowledge_base` — upload all markdown files under `docs/clients/<slug>/kb/` and attach to the agent.
