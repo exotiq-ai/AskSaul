@@ -1,0 +1,25 @@
+{
+  "name": "@asksaul/mcp-elevenlabs",
+  "version": "0.1.0",
+  "private": true,
+  "description": "MCP server for provisioning and managing ElevenLabs Conversational AI agents from repo source-of-truth files.",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": { "asksaul-elevenlabs": "dist/index.js" },
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  }
+}
