@@ -1,7 +1,7 @@
 import { Resend } from "resend";
 
 export type LeadEmailPayload = {
-  kind: "booking_request" | "private_dining" | "escalation" | "message";
+  kind: "booking_request" | "private_dining" | "escalation";
   name: string;
   phone: string;
   email?: string;
@@ -26,8 +26,6 @@ function subject(p: LeadEmailPayload): string {
       return `[Wolf's Tailor] Private dining inquiry — ${p.name}, party of ${p.party_size ?? "?"}`;
     case "escalation":
       return `${urgent}[Wolf's Tailor] Escalation — ${p.reason} — ${p.name}`;
-    case "message":
-      return `[Wolf's Tailor] Message for team — ${p.name}`;
   }
 }
 

@@ -17,6 +17,10 @@ export async function POST(request: NextRequest | Request) {
     return Response.json({ error: "validation", issues: parsed.error.issues }, { status: 422 });
   }
 
+  console.info(
+    `[check-availability] requested: ${parsed.data.date} ${parsed.data.time} party of ${parsed.data.party_size} (conv ${parsed.data.conversation_id})`,
+  );
+
   return Response.json({
     status: "use_tock",
     message:

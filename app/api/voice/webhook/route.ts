@@ -43,6 +43,7 @@ export async function POST(request: NextRequest | Request) {
   const sb = getVoiceSupabase();
   const { error } = await sb.from("call_logs").upsert(
     {
+      client_slug: "wolfs-tailor",
       conversation_id: conversationId,
       caller_number: payload.metadata?.caller_number ?? null,
       started_at: startedAt,
