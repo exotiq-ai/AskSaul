@@ -24,7 +24,10 @@ export async function POST(request: NextRequest) {
     await sendToGHL(payload);
   } catch (err) {
     console.error("[proposal/route] GHL webhook error:", err);
-    // Don't fail the user — log and continue
+    return Response.json(
+      { error: "We could not save your proposal request. Please try again or contact AskSaul directly." },
+      { status: 502 }
+    );
   }
 
   return Response.json({ success: true, estimatedValue: payload.estimated_value });

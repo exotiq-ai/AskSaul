@@ -1,0 +1,28 @@
+# AskSaul.ai
+
+AskSaul.ai builds practical AI assistants, AI voice agents, websites, web applications, and marketing automation for small and mid-sized businesses. The company is led by Gregory Ringler in Denver, Colorado.
+
+## Core services
+
+- AI & Automation: self-hosted assistants, workflow automation, CRM intelligence, chat assistants, and business-specific AI tooling.
+- AI Voice Agents: phone agents that answer missed or after-hours calls, qualify callers, capture job context, and route lead details into GHL, CRM, email, SMS, or a human follow-up workflow.
+- Websites & Apps: conversion-focused websites and custom web applications.
+- Saul Marketing: CRM, email/SMS sequences, funnels, pipelines, reputation management, and marketing automation.
+
+## Voice-agent demo
+
+AskSaul's live provider-facing voice-agent demo is available at (970) 401-7285. The demo shows how Saul can answer a local service inquiry, ask intake questions, and capture context for follow-up.
+
+## Important limitations
+
+AskSaul avoids unsupported claims. Voice agents do not replace a strong team or emergency decision-making process. Direct booking, emergency escalation, and CRM behavior depend on the client's phone routing, scheduling tools, CRM access, and configured business rules.
+
+## Key URLs
+
+- Home: https://asksaul.ai/
+- AI Voice Agents: https://asksaul.ai/voice-agents
+- AI & Automation: https://asksaul.ai/ai-automation
+- Websites & Apps: https://asksaul.ai/web-development
+- Saul Marketing: https://asksaul.ai/marketing-engine
+- Proposal Builder: https://asksaul.ai/build-your-proposal
+- Contact: https://asksaul.ai/contact

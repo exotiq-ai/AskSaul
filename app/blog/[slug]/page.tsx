@@ -1,4 +1,4 @@
-import type { Metadata, ResolvingMetadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight, Clock, Calendar, User } from "lucide-react";
@@ -12,7 +12,6 @@ import {
   BLOG_POSTS,
   getBlogPost,
   getRelatedPosts,
-  type BlogPost,
   type ContentBlock,
 } from "@/lib/blog-data";
 
@@ -86,10 +85,9 @@ type Props = {
   params: Promise<{ slug: string }>;
 };
 
-export async function generateMetadata(
-  { params }: Props,
-  _parent: ResolvingMetadata
-): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: Props): Promise<Metadata> {
   const { slug } = await params;
   const post = getBlogPost(slug);
 

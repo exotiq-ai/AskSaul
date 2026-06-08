@@ -7,6 +7,7 @@ const footerSections = [
     title: "Services",
     links: [
       { label: "AI & Automation", href: "/ai-automation" },
+      { label: "Voice Agents", href: "/voice-agents" },
       { label: "Websites & Apps", href: "/web-development" },
       { label: "Saul Marketing", href: "/marketing-engine" },
       { label: "Build Your Proposal", href: "/build-your-proposal" },

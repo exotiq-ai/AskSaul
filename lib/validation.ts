@@ -233,6 +233,35 @@ export const contactSchema = z.object({
 
 export type ContactFormData = z.infer<typeof contactSchema>;
 
+// ─── Voice Agent Lead Form ───────────────────────────────────────────────────
+
+export const voiceAgentLeadSchema = z.object({
+  name: z.string().min(2, "Name is required"),
+  businessName: z.string().min(1, "Business name is required"),
+  phone: z.string().min(1, "Phone number is required"),
+  email: z.string().email("Valid email is required"),
+  serviceType: z.string().min(1, "Service type is required"),
+  serviceArea: z.string().min(1, "Service area is required"),
+  currentCallHandling: z
+    .string()
+    .min(1, "Tell us how calls are currently handled"),
+  desiredAgentTasks: z
+    .string()
+    .min(1, "Tell us what you want the agent to do"),
+  missedCallPain: z
+    .string()
+    .min(1, "Tell us what missed calls are costing you"),
+  preferredCallbackWindow: z
+    .string()
+    .min(1, "Preferred callback window is required"),
+  smsConsent: z
+    .boolean()
+    .refine((v) => v === true, { message: "SMS consent is required to continue" }),
+  marketingSmsOptIn: z.boolean().optional(),
+});
+
+export type VoiceAgentLeadData = z.infer<typeof voiceAgentLeadSchema>;
+
 // ─── Chat Widget ─────────────────────────────────────────────────────────────
 
 export const chatLeadSchema = z.object({

@@ -129,7 +129,14 @@ export default function BuildYourProposalPage() {
       valid = await trigger(["businessName", "industry", "teamSize"]);
     else if (step === 3) valid = true; // optional questions
     else if (step === 4)
-      valid = await trigger(["name", "email", "preferredContact", "timeline"]);
+      valid = await trigger([
+        "name",
+        "email",
+        "phone",
+        "smsConsent",
+        "preferredContact",
+        "timeline",
+      ]);
     else valid = true;
 
     if (valid) {

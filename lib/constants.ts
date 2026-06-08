@@ -28,6 +28,11 @@ export const SERVICES_DROPDOWN = [
     description: "Custom sites and web apps that convert",
   },
   {
+    label: "Voice Agents",
+    href: "/voice-agents",
+    description: "Answer missed calls and qualify service leads",
+  },
+  {
     label: "Saul Marketing",
     href: "/marketing-engine",
     description: "Your entire marketing stack, managed for you",
