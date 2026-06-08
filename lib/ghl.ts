@@ -1,4 +1,35 @@
-import type { ProposalFormData, ContactFormData, ChatLeadData } from "./validation";
+import type {
+  ProposalFormData,
+  ContactFormData,
+  ChatLeadData,
+  VoiceAgentLeadData,
+} from "./validation";
+
+const ASK_SAUL_LOCATION_ID = "RxCVQeGoQ3RTJbbLG5gY";
+const GHL_BASE_URL = "https://services.leadconnectorhq.com";
+const GHL_VERSION = "2021-07-28";
+const DEMO_PHONE_DISPLAY = "(970) 401-7285";
+const BOOKING_URL =
+  "https://api.leadconnectorhq.com/widget/bookings/bookwithusdigitalmarketing-3d837e4b-c899-44ff-b612-275f498c2128";
+
+const ASK_SAUL_FIELD_IDS = {
+  interestLevel: "koWrZDkgAO9sNC2s2shH",
+  businessTypeService: "JgypblSA2JoQr4BEMP7y",
+  serviceAreaCity: "NWy9211034cZHQY3pUkR",
+  currentCallHandling: "S7tMFFwlfBysZyXzlGI9",
+  phoneAgentPainPoint: "UMqZYJNIazZ2cuc0LhVu",
+  desiredAgentTasks: "JhuGrgNFnYvbCRDOoHpF",
+  preferredCallbackWindow: "aigpBpRx1Zu0olGsel7E",
+  saulDemoOffered: "tQCyQmeCAxVuXSX90c1f",
+  saulDemoCalled: "pAlvWzrw93eVv1zNqqIT",
+  callbackBookingSource: "HdSlYwQDO4pO92XQk2Ox",
+  followUpConsent: "IUExvT3HcVpmrCgquSLq",
+  qualificationSummary: "DwFgznwilWEYtySydGXz",
+  leadProject: "dhbQp5V0ndn3p9vNk3bJ",
+  demoPhoneAgentNumber: "2paSojiiB35Rh9O9WnsR",
+  payPerCloseTerms: "LD6ph3fa6UkPqnu8aXda",
+  aiPhoneAgentOffer: "iLuun6ATAAtvZ8ajPKYz",
+} as const;
 
 // ─── Lead Scoring ────────────────────────────────────────────────────────────
 
@@ -114,6 +145,9 @@ export function buildProposalPayload(data: ProposalFormData) {
   return {
     source: "asksaul-proposal-builder",
     timestamp: new Date().toISOString(),
+    lead_project: data.services.includes("voice-agent")
+      ? "ask_saul_phone_agents"
+      : "asksaul_website",
     contact: {
       firstName,
       lastName,
@@ -154,10 +188,14 @@ export function buildProposalPayload(data: ProposalFormData) {
     budget: data.budget ?? "",
     notes: data.notes ?? "",
     tags: [
+      "ask-saul",
       "proposal-builder",
       "website-lead",
       valueTag,
       ...serviceTags,
+      ...(data.services.includes("voice-agent")
+        ? ["phone-agent-prospect", "lead-project:ask_saul_phone_agents"]
+        : []),
       ...(data.industry ? [`industry:${slugifyIndustry(data.industry)}`] : []),
       ...(data.monthlySpend ? [`spend:${data.monthlySpend}`] : []),
     ],
@@ -176,6 +214,7 @@ export function buildContactPayload(data: ContactFormData) {
   return {
     source: "asksaul-contact-form",
     timestamp: new Date().toISOString(),
+    lead_project: "asksaul_website",
     contact: {
       firstName: data.firstName,
       lastName: data.lastName,
@@ -184,7 +223,11 @@ export function buildContactPayload(data: ContactFormData) {
       message: data.message,
       referralSource: data.referralSource ?? "",
     },
-    tags: ["contact-form", "website-lead"],
+    consent: {
+      smsConsent: data.smsConsent,
+      marketingSmsOptIn: data.marketingSmsOptIn ?? false,
+    },
+    tags: ["ask-saul", "contact-form", "website-lead"],
   };
 }
 
@@ -192,22 +235,86 @@ export function buildChatPayload(data: ChatLeadData) {
   return {
     source: "asksaul-chat-widget",
     timestamp: new Date().toISOString(),
+    lead_project: "asksaul_chat",
     contact: {
       name: data.name,
       email: data.email,
+      phone: data.phone ?? "",
     },
     chatTranscript: data.chatTranscript,
     initialIntent: data.initialIntent ?? "browsing",
-    tags: ["chat-widget", "website-lead"],
+    tags: ["ask-saul", "chat-widget", "website-lead"],
   };
 }
 
-// ─── Webhook POST ────────────────────────────────────────────────────────────
+export function buildVoiceAgentLeadPayload(data: VoiceAgentLeadData) {
+  const nameParts = data.name.trim().split(/\s+/);
+  const firstName = nameParts[0] ?? "";
+  const lastName = nameParts.slice(1).join(" ") || "";
+
+  return {
+    source: "asksaul-voice-agent-page",
+    timestamp: new Date().toISOString(),
+    lead_project: "ask_saul_phone_agents",
+    contact: {
+      firstName,
+      lastName,
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+    },
+    business: {
+      name: data.businessName,
+      serviceArea: data.serviceArea,
+    },
+    voice_agent: {
+      serviceType: data.serviceType,
+      currentCallHandling: data.currentCallHandling,
+      desiredAgentTasks: data.desiredAgentTasks,
+      missedCallPain: data.missedCallPain,
+      preferredCallbackWindow: data.preferredCallbackWindow,
+    },
+    consent: {
+      smsConsent: data.smsConsent,
+      marketingSmsOptIn: data.marketingSmsOptIn ?? false,
+    },
+    tags: [
+      "ask-saul",
+      "website-lead",
+      "voice-agent-lead",
+      "phone-agent-prospect",
+      "lead-project:ask_saul_phone_agents",
+    ],
+  };
+}
+
+// ─── GHL Delivery ────────────────────────────────────────────────────────────
 
 export async function sendToGHL(payload: unknown): Promise<void> {
+  const apiKey = process.env.GHL_API_KEY ?? process.env.GHL_LOCAL_SERVICES_API_KEY;
+  const locationId = process.env.GHL_LOCATION_ID ?? process.env.GHL_LOCAL_SERVICES_LOCATION_ID;
+
+  if (apiKey || locationId) {
+    if (!apiKey || !locationId) {
+      throw new Error("[GHL] Direct API requires both GHL_API_KEY and GHL_LOCATION_ID");
+    }
+    if (locationId !== ASK_SAUL_LOCATION_ID) {
+      throw new Error(
+        `[GHL] Refusing to send AskSaul.ai lead to non-Ask-Saul location ${locationId}`
+      );
+    }
+    await upsertAskSaulContact(payload, { apiKey, locationId });
+    return;
+  }
+
   const webhookUrl = process.env.GHL_WEBHOOK_URL;
   if (!webhookUrl) {
-    console.warn("[GHL] GHL_WEBHOOK_URL not set — skipping webhook");
+    const message =
+      "[GHL] No GHL_API_KEY/GHL_LOCATION_ID or GHL_WEBHOOK_URL set — lead capture unavailable";
+    if (process.env.NODE_ENV === "production") {
+      throw new Error(message);
+    }
+    console.warn(message);
     return;
   }
 
@@ -221,4 +328,263 @@ export async function sendToGHL(payload: unknown): Promise<void> {
     const body = await res.text().catch(() => "");
     throw new Error(`GHL webhook failed: ${res.status} ${body}`);
   }
+}
+
+type GhlConfig = {
+  apiKey: string;
+  locationId: string;
+};
+
+type GhlContactPayload = {
+  locationId: string;
+  firstName: string;
+  lastName: string;
+  email?: string;
+  phone?: string;
+  companyName?: string;
+  source: string;
+  tags: string[];
+  customFields: Array<{ id: string; value: string }>;
+};
+
+async function upsertAskSaulContact(payload: unknown, cfg: GhlConfig): Promise<void> {
+  const normalized = normalizeForGhl(payload, cfg.locationId);
+  const res = await fetch(`${GHL_BASE_URL}/contacts/upsert`, {
+    method: "POST",
+    headers: ghlHeaders(cfg.apiKey),
+    body: JSON.stringify(normalized.contact),
+  });
+
+  const text = await res.text();
+  if (!res.ok) {
+    throw new Error(`GHL contact upsert failed: ${res.status} ${text.slice(0, 500)}`);
+  }
+
+  let contactId: string | undefined;
+  try {
+    const data = JSON.parse(text || "{}") as { contact?: { id?: string }; id?: string };
+    contactId = data.contact?.id ?? data.id;
+  } catch {
+    // The upsert succeeded, but the body was not JSON. Do not fail the submission.
+  }
+
+  if (contactId && normalized.note) {
+    await addGhlNote(contactId, normalized.note, cfg);
+  }
+}
+
+function normalizeForGhl(payload: unknown, locationId: string): {
+  contact: GhlContactPayload;
+  note: string;
+} {
+  const record = isRecord(payload) ? payload : {};
+  const contact = isRecord(record.contact) ? record.contact : {};
+  const business = isRecord(record.business) ? record.business : {};
+  const voiceAgent = isRecord(record.voice_agent) ? record.voice_agent : {};
+  const consent = isRecord(record.consent) ? record.consent : {};
+
+  const source = text(record.source) || "asksaul.ai website";
+  const firstName = text(contact.firstName) || splitName(text(contact.name)).first || "AskSaul";
+  const lastName = text(contact.lastName) || splitName(text(contact.name)).last || "Lead";
+  const email = text(contact.email);
+  const phone = text(contact.phone);
+  const companyName = text(business.name);
+  const tags = uniqueStrings([
+    "ask-saul",
+    "website-lead",
+    ...arrayOfStrings(record.tags),
+    sourceToTag(source),
+  ]);
+  const leadProject =
+    text(record.lead_project) ||
+    (tags.includes("voice-agent-lead") ? "ask_saul_phone_agents" : "asksaul_website");
+
+  const summary = buildQualificationSummary(record);
+  const fields = compactFields([
+    [ASK_SAUL_FIELD_IDS.leadProject, leadProject],
+    [ASK_SAUL_FIELD_IDS.businessTypeService, text(voiceAgent.serviceType) || text(business.industry)],
+    [ASK_SAUL_FIELD_IDS.serviceAreaCity, text(business.serviceArea)],
+    [ASK_SAUL_FIELD_IDS.currentCallHandling, text(voiceAgent.currentCallHandling)],
+    [ASK_SAUL_FIELD_IDS.phoneAgentPainPoint, text(voiceAgent.missedCallPain)],
+    [ASK_SAUL_FIELD_IDS.desiredAgentTasks, text(voiceAgent.desiredAgentTasks)],
+    [ASK_SAUL_FIELD_IDS.preferredCallbackWindow, text(voiceAgent.preferredCallbackWindow)],
+    [ASK_SAUL_FIELD_IDS.interestLevel, inferInterestLevel(record)],
+    [ASK_SAUL_FIELD_IDS.saulDemoOffered, tags.includes("voice-agent-lead") ? "yes_website" : undefined],
+    [ASK_SAUL_FIELD_IDS.saulDemoCalled, "unknown"],
+    [ASK_SAUL_FIELD_IDS.callbackBookingSource, sourceToBookingSource(source)],
+    [
+      ASK_SAUL_FIELD_IDS.followUpConsent,
+      booleanText(consent.smsConsent) ? `sms_consent=${booleanText(consent.smsConsent)}` : undefined,
+    ],
+    [ASK_SAUL_FIELD_IDS.qualificationSummary, summary],
+    [ASK_SAUL_FIELD_IDS.demoPhoneAgentNumber, DEMO_PHONE_DISPLAY],
+    [
+      ASK_SAUL_FIELD_IDS.payPerCloseTerms,
+      tags.includes("voice-agent-lead")
+        ? "Free setup/no contract/pay-per-close framing to be confirmed by Gregory"
+        : undefined,
+    ],
+    [
+      ASK_SAUL_FIELD_IDS.aiPhoneAgentOffer,
+      tags.includes("voice-agent-lead")
+        ? "AI phone agent for missed-call recovery, after-hours intake, qualification, and GHL lead routing"
+        : undefined,
+    ],
+  ]);
+
+  return {
+    contact: {
+      locationId,
+      firstName,
+      lastName,
+      ...(email ? { email } : {}),
+      ...(phone ? { phone } : {}),
+      ...(companyName ? { companyName } : {}),
+      source,
+      tags,
+      customFields: fields,
+    },
+    note: buildInternalNote(record, summary),
+  };
+}
+
+async function addGhlNote(contactId: string, body: string, cfg: GhlConfig): Promise<void> {
+  const res = await fetch(`${GHL_BASE_URL}/contacts/${encodeURIComponent(contactId)}/notes`, {
+    method: "POST",
+    headers: ghlHeaders(cfg.apiKey),
+    body: JSON.stringify({ body }),
+  });
+
+  if (!res.ok) {
+    const textBody = await res.text().catch(() => "");
+    console.warn(`[GHL] Contact upsert succeeded but note failed: ${res.status} ${textBody.slice(0, 300)}`);
+  }
+}
+
+function ghlHeaders(apiKey: string): HeadersInit {
+  return {
+    Authorization: `Bearer ${apiKey}`,
+    Version: process.env.GHL_API_VERSION ?? GHL_VERSION,
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    "User-Agent":
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36",
+    "Accept-Language": "en-US,en;q=0.9",
+    Origin: "https://app.gohighlevel.com",
+    Referer: "https://app.gohighlevel.com/",
+  };
+}
+
+function buildQualificationSummary(record: Record<string, unknown>): string {
+  const business = isRecord(record.business) ? record.business : {};
+  const voiceAgent = isRecord(record.voice_agent) ? record.voice_agent : {};
+  const contact = isRecord(record.contact) ? record.contact : {};
+
+  const lines = [
+    `Source: ${text(record.source) || "asksaul.ai"}`,
+    text(record.timestamp) ? `Submitted: ${text(record.timestamp)}` : undefined,
+    text(record.lead_project) ? `Lead project: ${text(record.lead_project)}` : undefined,
+    text(business.name) ? `Business: ${text(business.name)}` : undefined,
+    text(voiceAgent.serviceType) || text(business.industry)
+      ? `Service type: ${text(voiceAgent.serviceType) || text(business.industry)}`
+      : undefined,
+    text(business.serviceArea) ? `Service area: ${text(business.serviceArea)}` : undefined,
+    text(voiceAgent.currentCallHandling)
+      ? `Current call handling: ${text(voiceAgent.currentCallHandling)}`
+      : undefined,
+    text(voiceAgent.desiredAgentTasks)
+      ? `Desired agent tasks: ${text(voiceAgent.desiredAgentTasks)}`
+      : undefined,
+    text(voiceAgent.missedCallPain)
+      ? `Missed-call pain: ${text(voiceAgent.missedCallPain)}`
+      : undefined,
+    text(voiceAgent.preferredCallbackWindow)
+      ? `Preferred callback: ${text(voiceAgent.preferredCallbackWindow)}`
+      : undefined,
+    text(contact.message) ? `Message: ${text(contact.message)}` : undefined,
+    text(record.initialIntent) ? `Chat intent: ${text(record.initialIntent)}` : undefined,
+    Array.isArray(record.services_requested)
+      ? `Services requested: ${record.services_requested.join(", ")}`
+      : undefined,
+    typeof record.estimated_value === "number"
+      ? `Estimated value: $${record.estimated_value.toLocaleString()}`
+      : undefined,
+    Array.isArray(record.chatTranscript)
+      ? `Chat transcript: ${record.chatTranscript
+          .map((turn) => (isRecord(turn) ? `${text(turn.role)}: ${text(turn.content)}` : ""))
+          .filter(Boolean)
+          .join(" | ")}`
+      : undefined,
+    `Booking link: ${BOOKING_URL}`,
+  ].filter(Boolean);
+
+  return lines.join("\n").slice(0, 2800);
+}
+
+function buildInternalNote(record: Record<string, unknown>, summary: string): string {
+  const tags = arrayOfStrings(record.tags).join(", ");
+  return [
+    "AskSaul.ai website lead captured and mapped into the Ask Saul GHL location.",
+    tags ? `Tags: ${tags}` : undefined,
+    summary,
+  ]
+    .filter(Boolean)
+    .join("\n\n")
+    .slice(0, 5000);
+}
+
+function compactFields(entries: Array<[string, string | undefined]>): Array<{ id: string; value: string }> {
+  return entries
+    .filter((entry): entry is [string, string] => Boolean(entry[1]?.trim()))
+    .map(([id, value]) => ({ id, value }));
+}
+
+function inferInterestLevel(record: Record<string, unknown>): string {
+  const tags = arrayOfStrings(record.tags);
+  if (tags.includes("high-value") || tags.includes("voice-agent-lead")) return "warm";
+  if (tags.includes("chat-widget")) return "curious";
+  return "cold";
+}
+
+function sourceToBookingSource(source: string): string {
+  if (source.includes("voice-agent")) return "website_voice_agent_form";
+  if (source.includes("chat")) return "website_chat";
+  if (source.includes("proposal")) return "website_proposal_builder";
+  if (source.includes("contact")) return "website_contact_form";
+  return "website";
+}
+
+function sourceToTag(source: string): string {
+  return source
+    .toLowerCase()
+    .replace(/^asksaul-/, "source-")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
+function splitName(value: string | undefined): { first?: string; last?: string } {
+  if (!value) return {};
+  const parts = value.trim().split(/\s+/);
+  return { first: parts[0], last: parts.slice(1).join(" ") || undefined };
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
+function text(value: unknown): string | undefined {
+  return typeof value === "string" && value.trim() ? value.trim() : undefined;
+}
+
+function booleanText(value: unknown): string | undefined {
+  if (typeof value === "boolean") return value ? "true" : "false";
+  return undefined;
+}
+
+function arrayOfStrings(value: unknown): string[] {
+  return Array.isArray(value) ? value.filter((item): item is string => typeof item === "string") : [];
+}
+
+function uniqueStrings(values: string[]): string[] {
+  return [...new Set(values.filter((value) => value.trim()))];
 }

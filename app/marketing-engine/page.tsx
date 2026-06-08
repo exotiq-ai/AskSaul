@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Check, X, Bot, Zap, BarChart3, MessageSquare, Star, Phone, Calendar, Mail, Target, Users } from "lucide-react";
+import { ArrowRight, X, Bot, Zap, BarChart3, MessageSquare, Star, Phone, Calendar, Mail, Target, Users } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import AnimatedSection from "@/components/ui/AnimatedSection";

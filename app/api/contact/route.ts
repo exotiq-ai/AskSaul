@@ -24,6 +24,10 @@ export async function POST(request: NextRequest) {
     await sendToGHL(payload);
   } catch (err) {
     console.error("[contact/route] GHL webhook error:", err);
+    return Response.json(
+      { error: "We could not save your message. Please email or call AskSaul directly." },
+      { status: 502 }
+    );
   }
 
   return Response.json({ success: true });

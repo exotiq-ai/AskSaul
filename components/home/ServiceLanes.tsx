@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Bot, Code2, TrendingUp, ArrowRight, Check } from "lucide-react";
+import { Bot, Code2, TrendingUp, ArrowRight, Check, PhoneCall } from "lucide-react";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import { SERVICE_LANES } from "@/lib/constants";
 
@@ -34,7 +34,7 @@ export default function ServiceLanes() {
           </p>
         </AnimatedSection>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
           {SERVICE_LANES.map((lane, i) => {
             const Icon = iconMap[lane.icon];
             return (
@@ -89,6 +89,32 @@ export default function ServiceLanes() {
             );
           })}
         </div>
+        <AnimatedSection className="mb-16 rounded-3xl border border-cyan/20 bg-cyan/5 p-6 sm:p-8 flex flex-col lg:flex-row gap-6 lg:items-center lg:justify-between">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-xl bg-cyan/10 border border-cyan/20 flex items-center justify-center shrink-0">
+              <PhoneCall className="w-6 h-6 text-cyan" />
+            </div>
+            <div>
+              <p className="text-xs font-semibold tracking-widest uppercase text-cyan/80 mb-2">
+                New provider program
+              </p>
+              <h3 className="text-2xl font-bold text-cloud mb-2" style={{ fontFamily: "var(--font-display)" }}>
+                AI phone agents for missed calls and after-hours leads.
+              </h3>
+              <p className="text-slate leading-relaxed max-w-2xl">
+                Saul answers, qualifies, logs context, and routes service leads into your CRM or follow-up workflow.
+              </p>
+            </div>
+          </div>
+          <Link
+            href="/voice-agents"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-cyan hover:gap-3 transition-all duration-200 shrink-0"
+          >
+            See Voice Agents
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </AnimatedSection>
+
         {/* Industry badges */}
         <div className="text-center">
           <p className="text-xs font-semibold tracking-widest uppercase text-dim mb-4">

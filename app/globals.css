@@ -10,10 +10,10 @@
   --color-cyan: #00D4AA;
   --color-ice: #4AC6E8;
 
-  /* Text Colors */
-  --color-cloud: #E8E8ED;
-  --color-slate: #A0A0B8;
-  --color-dim: #707085;
+  /* Text Colors — tuned brighter for older local-service buyers on dark UI */
+  --color-cloud: #F3F5FA;
+  --color-slate: #C5CAD8;
+  --color-dim: #9399AA;
 
   /* Border */
   --color-wire: #2A2A38;
@@ -36,7 +36,7 @@ html {
 
 body {
   background-color: #0A0A0F;
-  color: #E8E8ED;
+  color: #F3F5FA;
   font-family: var(--font-body);
   font-size: 18px;
   line-height: 1.7;

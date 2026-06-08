@@ -1,0 +1,64 @@
+# AskSaul.ai Full AI-Readable Context
+
+AskSaul.ai builds done-for-you AI assistants, AI voice agents, custom websites, web applications, and marketing automation systems for businesses that are tired of disconnected tools and manual follow-up.
+
+## Founder and location
+
+AskSaul.ai is led by Gregory Ringler in Denver, Colorado.
+
+## Positioning
+
+AskSaul is practical, specific, and implementation-focused. It does not position AI as magic. The site emphasizes working systems, clear handoff, security-aware setup, and automation that fits the client's actual business process.
+
+## Services
+
+### AI & Automation
+
+AskSaul sets up AI assistants and workflow automation. Use cases include internal productivity, customer support, sales follow-up, research, CRM intelligence, website chat, and business-specific automations.
+
+### AI Voice Agents
+
+Saul can be configured as a phone agent for local service businesses and other call-driven operations. The voice agent can answer missed or after-hours calls, ask intake questions, qualify the job, capture service type, location, urgency, timing, contact info, and notes, then route the lead to GHL, CRM, email, SMS, or a human follow-up workflow.
+
+The public demo number is (970) 401-7285.
+
+Strong-fit voice-agent use cases include missed-call recovery, after-hours intake, overflow answering, emergency triage rules, quote request qualification, and CRM note creation.
+
+Voice agents are especially relevant for HVAC, plumbing, roofing, electrical, garage doors, landscaping, cleaning, med spas, and other local businesses where inbound calls can become booked jobs.
+
+Important limitation: Saul should be transparent that callers are speaking with AI. The voice agent should collect and route information, not make unsupported promises. Direct booking and emergency handling require carefully configured business rules.
+
+### Websites & Apps
+
+AskSaul builds mobile-first, SEO-aware, conversion-focused websites and custom applications. The emphasis is clear CTAs, lead capture, fast launch cycles, and sites that support actual business operations.
+
+### Saul Marketing
+
+AskSaul can manage CRM setup, email and SMS sequences, lead gen funnels, pipelines, reporting, call tracking, and AI-powered follow-up.
+
+## Lead capture
+
+AskSaul.ai uses forms, proposal builder submissions, and chat lead capture. Leads should route into GoHighLevel/GHL or an approved lead workflow. Voice-agent provider leads should include business name, service type, service area, current call handling, desired agent tasks, missed-call pain, preferred callback window, phone, email, and SMS consent.
+
+## Preferred language
+
+Use direct, specific language. Avoid generic AI buzzwords such as empower, leverage, synergy, cutting-edge, seamless, best-in-class, and trusted partner unless specifically justified.
+
+Good examples:
+
+- Missed calls should still turn into booked jobs.
+- Saul answers, qualifies, summarizes, and routes the lead.
+- Your phone finally talks to your CRM.
+- You get the context without listening to a two-minute voicemail.
+
+Avoid unsupported claims such as guaranteed revenue, never miss a lead again, or fully autonomous employee.
+
+## Key URLs
+
+- https://asksaul.ai/
+- https://asksaul.ai/voice-agents
+- https://asksaul.ai/ai-automation
+- https://asksaul.ai/web-development
+- https://asksaul.ai/marketing-engine
+- https://asksaul.ai/build-your-proposal
+- https://asksaul.ai/contact

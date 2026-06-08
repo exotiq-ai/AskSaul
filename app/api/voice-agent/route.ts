@@ -1,16 +1,18 @@
 import { type NextRequest } from "next/server";
-import { chatLeadSchema } from "@/lib/validation";
-import { buildChatPayload, sendToGHL } from "@/lib/ghl";
+import { voiceAgentLeadSchema } from "@/lib/validation";
+import { buildVoiceAgentLeadPayload, sendToGHL } from "@/lib/ghl";
 
 export async function POST(request: NextRequest) {
   let body: unknown;
+
   try {
     body = await request.json();
   } catch {
     return Response.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  const result = chatLeadSchema.safeParse(body);
+  const result = voiceAgentLeadSchema.safeParse(body);
+
   if (!result.success) {
     return Response.json(
       { error: "Validation failed", issues: result.error.issues },
@@ -18,14 +20,14 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const payload = buildChatPayload(result.data);
+  const payload = buildVoiceAgentLeadPayload(result.data);
 
   try {
     await sendToGHL(payload);
   } catch (err) {
-    console.error("[chat/route] GHL webhook error:", err);
+    console.error("[voice-agent/route] GHL webhook error:", err);
     return Response.json(
-      { error: "We could not save your chat details. Please try again or contact AskSaul directly." },
+      { error: "We could not save this request. Please call Saul or try again." },
       { status: 502 }
     );
   }

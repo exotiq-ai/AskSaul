@@ -17,7 +17,8 @@ interface Message {
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const GREETING = "Hey, I'm Saul. What can I help you figure out?";
+const GREETING =
+  "Hey, I'm Saul. I can point you to the right service and get Gregory the context. What can I help you figure out?";
 
 const QUICK_REPLIES: { label: string; intent: Intent }[] = [
   { label: "I need a website", intent: "website" },
@@ -30,7 +31,7 @@ const RESPONSES: Record<Intent, string> = {
   website:
     "Nice. We build custom websites from $5,000, mobile-first and SEO-optimized. Typically 2-4 weeks to launch. Want to walk through what you actually need? [Build Your Proposal](/build-your-proposal)",
   "ai-setup":
-    "OpenClaw deployments, self-hosted on your infrastructure. Starter at $500, Pro at $2,500. Your data stays yours, not on a third-party server. [See AI packages](/ai-automation)",
+    "OpenClaw deployments, self-hosted on your infrastructure, plus practical phone and chat agents when the use case is right. Start with the AI packages or see the live voice-agent demo. [See AI packages](/ai-automation) [Voice agents](/voice-agents)",
   pricing:
     "Depends on what you need. Websites from $5K, AI setups from $500, Saul Marketing custom-priced based on your stack. Build a proposal and we'll scope it to your numbers. [Build Your Proposal](/build-your-proposal)",
   browsing:
@@ -185,7 +186,7 @@ export default function ChatWidget() {
       {
         role: "assistant",
         content:
-          "Just need your name and email first so I can follow up if needed.",
+          "I can route you to the right place and save your details for Gregory. What is your name and email?",
       },
     ]);
     setStep("capture");
@@ -443,11 +444,11 @@ export default function ChatWidget() {
                     type="text"
                     placeholder={
                       step === "response"
-                        ? "Ask a follow-up..."
-                        : "Or type a question..."
+                        ? "Add context for Gregory..."
+                        : "Choose an option above..."
                     }
                     disabled={step !== "response" || isSubmitting}
-                    aria-label="Free-form message"
+                    aria-label="Add context for Gregory"
                     className="flex-1 bg-graphite border border-wire rounded-lg px-3 py-2 text-sm text-cloud placeholder:text-dim focus:outline-none focus:border-cyan/60 focus:ring-1 focus:ring-cyan/30 transition-colors duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
                     onKeyDown={(e) => {
                       if (
