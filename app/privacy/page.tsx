@@ -30,7 +30,7 @@ export default function PrivacyPage() {
               2026
             </p>
             <p>
-              <strong className="text-slate">Last Updated:</strong> April 2026
+              <strong className="text-slate">Last Updated:</strong> June 2026
             </p>
           </div>
 
@@ -122,10 +122,10 @@ export default function PrivacyPage() {
             </h3>
             <p>
               We use your contact information to send: project-related emails
-              and updates; transactional and promotional SMS messages via
-              GoHighLevel (only with your prior express consent); and relevant
-              service announcements. You may opt out of non-transactional
-              communications at any time.
+              and updates; non-marketing and promotional SMS messages via
+              GoHighLevel only when you separately opt in to the relevant SMS
+              category; and relevant service announcements. You may opt out of
+              SMS or non-transactional communications at any time.
             </p>
 
             <h3 className="font-display text-lg font-semibold text-cloud">
@@ -193,10 +193,12 @@ export default function PrivacyPage() {
             </h3>
             <p>
               We do not sell, rent, or share your SMS consent or phone number
-              with any third parties for their marketing purposes. Your phone
-              number and SMS consent data may only be shared with: (a) our SMS
-              service provider (GoHighLevel) solely for message delivery; and
-              (b) as required by law or legal process.
+              with any third parties or affiliates for their marketing or
+              promotional purposes. Text messaging originator opt-in data and
+              consent will not be shared with any third parties. Your phone
+              number and SMS consent data may only be shared with our SMS
+              service provider (GoHighLevel) solely to deliver and support the
+              messages you requested, or as required by law or legal process.
             </p>
 
             <h3 className="font-display text-lg font-semibold text-cloud">

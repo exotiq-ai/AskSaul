@@ -19,7 +19,7 @@ This sprint succeeds if a local service provider who receives outreach can visit
 
 1. Saul can answer missed/after-hours calls for their business.
 2. Saul can qualify callers, capture job context, and route the lead to GHL/CRM/Gregory/provider.
-3. They can call the live demo number `(970) 401-7285`.
+3. They can call the live demo number `(720) 292-7554`.
 4. They can request setup through a low-friction form/survey.
 5. Gregory receives the lead in the right GHL location with usable context.
 6. The site looks premium, loads cleanly, passes build/type checks, and does not silently drop leads.
@@ -44,7 +44,7 @@ This sprint succeeds if a local service provider who receives outreach can visit
   - Uses `process.env.GHL_WEBHOOK_URL`.
   - If missing, it logs warning and returns successfully, which is risky for production lead capture.
 - Saul Provider phone system context from lead-gen-saul:
-  - Demo phone: `(970) 401-7285`
+  - Demo phone: `(720) 292-7554`
   - Ask Saul GHL location: `RxCVQeGoQ3RTJbbLG5gY`
   - GHL calendar booking link exists.
 
@@ -206,7 +206,7 @@ Bad parallel examples:
 ```env
 GHL_WEBHOOK_URL=
 NEXT_PUBLIC_SITE_URL=https://asksaul.ai
-ASKSAUL_DEMO_PHONE=(970) 401-7285
+ASKSAUL_DEMO_PHONE=(720) 292-7554
 ASKSAUL_BOOKING_URL=https://api.leadconnectorhq.com/widget/bookings/bookwithusdigitalmarketing-3d837e4b-c899-44ff-b612-275f498c2128
 CHAT_MODE=static
 ```
@@ -344,7 +344,7 @@ Subhead:
 
 CTAs:
 
-- Primary: `Call Saul: (970) 401-7285`
+- Primary: `Call Saul: (720) 292-7554`
 - Secondary: `Book a 15-minute setup call`
 - Tertiary: `See how it works`
 
@@ -519,7 +519,7 @@ Add a focused voice-agent module above or near the existing “Meet Saul” sect
 
 - `New: AI phone agents for local service businesses`
 - Short paragraph explaining missed calls → qualified leads.
-- CTA to `/voice-agents` and call `(970) 401-7285`.
+- CTA to `/voice-agents` and call `(720) 292-7554`.
 
 ### E2. Rework “What Saul does” examples
 
@@ -654,7 +654,7 @@ Before pushing/deploying, Gregory should confirm:
 
 - Provider program offer language.
 - Whether to show pay-per-close terms publicly.
-- Whether `(970) 401-7285` should be prominent on all pages or only voice-agent page.
+- Whether `(720) 292-7554` should be prominent on all pages or only voice-agent page.
 - Whether forms should submit live into GHL during QA.
 
 ---
@@ -672,7 +672,7 @@ Before pushing/deploying, Gregory should confirm:
 - This plan.
 - Existing `BUILD_SPEC.md` voice rules.
 - Current provider facts:
-  - `(970) 401-7285`
+  - `(720) 292-7554`
   - GHL/CRM routing
   - Free setup/no contract/pay-per-close language must be flagged for Gregory confirmation.
 
@@ -959,7 +959,7 @@ Ideal sprint done:
 Avi can proceed on most of the sprint without blocking, but these affect final public copy and live routing:
 
 1. Should the public provider-program offer say `Free setup, no contract, pay $50 only if you close a job from one of Saul's calls`?
-2. Should `(970) 401-7285` be shown globally in nav/footer, or only on `/voice-agents` and related CTAs?
+2. Should `(720) 292-7554` be shown globally in nav/footer, or only on `/voice-agents` and related CTAs?
 3. Do we want all AskSaul.ai forms to route directly to Ask Saul GHL location `RxCVQeGoQ3RTJbbLG5gY`, or keep the current generic webhook for now?
 4. Do you want a preview branch/deploy first, or should Avi prepare for direct production after QA?
 5. For live AI chat, should we use a simple hosted LLM proxy first, or wait until we expose a secure Saul/OpenClaw-backed public endpoint?

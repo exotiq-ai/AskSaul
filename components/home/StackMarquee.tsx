@@ -8,8 +8,8 @@ type StackItem = {
 
 const STACK: StackItem[] = [
   { name: "OpenClaw", role: "agent orchestration", logoSrc: "/brand-logos/openclaw.svg" },
-  { name: "GoHighLevel", role: "CRM handoff", logoSrc: "/brand-logos/gohighlevel.svg" },
-  { name: "SendBlue", role: "SMS follow-up", logoSrc: "/brand-logos/sendblue.svg" },
+  { name: "GoHighLevel", role: "CRM + SMS", logoSrc: "/brand-logos/gohighlevel.svg" },
+  { name: "SendBlue", role: "warm iMessage", logoSrc: "/brand-logos/sendblue.svg" },
   { name: "Twilio", role: "phone + routing", logoSrc: "/brand-logos/twilio.svg" },
   { name: "ElevenLabs", role: "voice agents", logoSrc: "/brand-logos/elevenlabs.svg" },
   { name: "Next.js", role: "conversion sites", logoSrc: "/brand-logos/nextjs.svg" },

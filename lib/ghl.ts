@@ -8,7 +8,7 @@ import type {
 const ASK_SAUL_LOCATION_ID = "RxCVQeGoQ3RTJbbLG5gY";
 const GHL_BASE_URL = "https://services.leadconnectorhq.com";
 const GHL_VERSION = "2021-07-28";
-const DEMO_PHONE_DISPLAY = "(970) 401-7285";
+const DEMO_PHONE_DISPLAY = "(720) 292-7554";
 export const BOOKING_URL =
   "https://api.leadconnectorhq.com/widget/bookings/bookwithusdigitalmarketing-3d837e4b-c899-44ff-b612-275f498c2128";
 
@@ -334,7 +334,16 @@ export function buildVoiceAgentLeadPayload(data: VoiceAgentLeadData) {
 
 // ─── GHL Delivery ────────────────────────────────────────────────────────────
 
-export async function sendToGHL(payload: unknown): Promise<void> {
+export type GhlLeadCaptureResult = {
+  contactId?: string;
+};
+
+export type GhlOutboundResult =
+  | { ok: true; skipped?: false; conversationId?: string; messageId?: string }
+  | { ok: true; skipped: true; reason: string }
+  | { ok: false; error: string; status?: number };
+
+export async function sendToGHL(payload: unknown): Promise<GhlLeadCaptureResult> {
   const apiKey = process.env.GHL_API_KEY ?? process.env.GHL_LOCAL_SERVICES_API_KEY;
   const locationId = process.env.GHL_LOCATION_ID ?? process.env.GHL_LOCAL_SERVICES_LOCATION_ID;
 
@@ -347,8 +356,8 @@ export async function sendToGHL(payload: unknown): Promise<void> {
         `[GHL] Refusing to send AskSaul.ai lead to non-Ask-Saul location ${locationId}`
       );
     }
-    await upsertAskSaulContact(payload, { apiKey, locationId });
-    return;
+    const contactId = await upsertAskSaulContact(payload, { apiKey, locationId });
+    return { contactId };
   }
 
   const webhookUrl = process.env.GHL_WEBHOOK_URL;
@@ -359,7 +368,7 @@ export async function sendToGHL(payload: unknown): Promise<void> {
       throw new Error(message);
     }
     console.warn(message);
-    return;
+    return {};
   }
 
   const res = await fetch(webhookUrl, {
@@ -372,6 +381,8 @@ export async function sendToGHL(payload: unknown): Promise<void> {
     const body = await res.text().catch(() => "");
     throw new Error(`GHL webhook failed: ${res.status} ${body}`);
   }
+
+  return {};
 }
 
 type GhlConfig = {
@@ -391,7 +402,7 @@ type GhlContactPayload = {
   customFields: Array<{ id: string; value: string }>;
 };
 
-async function upsertAskSaulContact(payload: unknown, cfg: GhlConfig): Promise<void> {
+async function upsertAskSaulContact(payload: unknown, cfg: GhlConfig): Promise<string | undefined> {
   const normalized = normalizeForGhl(payload, cfg.locationId);
   const res = await fetch(`${GHL_BASE_URL}/contacts/upsert`, {
     method: "POST",
@@ -414,6 +425,64 @@ async function upsertAskSaulContact(payload: unknown, cfg: GhlConfig): Promise<v
 
   if (contactId && normalized.note) {
     await addGhlNote(contactId, normalized.note, cfg);
+  }
+
+  return contactId;
+}
+
+export async function sendGhlSmsMessage({
+  contactId,
+  message,
+}: {
+  contactId?: string;
+  message: string;
+}): Promise<GhlOutboundResult> {
+  if (!contactId) {
+    return { ok: true, skipped: true, reason: "No GHL contact ID returned from lead capture" };
+  }
+
+  const apiKey = process.env.GHL_API_KEY ?? process.env.GHL_LOCAL_SERVICES_API_KEY;
+  const locationId = process.env.GHL_LOCATION_ID ?? process.env.GHL_LOCAL_SERVICES_LOCATION_ID;
+  if (!apiKey || !locationId) {
+    return { ok: true, skipped: true, reason: "GHL outbound skipped because direct GHL env is missing" };
+  }
+  if (locationId !== ASK_SAUL_LOCATION_ID) {
+    return { ok: false, error: `[GHL] Refusing outbound from non-Ask-Saul location ${locationId}` };
+  }
+
+  if (process.env.GHL_OUTBOUND_SMS_ENABLED !== "1") {
+    return { ok: true, skipped: true, reason: "GHL_OUTBOUND_SMS_ENABLED is not enabled" };
+  }
+
+  if (process.env.GHL_OUTBOUND_DRY_RUN === "1" || process.env.GHL_OUTBOUND_DRY_RUN === "true") {
+    console.info("[GHL][sms-dry-run]", { contactId, message });
+    return { ok: true, skipped: true, reason: "GHL_OUTBOUND_DRY_RUN enabled" };
+  }
+
+  const res = await fetch(`${GHL_BASE_URL}/conversations/messages`, {
+    method: "POST",
+    headers: ghlHeaders(apiKey),
+    body: JSON.stringify({ type: "SMS", contactId, message }),
+  });
+
+  const body = await res.text();
+  if (!res.ok) {
+    return { ok: false, status: res.status, error: body.slice(0, 500) || "GHL outbound SMS failed" };
+  }
+
+  try {
+    const parsed = JSON.parse(body || "{}") as {
+      conversationId?: string;
+      messageId?: string;
+      message?: { id?: string; conversationId?: string };
+    };
+    return {
+      ok: true,
+      conversationId: parsed.conversationId ?? parsed.message?.conversationId,
+      messageId: parsed.messageId ?? parsed.message?.id,
+    };
+  } catch {
+    return { ok: true };
   }
 }
 

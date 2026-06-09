@@ -133,7 +133,6 @@ export default function BuildYourProposalPage() {
         "name",
         "email",
         "phone",
-        "smsConsent",
         "preferredContact",
         "timeline",
       ]);

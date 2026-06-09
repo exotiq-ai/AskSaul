@@ -23,16 +23,9 @@ export default function ContactForm() {
   const [errorMsg, setErrorMsg] = useState("");
   const [smsConsent, setSmsConsent] = useState(false);
   const [marketingOptIn, setMarketingOptIn] = useState(false);
-  const [smsConsentError, setSmsConsentError] = useState("");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-
-    if (!smsConsent) {
-      setSmsConsentError("SMS consent is required to continue");
-      return;
-    }
-    setSmsConsentError("");
 
     setFormState("loading");
     setErrorMsg("");
@@ -148,21 +141,14 @@ export default function ContactForm() {
             id="smsConsent"
             type="checkbox"
             checked={smsConsent}
-            onChange={(e) => {
-              setSmsConsent(e.target.checked);
-              if (e.target.checked) setSmsConsentError("");
-            }}
+            onChange={(e) => setSmsConsent(e.target.checked)}
             disabled={formState === "loading"}
             className="mt-0.5 w-4 h-4 rounded border-wire bg-graphite text-cyan focus:ring-cyan/40 shrink-0 cursor-pointer"
           />
           <label htmlFor="smsConsent" className="text-xs text-slate leading-relaxed cursor-pointer">
-            <span className="text-error mr-1">*</span>
-            By providing your phone number, you consent to receive transactional SMS messages from AskSaul related to your inquiry. Message frequency varies. Message and data rates may apply. Reply STOP to opt out. Reply HELP for help.
+            I consent to receive non-marketing text messages from AskSaul about this inquiry, including follow-up questions, callback coordination, project updates, and booking reminders. Message frequency varies. Message and data rates may apply. Text HELP for help, reply STOP to opt out.
           </label>
         </div>
-        {smsConsentError && (
-          <p className="text-xs text-error ml-7">{smsConsentError}</p>
-        )}
 
         <div className="flex items-start gap-3">
           <input
@@ -174,11 +160,12 @@ export default function ContactForm() {
             className="mt-0.5 w-4 h-4 rounded border-wire bg-graphite text-cyan focus:ring-cyan/40 shrink-0 cursor-pointer"
           />
           <label htmlFor="marketingOptIn" className="text-xs text-slate leading-relaxed cursor-pointer">
-            I also want to receive occasional tips, updates, and offers from AskSaul via SMS. You can opt out anytime by replying STOP.
+            I consent to receive marketing text messages from AskSaul about automation tips, service updates, and occasional offers. Message frequency varies. Message and data rates may apply. Text HELP for help, reply STOP to opt out.
           </label>
         </div>
 
         <p className="text-xs text-dim ml-7">
+          SMS consent is optional and is not required to submit this form or buy services.{" "}
           View our{" "}
           <a href="/privacy" className="underline hover:text-slate transition-colors">Privacy Policy</a>
           {" "}and{" "}

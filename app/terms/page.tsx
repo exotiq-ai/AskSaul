@@ -30,7 +30,7 @@ export default function TermsPage() {
               2026
             </p>
             <p>
-              <strong className="text-slate">Last Updated:</strong> April 2026
+              <strong className="text-slate">Last Updated:</strong> June 2026
             </p>
           </div>
 
@@ -150,12 +150,12 @@ export default function TermsPage() {
               Article V: SMS and Communication Terms
             </h2>
             <p>
-              By providing your phone number and opting in to SMS communications,
-              you consent to receive text messages from AskSaul.ai for
-              project-related communications and, if separately opted in,
-              marketing messages. Message frequency varies. Message and data
-              rates may apply. Reply STOP to opt out at any time. Reply HELP
-              for assistance.
+              By providing your phone number and separately opting in to SMS
+              communications, you consent to receive text messages from
+              AskSaul.ai for project-related communications and, if separately
+              opted in, marketing messages. Message frequency varies. Message
+              and data rates may apply. Reply STOP to opt out at any time.
+              Reply HELP for assistance.
             </p>
             <p>
               Your consent to receive SMS is not a condition of purchasing any

@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AskSaul.ai
 
-## Getting Started
+Next.js site for AskSaul.ai lead capture, proposal intake, chat handoff, and voice-agent inquiry flows.
 
-First, run the development server:
+## Local development
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## CRM and SMS routing
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+AskSaul.ai uses the Ask Saul GoHighLevel / LeadConnector location as the CRM and outbound SMS system of record.
 
-## Learn More
+- GHL location: `RxCVQeGoQ3RTJbbLG5gY`
+- Primary integration code: `lib/ghl.ts`
+- A2P campaign packet: `docs/ghl-a2p-outbound-campaign-plan.md`
+- SMS/GHL handoff: `docs/ghl-sms-handoff.md`
 
-To learn more about Next.js, take a look at the following resources:
+Current channel stance:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- GHL/LeadConnector: opted-in outbound SMS, workflow follow-up, STOP/HELP handling, CRM conversation history.
+- Sendblue: warm/inbound iMessage only unless Gregory confirms true outbound Sendblue support.
+- Twilio: on hold unless Gregory explicitly asks to add it.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Before submitting the GHL A2P campaign, deploy the site so reviewers can see the optional SMS consent checkboxes and public Privacy/Terms pages.
 
-## Deploy on Vercel
+## Quality checks
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run lint
+npm run build
+```

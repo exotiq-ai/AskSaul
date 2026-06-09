@@ -163,8 +163,7 @@ export default function ContactPreferences() {
             {...register("smsConsent")}
           />
           <label htmlFor="smsConsent" className="text-xs text-slate leading-relaxed cursor-pointer">
-            <span className="text-error mr-1">*</span>
-            By providing your phone number, you consent to receive transactional SMS messages from AskSaul related to your inquiry. Message frequency varies. Message and data rates may apply. Reply STOP to opt out. Reply HELP for help.
+            I consent to receive non-marketing text messages from AskSaul about this inquiry, including follow-up questions, callback coordination, project updates, and booking reminders. Message frequency varies. Message and data rates may apply. Text HELP for help, reply STOP to opt out.
           </label>
         </div>
         {errors.smsConsent && (
@@ -179,11 +178,12 @@ export default function ContactPreferences() {
             {...register("marketingSmsOptIn")}
           />
           <label htmlFor="marketingSmsOptIn" className="text-xs text-slate leading-relaxed cursor-pointer">
-            I also want to receive occasional tips, updates, and offers from AskSaul via SMS. You can opt out anytime by replying STOP.
+            I consent to receive marketing text messages from AskSaul about automation tips, service updates, and occasional offers. Message frequency varies. Message and data rates may apply. Text HELP for help, reply STOP to opt out.
           </label>
         </div>
 
         <p className="text-xs text-dim ml-7">
+          SMS consent is optional and is not required to submit this form or buy services.{" "}
           View our{" "}
           <a href="/privacy" className="underline hover:text-slate transition-colors">Privacy Policy</a>
           {" "}and{" "}

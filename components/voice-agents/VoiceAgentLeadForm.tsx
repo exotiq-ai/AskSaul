@@ -51,10 +51,6 @@ function hasRequiredFields(form: VoiceAgentLeadData) {
     errors.email = "Enter a valid email";
   }
 
-  if (!form.smsConsent) {
-    errors.smsConsent = "SMS consent is required";
-  }
-
   return errors;
 }
 
@@ -130,7 +126,7 @@ export default function VoiceAgentLeadForm({ vertical = "general" }: VoiceAgentL
       setForm(initialForm);
     } catch {
       setSubmitError(
-        "Something went wrong saving this. Please call Saul at (970) 401-7285 or email saul3000bot@gmail.com."
+        "Something went wrong saving this. Please call Saul at (720) 292-7554 or email saul3000bot@gmail.com."
       );
     } finally {
       setSubmitting(false);
@@ -147,7 +143,7 @@ export default function VoiceAgentLeadForm({ vertical = "general" }: VoiceAgentL
           Gregory has the context.
         </h3>
         <p className="text-slate leading-relaxed mb-6">
-          We saved your voice-agent setup request in GHL. If you want to hear the live demo while you wait, call Saul at (970) 401-7285, or grab a 15-minute intro with Gregory now.
+          We saved your voice-agent setup request in GHL. If you want to hear the live demo while you wait, call Saul at (720) 292-7554, or grab a 15-minute intro with Gregory now.
         </p>
         <div className="flex flex-col sm:flex-row justify-center gap-3">
           <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer">
@@ -232,8 +228,7 @@ export default function VoiceAgentLeadForm({ vertical = "general" }: VoiceAgentL
             className="mt-1 h-4 w-4 rounded border-wire bg-graphite text-cyan focus:ring-cyan/40 shrink-0 cursor-pointer"
           />
           <label htmlFor="voice-sms-consent" className="text-xs text-slate leading-relaxed cursor-pointer">
-            <span className="text-error mr-1">*</span>
-            I consent to receive transactional SMS messages from AskSaul related to this voice-agent inquiry. Message frequency varies. Message and data rates may apply. Reply STOP to opt out.
+            I consent to receive non-marketing text messages from AskSaul about this voice-agent inquiry, including follow-up questions, callback coordination, and booking reminders. Message frequency varies. Message and data rates may apply. Text HELP for help, reply STOP to opt out.
           </label>
         </div>
         {errors.smsConsent && <p className="text-xs text-error ml-7">{errors.smsConsent}</p>}
@@ -247,9 +242,15 @@ export default function VoiceAgentLeadForm({ vertical = "general" }: VoiceAgentL
             className="mt-1 h-4 w-4 rounded border-wire bg-graphite text-cyan focus:ring-cyan/40 shrink-0 cursor-pointer"
           />
           <label htmlFor="voice-marketing-consent" className="text-xs text-slate leading-relaxed cursor-pointer">
-            I also want occasional AskSaul tips and offers by SMS. I can opt out anytime.
+            I consent to receive marketing text messages from AskSaul about voice-agent tips, service updates, and occasional offers. Message frequency varies. Message and data rates may apply. Text HELP for help, reply STOP to opt out.
           </label>
         </div>
+        <p className="text-xs text-dim ml-7">
+          SMS consent is optional and is not required to submit this form or buy services. View our{" "}
+          <a href="/privacy" className="underline hover:text-slate transition-colors">Privacy Policy</a>
+          {" "}and{" "}
+          <a href="/terms" className="underline hover:text-slate transition-colors">Terms of Service</a>.
+        </p>
       </div>
 
       {submitError && (
@@ -263,7 +264,7 @@ export default function VoiceAgentLeadForm({ vertical = "general" }: VoiceAgentL
           {submitting ? "Sending..." : "Map My Call Flow"}
         </Button>
         <p className="text-xs text-dim leading-relaxed">
-          Prefer to test it first? Call Saul at <a className="text-cyan hover:text-cyan/80" href={"tel:" + "+1" + "970" + "401" + "7285"}>(970) 401-7285</a>.
+          Prefer to test it first? Call Saul at <a className="text-cyan hover:text-cyan/80" href={"tel:" + "+1" + "720" + "292" + "7554"}>(720) 292-7554</a>.
         </p>
       </div>
     </form>

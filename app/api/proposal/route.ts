@@ -1,8 +1,7 @@
 import { type NextRequest } from "next/server";
 import { proposalSchema } from "@/lib/validation";
-import { buildProposalPayload, getAskSaulBookingUrl, sendToGHL } from "@/lib/ghl";
+import { buildProposalPayload, getAskSaulBookingUrl, sendGhlSmsMessage, sendToGHL } from "@/lib/ghl";
 import { sendInternalLeadAlert } from "@/lib/internal-alerts";
-import { sendSendblueMessage } from "@/lib/sendblue";
 
 export async function POST(request: NextRequest) {
   let body: unknown;
@@ -22,9 +21,10 @@ export async function POST(request: NextRequest) {
 
   const payload = buildProposalPayload(result.data);
   const bookingUrl = getAskSaulBookingUrl();
+  let ghlResult: Awaited<ReturnType<typeof sendToGHL>>;
 
   try {
-    await sendToGHL(payload);
+    ghlResult = await sendToGHL(payload);
   } catch (err) {
     console.error("[proposal/route] GHL webhook error:", err);
     return Response.json(
@@ -48,25 +48,27 @@ export async function POST(request: NextRequest) {
   });
   if (!alertResult.ok) console.warn("[proposal/route] internal alert failed:", alertResult);
 
-  let smsResult: Awaited<ReturnType<typeof sendSendblueMessage>> | undefined;
+  let smsResult: Awaited<ReturnType<typeof sendGhlSmsMessage>> | undefined;
   try {
-    smsResult = await sendSendblueMessage({
-      to: result.data.phone,
-      body: `Thanks for requesting your AskSaul Automation Map. Gregory has your context and will review it. If you want to grab a demo time now: ${bookingUrl} Reply STOP to opt out.`,
-    });
+    smsResult = result.data.smsConsent
+      ? await sendGhlSmsMessage({
+          contactId: ghlResult.contactId,
+          message: `Thanks for requesting your AskSaul Automation Map. Gregory has your context and will review it. If you want to grab a demo time now: ${bookingUrl} Reply STOP to opt out.`,
+        })
+      : { ok: true, skipped: true, reason: "SMS consent not provided" };
     if (!smsResult.ok) {
-      console.warn("[proposal/route] Sendblue thank-you SMS failed:", smsResult);
+      console.warn("[proposal/route] GHL thank-you SMS failed:", smsResult);
     }
   } catch (err) {
-    console.warn("[proposal/route] Sendblue thank-you SMS threw after lead capture succeeded:", err);
-    smsResult = { ok: false, error: "Sendblue request threw after lead capture succeeded" };
+    console.warn("[proposal/route] GHL thank-you SMS threw after lead capture succeeded:", err);
+    smsResult = { ok: false, error: "GHL outbound request threw after lead capture succeeded" };
   }
 
   return Response.json({
     success: true,
     estimatedValue: payload.estimated_value,
     bookingUrl,
-    sms: smsResult ?? { ok: false, error: "SMS not attempted" },
+    sms: smsResult ?? { ok: false, error: "GHL SMS not attempted" },
     alert: alertResult,
   });
 }

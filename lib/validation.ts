@@ -197,9 +197,7 @@ export const step4Schema = z.object({
   name: z.string().min(2, "Name is required"),
   email: z.string().email("Valid email is required"),
   phone: z.string().min(1, "Phone number is required"),
-  smsConsent: z
-    .boolean()
-    .refine((v) => v === true, { message: "SMS consent is required to continue" }),
+  smsConsent: z.boolean().default(false),
   marketingSmsOptIn: z.boolean().optional(),
   preferredContact: z.enum(PREFERRED_CONTACT_OPTIONS),
   timeline: z.enum(TIMELINE_OPTIONS),
@@ -214,7 +212,7 @@ export const proposalSchema = step1Schema
   .merge(step3Schema)
   .merge(step4Schema);
 
-export type ProposalFormData = z.infer<typeof proposalSchema>;
+export type ProposalFormData = z.input<typeof proposalSchema>;
 
 // ─── Contact Form ────────────────────────────────────────────────────────────
 
@@ -223,15 +221,13 @@ export const contactSchema = z.object({
   lastName: z.string().min(1, "Last name is required"),
   email: z.string().email("Valid email is required"),
   phone: z.string().min(1, "Phone number is required"),
-  smsConsent: z
-    .boolean()
-    .refine((v) => v === true, { message: "SMS consent is required to continue" }),
+  smsConsent: z.boolean().default(false),
   marketingSmsOptIn: z.boolean().optional(),
   message: z.string().min(10, "Please tell us a bit more"),
   referralSource: z.string().optional(),
 });
 
-export type ContactFormData = z.infer<typeof contactSchema>;
+export type ContactFormData = z.input<typeof contactSchema>;
 
 // ─── Voice Agent Lead Form ───────────────────────────────────────────────────
 
@@ -254,13 +250,11 @@ export const voiceAgentLeadSchema = z.object({
   preferredCallbackWindow: z
     .string()
     .min(1, "Preferred callback window is required"),
-  smsConsent: z
-    .boolean()
-    .refine((v) => v === true, { message: "SMS consent is required to continue" }),
+  smsConsent: z.boolean().default(false),
   marketingSmsOptIn: z.boolean().optional(),
 });
 
-export type VoiceAgentLeadData = z.infer<typeof voiceAgentLeadSchema>;
+export type VoiceAgentLeadData = z.input<typeof voiceAgentLeadSchema>;
 
 // ─── Chat Widget ─────────────────────────────────────────────────────────────
 
