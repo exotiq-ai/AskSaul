@@ -48,7 +48,7 @@ export default function Navbar() {
                     onMouseEnter={() => setServicesOpen(true)}
                     onMouseLeave={() => setServicesOpen(false)}
                   >
-                    <button className="flex items-center gap-1 px-4 py-2 text-slate hover:text-cloud transition-colors text-sm font-medium">
+                    <button className="flex items-center gap-1 px-4 py-2 text-slate hover:text-cloud transition-colors text-sm font-medium rounded-lg" aria-expanded={servicesOpen} aria-haspopup="true" onClick={() => setServicesOpen((open) => !open)} onFocus={() => setServicesOpen(true)}>
                       {link.label}
                       <ChevronDown
                         className={`w-4 h-4 transition-transform duration-200 ${
@@ -58,30 +58,26 @@ export default function Navbar() {
                     </button>
 
                     {/* Dropdown */}
-                    <div
-                      className={`absolute top-full left-0 pt-2 transition-all duration-200 ${
-                        servicesOpen
-                          ? "opacity-100 translate-y-0 pointer-events-auto"
-                          : "opacity-0 -translate-y-2 pointer-events-none"
-                      }`}
-                    >
-                      <div className="bg-carbon border border-wire rounded-xl shadow-[0_8px_30px_rgba(0,0,0,0.5)] p-2 min-w-56">
-                        {SERVICES_DROPDOWN.map((item) => (
-                          <Link
-                            key={item.href}
-                            href={item.href}
-                            className="block px-4 py-3 rounded-lg hover:bg-graphite transition-colors group"
-                          >
-                            <div className="text-sm font-medium text-cloud group-hover:text-cyan transition-colors">
-                              {item.label}
-                            </div>
-                            <div className="text-xs text-dim mt-0.5">
-                              {item.description}
-                            </div>
-                          </Link>
-                        ))}
+                    {servicesOpen && (
+                      <div className="absolute top-full left-0 pt-2 transition-all duration-200">
+                        <div className="bg-carbon border border-wire rounded-xl shadow-[0_8px_30px_rgba(0,0,0,0.5)] p-2 min-w-56">
+                          {SERVICES_DROPDOWN.map((item) => (
+                            <Link
+                              key={item.href}
+                              href={item.href}
+                              className="block px-4 py-3 rounded-lg hover:bg-graphite transition-colors group"
+                            >
+                              <div className="text-sm font-medium text-cloud group-hover:text-cyan transition-colors">
+                                {item.label}
+                              </div>
+                              <div className="text-xs text-dim mt-0.5">
+                                {item.description}
+                              </div>
+                            </Link>
+                          ))}
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 ) : (
                   <Link
@@ -99,12 +95,12 @@ export default function Navbar() {
             <div className="hidden md:flex items-center gap-3">
               <Link href="/contact">
                 <Button variant="ghost" size="sm">
-                  Talk to Saul
+                  Talk Through Workflow
                 </Button>
               </Link>
               <Link href="/build-your-proposal">
                 <Button variant="primary" size="sm">
-                  Build Your Proposal
+                  Get Automation Map
                 </Button>
               </Link>
             </div>
@@ -113,7 +109,7 @@ export default function Navbar() {
             <button
               onClick={() => setMobileOpen(true)}
               className="md:hidden text-slate hover:text-cloud transition-colors p-2"
-              aria-label="Open menu"
+              aria-label="Open menu" aria-expanded={mobileOpen} aria-controls="mobile-navigation-dialog"
             >
               <Menu className="w-5 h-5" />
             </button>

@@ -1,0 +1,32 @@
+# AskSaul.ai Agents File
+
+Last updated: 2026-06-08
+
+AskSaul.ai is a Denver-based service by Gregory Ringler that builds practical AI systems for businesses: AI assistants, workflow automation, AI voice agents, conversion websites/apps, and marketing automation.
+
+Primary site: https://asksaul.ai
+Contact: saul3000bot@gmail.com · 970.343.9634
+
+Key public URLs:
+- https://asksaul.ai/
+- https://asksaul.ai/build-your-proposal
+- https://asksaul.ai/ai-automation
+- https://asksaul.ai/voice-agents
+- https://asksaul.ai/voice-agents/waste
+- https://asksaul.ai/web-development
+- https://asksaul.ai/marketing-engine
+- https://asksaul.ai/case-studies
+- https://asksaul.ai/portfolio
+
+Preferred description:
+AskSaul helps practical businesses map bottlenecks, then build the first AI system that can save time, capture leads, or improve follow-up.
+
+Important limitations:
+- AskSaul provides AI voice-agent and automation services; it does not directly rent dumpsters or provide waste hauling.
+- Do not treat demo waste websites as testimonials unless explicit testimonial copy is present.
+- Do not claim guaranteed revenue, guaranteed booking rates, or fully autonomous dispatch without human-approved scope.
+- The site chat may be a lead-capture assistant unless explicitly labeled as live AI.
+
+LLM-readable summaries:
+- /llms.txt
+- /llms-full.txt

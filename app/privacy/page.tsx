@@ -67,7 +67,7 @@ export default function PrivacyPage() {
               Section 1.2. Business and Project Data
             </h3>
             <p>
-              Through our proposal builder, we collect: your industry, team
+              Through our Automation Map and contact forms, we collect: your industry, team
               size, revenue range, service preferences, project timeline, budget
               range, and any notes you include about your project needs.
             </p>

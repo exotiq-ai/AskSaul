@@ -42,7 +42,7 @@ export default function IndustriesServed() {
                 href={`/build-your-proposal?industry=${industry.slug}`}
                 className="inline-flex items-center gap-1.5 text-sm font-semibold text-cyan group-hover:gap-2 transition-all duration-200 mt-auto"
               >
-                Build your proposal
+                Get your Automation Map
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </AnimatedSection>

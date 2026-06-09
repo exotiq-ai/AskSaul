@@ -85,12 +85,17 @@ function TextArea({ id, label, placeholder, value, error, onChange }: TextAreaPr
   );
 }
 
-export default function VoiceAgentLeadForm() {
+interface VoiceAgentLeadFormProps {
+  vertical?: "general" | "waste";
+}
+
+export default function VoiceAgentLeadForm({ vertical = "general" }: VoiceAgentLeadFormProps) {
   const [form, setForm] = useState<VoiceAgentLeadData>(initialForm);
   const [errors, setErrors] = useState<FieldErrors>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState("");
+  const isWaste = vertical === "waste";
 
   function update<K extends keyof VoiceAgentLeadData>(field: K, value: VoiceAgentLeadData[K]) {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -155,27 +160,29 @@ export default function VoiceAgentLeadForm() {
           Get your call flow mapped
         </p>
         <h2 className="text-2xl sm:text-3xl font-bold text-cloud mb-3" style={{ fontFamily: "var(--font-display)" }}>
-          Tell us where the phone process breaks.
+          {isWaste ? "Tell us where waste calls get missed or messy." : "Tell us where the phone process breaks."}
         </h2>
         <p className="text-slate leading-relaxed">
-          This goes to the AskSaul lead workflow so Gregory can see your service area, current call handling, and what Saul should cover first.
+          {isWaste
+            ? "This goes to the AskSaul lead workflow so Gregory can see your markets, current call handling, dumpster quote flow, and what Saul should collect first."
+            : "This goes to the AskSaul lead workflow so Gregory can see your service area, current call handling, and what Saul should cover first."}
         </p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
         <Input label="Your name" placeholder="Jane Smith" autoComplete="name" value={form.name} error={errors.name} onChange={(e) => update("name", e.target.value)} />
-        <Input label="Business name" placeholder="Smith Heating & Air" autoComplete="organization" value={form.businessName} error={errors.businessName} onChange={(e) => update("businessName", e.target.value)} />
+        <Input label="Business name" placeholder={isWaste ? "Smith Roll-Off Rentals" : "Smith Heating & Air"} autoComplete="organization" value={form.businessName} error={errors.businessName} onChange={(e) => update("businessName", e.target.value)} />
         <Input label="Phone" type="tel" placeholder="(555) 867-5309" autoComplete="tel" value={form.phone} error={errors.phone} onChange={(e) => update("phone", e.target.value)} />
         <Input label="Email" type="email" placeholder="you@business.com" autoComplete="email" value={form.email} error={errors.email} onChange={(e) => update("email", e.target.value)} />
-        <Input label="Service type" placeholder="HVAC, plumbing, roofing..." value={form.serviceType} error={errors.serviceType} onChange={(e) => update("serviceType", e.target.value)} />
-        <Input label="Service area" placeholder="Denver, Boulder, Pueblo..." value={form.serviceArea} error={errors.serviceArea} onChange={(e) => update("serviceArea", e.target.value)} />
+        <Input label="Service type" placeholder={isWaste ? "Dumpster rental, junk removal, hauling..." : "HVAC, plumbing, roofing..."} value={form.serviceType} error={errors.serviceType} onChange={(e) => update("serviceType", e.target.value)} />
+        <Input label="Service area" placeholder={isWaste ? "Pueblo, Fayetteville, Lake Charles..." : "Denver, Boulder, Pueblo..."} value={form.serviceArea} error={errors.serviceArea} onChange={(e) => update("serviceArea", e.target.value)} />
       </div>
 
       <div className="grid grid-cols-1 gap-4">
         <TextArea
           id="currentCallHandling"
           label="How are calls handled right now?"
-          placeholder="Owner cell, front desk, voicemail, GHL, answering service..."
+          placeholder={isWaste ? "Owner cell, office line, voicemail, CallRail, GHL, answering service..." : "Owner cell, front desk, voicemail, GHL, answering service..."}
           value={form.currentCallHandling}
           error={errors.currentCallHandling}
           onChange={(value) => update("currentCallHandling", value)}
@@ -183,7 +190,7 @@ export default function VoiceAgentLeadForm() {
         <TextArea
           id="desiredAgentTasks"
           label="What should Saul handle first?"
-          placeholder="Missed calls, after-hours, quotes, scheduling, emergencies, CRM notes..."
+          placeholder={isWaste ? "Quote intake, dumpster size, ZIP checks, debris rules, delivery timing, CRM notes..." : "Missed calls, after-hours, quotes, scheduling, emergencies, CRM notes..."}
           value={form.desiredAgentTasks}
           error={errors.desiredAgentTasks}
           onChange={(value) => update("desiredAgentTasks", value)}
@@ -191,7 +198,7 @@ export default function VoiceAgentLeadForm() {
         <TextArea
           id="missedCallPain"
           label="What are missed calls costing you?"
-          placeholder="Tell us what gets lost, delayed, or forgotten today."
+          placeholder={isWaste ? "Missed after-hours calls, price shoppers, wrong details, slow callbacks, bad fit leads..." : "Tell us what gets lost, delayed, or forgotten today."}
           value={form.missedCallPain}
           error={errors.missedCallPain}
           onChange={(value) => update("missedCallPain", value)}

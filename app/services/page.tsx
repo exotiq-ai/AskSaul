@@ -94,7 +94,7 @@ export default function ServicesPage() {
               </p>
               <Link href="/build-your-proposal">
                 <Button variant="primary" size="lg">
-                  Build Your Proposal
+                  Get Your Automation Map
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
@@ -164,11 +164,11 @@ export default function ServicesPage() {
                 Not sure which service fits?
               </h2>
               <p className="text-slate mb-6">
-                The proposal builder has a "not sure yet" option. Answer a few questions and Saul will figure it out with you.
+                The Automation Map has a "not sure yet" option. Answer a few questions and Saul will figure out the highest-leverage place to start.
               </p>
               <Link href="/build-your-proposal">
                 <Button variant="primary" size="md">
-                  Build Your Proposal
+                  Get Your Automation Map
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>

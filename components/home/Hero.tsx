@@ -1,105 +1,119 @@
 import Link from "next/link";
-import { ArrowRight, MessageSquare } from "lucide-react";
+import { ArrowRight, CheckCircle2, MessageSquare, Radar } from "lucide-react";
 import Button from "@/components/ui/Button";
+
+const bottlenecks = [
+  "Missed calls",
+  "Slow follow-up",
+  "Manual CRM work",
+  "Websites that don't convert",
+];
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-obsidian">
-      {/* Dot pattern background */}
+    <section className="relative min-h-screen flex items-center overflow-hidden bg-obsidian">
       <div className="absolute inset-0 dot-pattern" aria-hidden="true" />
-
-      {/* Subtle radial gradient for depth */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,212,170,0.04) 0%, transparent 70%)",
+            "radial-gradient(ellipse 80% 60% at 30% 0%, rgba(0,212,170,0.08) 0%, transparent 70%)",
         }}
         aria-hidden="true"
       />
 
-      {/* Horizontal rule accents */}
-      <div
-        className="absolute top-0 left-0 right-0 h-px"
-        style={{
-          background:
-            "linear-gradient(90deg, transparent, rgba(0,212,170,0.3), transparent)",
-        }}
-        aria-hidden="true"
-      />
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_440px] gap-12 items-center">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan/10 border border-cyan/25 text-cyan text-xs font-semibold tracking-widest uppercase mb-8">
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan" />
+              The Saul Automation Map
+            </div>
 
-      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-20 text-center">
-        {/* Overline label */}
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan/10 border border-cyan/20 text-cyan text-xs font-semibold tracking-widest uppercase mb-8">
-          <span className="w-1.5 h-1.5 rounded-full bg-cyan animate-pulse" />
-          AI &bull; Automation &bull; Web Development
-        </div>
+            <h1
+              className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-cloud leading-[0.98] mb-7"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              Practical AI systems for the work your business keeps doing by hand.
+            </h1>
 
-        {/* Main headline */}
-        <h1
-          className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-cloud leading-[1.05] mb-6"
-          style={{ fontFamily: "var(--font-display)" }}
-        >
-          Your competitors
-          <br />
-          are automating.
-          <br />
-          <span className="text-cyan">You are still</span>
-          <br />
-          doing it manually.
-        </h1>
+            <p className="text-lg sm:text-xl text-slate max-w-2xl mb-8 leading-relaxed">
+              AskSaul maps the bottlenecks in your business — missed calls, slow follow-up, repetitive admin, weak website flows — then builds AI assistants, automations, voice agents, websites, and apps that help your team move faster.
+            </p>
 
-        {/* Subheadline */}
-        <p className="text-lg sm:text-xl text-slate max-w-2xl mx-auto mb-10 leading-relaxed">
-          Done-for-you AI assistants, websites that convert, and marketing
-          automation that actually works. For businesses done wasting time on
-          tools that do not talk to each other.
-        </p>
+            <div className="flex flex-col sm:flex-row gap-4 mb-5">
+              <Link href="/build-your-proposal">
+                <Button variant="primary" size="lg" className="group w-full sm:w-auto">
+                  Get Your Automation Map
+                  <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-0.5" />
+                </Button>
+              </Link>
+              <Link href="/services">
+                <Button variant="ghost" size="lg" className="w-full sm:w-auto">
+                  <MessageSquare className="w-5 h-5" />
+                  See What Saul Can Build
+                </Button>
+              </Link>
+            </div>
+            <p className="text-sm text-slate max-w-xl">
+              3 minutes · real proposal in 24 hours · no sales call unless you ask.
+            </p>
 
-        {/* CTAs */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <Link href="/build-your-proposal">
-            <Button variant="primary" size="lg" className="group">
-              Build Your Proposal
-              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-0.5" />
-            </Button>
-          </Link>
-          <Link href="/contact">
-            <Button variant="ghost" size="lg">
-              <MessageSquare className="w-5 h-5" />
-              Talk to Saul
-            </Button>
-          </Link>
-        </div>
+            <div className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl">
+              {bottlenecks.map((item) => (
+                <div key={item} className="rounded-2xl border border-wire bg-carbon/70 px-4 py-3 text-sm text-cloud flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-cyan shrink-0" aria-hidden="true" />
+                  {item}
+                </div>
+              ))}
+            </div>
+          </div>
 
-        {/* Results strip */}
-        <div className="mt-14 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 text-sm">
-          <span className="text-cloud font-semibold">4 demos booked in 24 hours.</span>
-          <span className="hidden sm:block w-px h-4 bg-wire" />
-          <span className="text-cloud font-semibold">Full CRM built in 48 hours.</span>
-          <span className="hidden sm:block w-px h-4 bg-wire" />
-          <span className="text-cloud font-semibold">Pipeline live in under a week.</span>
-        </div>
-
-        {/* Social proof strip */}
-        <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 text-sm text-dim">
-          <span>5 live platforms built and running</span>
-          <span className="hidden sm:block w-px h-4 bg-wire" />
-          <span>Weeks to launch, not months</span>
-          <span className="hidden sm:block w-px h-4 bg-wire" />
-          <span>Your data, your infrastructure</span>
-          <span className="hidden sm:block w-px h-4 bg-wire" />
-          <span>Denver, CO</span>
+          <div className="rounded-3xl border border-cyan/25 bg-carbon/85 p-6 sm:p-8 shadow-[0_0_80px_rgba(0,212,170,0.10)]">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="h-12 w-12 rounded-2xl bg-cyan text-obsidian flex items-center justify-center">
+                <Radar className="w-6 h-6" aria-hidden="true" />
+              </div>
+              <div>
+                <p className="text-xs font-semibold tracking-widest uppercase text-cyan">Free diagnostic</p>
+                <h2 className="text-2xl font-bold text-cloud" style={{ fontFamily: "var(--font-display)" }}>
+                  Get Your Automation Map
+                </h2>
+              </div>
+            </div>
+            <p className="text-slate leading-relaxed mb-6">
+              The 1–3 highest-leverage workflows Saul can automate for your business — ranked by time saved, revenue impact, and launch difficulty.
+            </p>
+            <div className="space-y-3 mb-7">
+              {[
+                "Spot the leaks in calls, forms, follow-up, and admin",
+                "Rank what should be automated first",
+                "Get a scoped proposal without a bloated AI strategy deck",
+              ].map((line) => (
+                <div key={line} className="flex items-start gap-3 text-sm text-slate">
+                  <CheckCircle2 className="w-5 h-5 text-cyan shrink-0 mt-0.5" aria-hidden="true" />
+                  <span>{line}</span>
+                </div>
+              ))}
+            </div>
+            <Link href="/build-your-proposal">
+              <Button variant="primary" size="lg" className="w-full">
+                Map My Automation Opportunity
+                <ArrowRight className="w-5 h-5" />
+              </Button>
+            </Link>
+            <div className="mt-5 grid grid-cols-3 gap-2 text-center text-xs text-slate">
+              <span className="rounded-xl border border-wire bg-obsidian/60 px-2 py-2">No pitch</span>
+              <span className="rounded-xl border border-wire bg-obsidian/60 px-2 py-2">24 hr reply</span>
+              <span className="rounded-xl border border-wire bg-obsidian/60 px-2 py-2">Practical plan</span>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Bottom fade */}
       <div
         className="absolute bottom-0 left-0 right-0 h-32"
-        style={{
-          background:
-            "linear-gradient(to bottom, transparent, #0A0A0F)",
-        }}
+        style={{ background: "linear-gradient(to bottom, transparent, #0A0A0F)" }}
         aria-hidden="true"
       />
     </section>

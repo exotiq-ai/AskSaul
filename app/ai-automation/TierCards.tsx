@@ -82,7 +82,7 @@ function TierCard({ tier }: { tier: Tier }) {
           size="sm"
           className="w-full"
         >
-          Build Your Proposal for Pricing
+          Get Your Automation Map for Pricing
         </Button>
       </Link>
     </div>

@@ -7,8 +7,13 @@ module.exports = {
       { userAgent: '*', allow: '/' },
       { userAgent: 'GPTBot', allow: '/' },
       { userAgent: 'ChatGPT-User', allow: '/' },
+      { userAgent: 'OAI-SearchBot', allow: '/' },
       { userAgent: 'anthropic-ai', allow: '/' },
+      { userAgent: 'ClaudeBot', allow: '/' },
       { userAgent: 'PerplexityBot', allow: '/' },
+      { userAgent: 'Perplexity-User', allow: '/' },
+      { userAgent: 'Google-Extended', allow: '/' },
+      { userAgent: 'CCBot', allow: '/' },
     ],
   },
   exclude: ['/api/*', '/opengraph-image', '/twitter-image', '/icon', '/apple-icon'],
@@ -16,7 +21,7 @@ module.exports = {
   priority: 0.7,
   transform: async (config, path) => {
     // Higher priority for key pages
-    const highPriority = ['/', '/services', '/ai-automation', '/web-development', '/marketing-engine', '/build-your-proposal'];
+    const highPriority = ['/', '/services', '/ai-automation', '/voice-agents', '/voice-agents/waste', '/web-development', '/marketing-engine', '/build-your-proposal'];
     return {
       loc: path,
       changefreq: highPriority.includes(path) ? 'daily' : config.changefreq,

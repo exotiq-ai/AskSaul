@@ -200,13 +200,13 @@ export default function BuildYourProposalPage() {
           {/* Header */}
           <div ref={topRef} className="text-center mb-8">
             <p className="text-xs font-semibold uppercase tracking-widest text-cyan mb-2">
-              Proposal Builder
+              The Saul Automation Map
             </p>
             <h1 className="font-display text-3xl sm:text-4xl font-bold text-cloud mb-3">
-              Build Your Proposal
+              Get Your Automation Map
             </h1>
             <p className="text-slate text-base max-w-md mx-auto">
-              Answer a few questions and Saul will put together a real, scoped proposal. Takes about 3 minutes.
+              Answer a few questions and Saul will map the 1–3 workflows most worth automating first. Takes about 3 minutes; real proposal back within 24 hours.
             </p>
           </div>
 

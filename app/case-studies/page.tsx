@@ -99,7 +99,7 @@ export default function CaseStudiesPage() {
               </p>
               <Link href="/build-your-proposal">
                 <Button variant="primary" size="lg">
-                  Build Your Proposal
+                  Get Your Automation Map
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>

@@ -244,6 +244,26 @@ export default function VoiceAgentsPage() {
 
         <VoiceAgentFlow />
 
+        <section className="py-16 bg-obsidian border-y border-wire">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p className="text-xs font-semibold tracking-widest uppercase text-cyan mb-3">
+              Vertical voice agents
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-bold text-cloud mb-4" style={{ fontFamily: "var(--font-display)" }}>
+              Need dumpster rental call intake?
+            </h2>
+            <p className="text-slate leading-relaxed max-w-2xl mx-auto mb-7">
+              Saul now has a dedicated waste-industry flow for roll-off dumpster, junk removal, and hauling businesses: ZIP-code qualification, debris details, size guidance, scheduling, and GHL handoff.
+            </p>
+            <Link href="/voice-agents/waste">
+              <Button variant="primary" size="lg">
+                See Waste Voice Agents
+                <ArrowRight className="w-5 h-5" />
+              </Button>
+            </Link>
+          </div>
+        </section>
+
         <section className="py-24 bg-carbon/40">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">

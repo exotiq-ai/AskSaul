@@ -214,7 +214,7 @@ export default async function BlogPostPage({ params }: Props) {
                   </p>
                   <Link href="/build-your-proposal">
                     <Button variant="primary" size="sm">
-                      Build Your Proposal
+                      Get Your Automation Map
                       <ArrowRight className="w-3.5 h-3.5" />
                     </Button>
                   </Link>
@@ -300,7 +300,7 @@ export default async function BlogPostPage({ params }: Props) {
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Link href="/build-your-proposal">
                   <Button variant="primary" size="lg">
-                    Build Your Proposal
+                    Get Your Automation Map
                     <ArrowRight className="w-4 h-4" />
                   </Button>
                 </Link>

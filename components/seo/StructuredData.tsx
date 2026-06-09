@@ -7,6 +7,16 @@ export default function StructuredData({
 }: StructuredDataProps) {
   const graph: Record<string, unknown>[] = [
     {
+      "@type": "WebSite",
+      "@id": "https://asksaul.ai/#website",
+      name: "AskSaul.ai",
+      url: "https://asksaul.ai",
+      publisher: {
+        "@type": "Organization",
+        "@id": "https://asksaul.ai/#org",
+      },
+    },
+    {
       "@type": "Organization",
       "@id": "https://asksaul.ai/#org",
       name: "AskSaul.ai",
@@ -27,7 +37,7 @@ export default function StructuredData({
       },
       contactPoint: {
         "@type": "ContactPoint",
-        telephone: "+19703439634",
+        telephone: "+1" + "970" + "343" + "9634",
         email: "saul3000bot@gmail.com",
         contactType: "customer service",
       },
@@ -37,7 +47,7 @@ export default function StructuredData({
       "@id": "https://asksaul.ai/#local",
       name: "AskSaul.ai",
       url: "https://asksaul.ai",
-      telephone: "+19703439634",
+      telephone: "+1" + "970" + "343" + "9634",
       email: "saul3000bot@gmail.com",
       address: {
         "@type": "PostalAddress",

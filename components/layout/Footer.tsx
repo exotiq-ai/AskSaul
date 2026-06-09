@@ -10,7 +10,7 @@ const footerSections = [
       { label: "Voice Agents", href: "/voice-agents" },
       { label: "Websites & Apps", href: "/web-development" },
       { label: "Saul Marketing", href: "/marketing-engine" },
-      { label: "Build Your Proposal", href: "/build-your-proposal" },
+      { label: "Get Your Automation Map", href: "/build-your-proposal" },
     ],
   },
   {
@@ -40,8 +40,8 @@ export default function Footer() {
               Ask<span className="text-cyan">Saul</span>
             </Link>
             <p className="mt-4 text-sm text-slate leading-relaxed">
-              Done-for-you AI assistants, custom websites, and marketing
-              automation. Built by Gregory Ringler in Denver, CO.
+              Practical AI systems for the work your business keeps doing by hand.
+              Built by Gregory Ringler in Denver, CO.
             </p>
             <div className="mt-6 space-y-2">
               <a
@@ -92,13 +92,13 @@ export default function Footer() {
               Get Started
             </h3>
             <p className="text-sm text-slate leading-relaxed mb-4">
-              Ready to automate and build? Start with a proposal or book a call.
+              Ready to automate and build? Start with the map, then ship the workflow.
             </p>
             <Link
               href="/build-your-proposal"
               className="inline-flex items-center gap-2 text-sm font-semibold text-cyan hover:text-cyan/80 transition-colors"
             >
-              Build Your Proposal
+              Get Your Automation Map
               <span aria-hidden="true">&rarr;</span>
             </Link>
           </div>

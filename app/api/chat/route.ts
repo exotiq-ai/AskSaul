@@ -1,6 +1,6 @@
 import { type NextRequest } from "next/server";
 import { chatLeadSchema } from "@/lib/validation";
-import { buildChatPayload, sendToGHL } from "@/lib/ghl";
+import { BOOKING_URL, buildChatPayload, sendToGHL } from "@/lib/ghl";
 
 export async function POST(request: NextRequest) {
   let body: unknown;
@@ -30,5 +30,8 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  return Response.json({ success: true });
+  return Response.json({
+    success: true,
+    bookingUrl: result.data.handoffIntent === "book-demo" ? BOOKING_URL : undefined,
+  });
 }

@@ -345,7 +345,7 @@ export default function AIAutomationPage() {
               </p>
               <Link href="/build-your-proposal">
                 <Button variant="primary" size="lg">
-                  Build Your Proposal
+                  Get Your Automation Map
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
@@ -361,7 +361,7 @@ export default function AIAutomationPage() {
                 <p className="text-xs font-semibold uppercase tracking-widest text-dim mb-2">OpenClaw Deployments</p>
                 <h2 className="font-display text-3xl font-bold text-cloud mb-3">Pick your tier</h2>
                 <p className="text-slate max-w-xl mx-auto">
-                  Built, not bought. No monthly subscription to AskSaul. You pay API costs directly to the model provider. Build your proposal for a scoped quote.
+                  Built, not bought. No monthly subscription to AskSaul. You pay API costs directly to the model provider. Get your Automation Map for a scoped quote.
                 </p>
               </div>
             </AnimatedSection>
@@ -409,7 +409,7 @@ export default function AIAutomationPage() {
                 </p>
                 <Link href="/build-your-proposal">
                   <Button variant="primary" size="md">
-                    Build Your Proposal
+                    Get Your Automation Map
                     <ArrowRight className="w-4 h-4" />
                   </Button>
                 </Link>
@@ -555,7 +555,7 @@ export default function AIAutomationPage() {
               <div className="mt-10 text-center">
                 <Link href="/build-your-proposal">
                   <Button variant="primary" size="md">
-                    Build Your Proposal for a Custom Quote
+                    Get Your Automation Map for a Custom Quote
                     <ArrowRight className="w-4 h-4" />
                   </Button>
                 </Link>
@@ -586,7 +586,7 @@ export default function AIAutomationPage() {
               </p>
               <Link href="/build-your-proposal">
                 <Button variant="primary" size="lg">
-                  Build Your Proposal
+                  Get Your Automation Map
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>

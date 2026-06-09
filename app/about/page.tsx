@@ -181,7 +181,7 @@ export default function AboutPage() {
                     <div className="flex flex-col sm:flex-row gap-3">
                       <Link href="/build-your-proposal" className="flex-1">
                         <Button variant="primary" size="sm" className="w-full">
-                          Build Your Proposal
+                          Get Your Automation Map
                           <ArrowRight className="w-3.5 h-3.5" />
                         </Button>
                       </Link>
@@ -291,7 +291,7 @@ export default function AboutPage() {
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Link href="/build-your-proposal">
                   <Button variant="primary" size="lg">
-                    Build Your Proposal
+                    Get Your Automation Map
                     <ArrowRight className="w-4 h-4" />
                   </Button>
                 </Link>

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Syne, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import ChatWidget from "@/components/chat/ChatWidget";
+import AnalyticsScripts from "@/components/analytics/AnalyticsScripts";
+import ConversionTracker from "@/components/analytics/ConversionTracker";
 import StructuredData from "@/components/seo/StructuredData";
 
 const syne = Syne({
@@ -28,11 +30,11 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://asksaul.ai"),
   title: {
-    default: "AskSaul.ai | AI, Automation & Web Development",
+    default: "AskSaul.ai | Practical AI Systems for SMB Workflows",
     template: "%s | AskSaul.ai",
   },
   description:
-    "Done-for-you AI assistants, custom websites, and marketing automation for businesses that are done duct-taping their tech together. Based in Denver, CO.",
+    "Practical AI assistants, voice agents, websites, apps, and automation systems for businesses that need faster response, cleaner follow-up, and less manual work. Built in Denver, CO.",
   keywords: [
     "AI automation",
     "OpenClaw setup",
@@ -49,9 +51,9 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://asksaul.ai",
     siteName: "AskSaul.ai",
-    title: "AskSaul.ai | AI, Automation & Web Development",
+    title: "AskSaul.ai | Practical AI Systems for SMB Workflows",
     description:
-      "Done-for-you AI assistants, custom websites, and marketing automation. Your competitors are automating. You're still doing it manually.",
+      "Get an Automation Map for AI assistants, voice agents, websites, apps, and follow-up systems that take real work off your team.",
     images: [
       {
         url: "/opengraph-image",
@@ -63,9 +65,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "AskSaul.ai | AI, Automation & Web Development",
+    title: "AskSaul.ai | Practical AI Systems for SMB Workflows",
     description:
-      "Done-for-you AI assistants, custom websites, and marketing automation.",
+      "Get an Automation Map for AI assistants, voice agents, websites, apps, and follow-up systems.",
     images: ["/twitter-image"],
   },
   robots: {
@@ -73,6 +75,7 @@ export const metadata: Metadata = {
     follow: true,
   },
   alternates: {
+    canonical: "https://asksaul.ai",
     types: {
       "application/rss+xml": "/blog/feed.xml",
     },
@@ -98,6 +101,8 @@ export default function RootLayout({
           Skip to main content
         </a>
         <StructuredData />
+        <AnalyticsScripts />
+        <ConversionTracker />
         {children}
         <ChatWidget />
       </body>

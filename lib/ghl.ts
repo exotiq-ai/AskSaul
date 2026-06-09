@@ -9,7 +9,7 @@ const ASK_SAUL_LOCATION_ID = "RxCVQeGoQ3RTJbbLG5gY";
 const GHL_BASE_URL = "https://services.leadconnectorhq.com";
 const GHL_VERSION = "2021-07-28";
 const DEMO_PHONE_DISPLAY = "(970) 401-7285";
-const BOOKING_URL =
+export const BOOKING_URL =
   "https://api.leadconnectorhq.com/widget/bookings/bookwithusdigitalmarketing-3d837e4b-c899-44ff-b612-275f498c2128";
 
 const ASK_SAUL_FIELD_IDS = {
@@ -143,7 +143,7 @@ export function buildProposalPayload(data: ProposalFormData) {
   const lastName = nameParts.slice(1).join(" ") || "";
 
   return {
-    source: "asksaul-proposal-builder",
+    source: "asksaul-automation-map",
     timestamp: new Date().toISOString(),
     lead_project: data.services.includes("voice-agent")
       ? "ask_saul_phone_agents"
@@ -187,8 +187,19 @@ export function buildProposalPayload(data: ProposalFormData) {
     timeline: data.timeline,
     budget: data.budget ?? "",
     notes: data.notes ?? "",
+    consent: {
+      smsConsent: data.smsConsent,
+      marketingSmsOptIn: data.marketingSmsOptIn ?? false,
+    },
+    conversion_context: {
+      route: "/build-your-proposal",
+      page: "Get Your Automation Map",
+      sourceCampaign: "website_automation_map",
+      bookingUrl: BOOKING_URL,
+    },
     tags: [
       "ask-saul",
+      "automation-map",
       "proposal-builder",
       "website-lead",
       valueTag,
@@ -232,18 +243,46 @@ export function buildContactPayload(data: ContactFormData) {
 }
 
 export function buildChatPayload(data: ChatLeadData) {
+  const handoffIntent = data.handoffIntent ?? data.initialIntent ?? "send-context";
+  const isWasteLead = handoffIntent === "waste-demo";
+
   return {
-    source: "asksaul-chat-widget",
+    source: "asksaul-chat-assistant",
     timestamp: new Date().toISOString(),
-    lead_project: "asksaul_chat",
+    lead_project: isWasteLead ? "ask_saul_phone_agents" : "asksaul_chat",
     contact: {
       name: data.name,
       email: data.email,
       phone: data.phone ?? "",
     },
+    business: {
+      name: data.businessName ?? "",
+    },
     chatTranscript: data.chatTranscript,
-    initialIntent: data.initialIntent ?? "browsing",
-    tags: ["ask-saul", "chat-widget", "website-lead"],
+    initialIntent: data.initialIntent ?? handoffIntent,
+    handoffIntent,
+    conversion_context: {
+      route: data.sourcePath ?? "site-chat",
+      page: "AskSaul chat widget",
+      sourceCampaign: "website_chat",
+      bookingUrl: BOOKING_URL,
+    },
+    tags: [
+      "ask-saul",
+      "chat-assistant",
+      "website-lead",
+      "chat-handoff",
+      ...(handoffIntent === "book-demo" ? ["booking-requested"] : []),
+      ...(handoffIntent === "automation-map" ? ["automation-map-interest"] : []),
+      ...(isWasteLead
+        ? [
+            "voice-agent-lead",
+            "phone-agent-prospect",
+            "waste-voice-agent-interest",
+            "lead-project:ask_saul_phone_agents",
+          ]
+        : []),
+    ],
   };
 }
 
@@ -479,12 +518,18 @@ function buildQualificationSummary(record: Record<string, unknown>): string {
   const business = isRecord(record.business) ? record.business : {};
   const voiceAgent = isRecord(record.voice_agent) ? record.voice_agent : {};
   const contact = isRecord(record.contact) ? record.contact : {};
+  const serviceDetails = isRecord(record.service_details) ? record.service_details : {};
+  const conversionContext = isRecord(record.conversion_context) ? record.conversion_context : {};
 
   const lines = [
     `Source: ${text(record.source) || "asksaul.ai"}`,
     text(record.timestamp) ? `Submitted: ${text(record.timestamp)}` : undefined,
     text(record.lead_project) ? `Lead project: ${text(record.lead_project)}` : undefined,
     text(business.name) ? `Business: ${text(business.name)}` : undefined,
+    text(business.industry) ? `Industry: ${text(business.industry)}` : undefined,
+    text(business.teamSize) ? `Team size: ${text(business.teamSize)}` : undefined,
+    text(business.revenueRange) ? `Revenue range: ${text(business.revenueRange)}` : undefined,
+    text(business.monthlySpend) ? `Monthly spend: ${text(business.monthlySpend)}` : undefined,
     text(voiceAgent.serviceType) || text(business.industry)
       ? `Service type: ${text(voiceAgent.serviceType) || text(business.industry)}`
       : undefined,
@@ -503,9 +548,23 @@ function buildQualificationSummary(record: Record<string, unknown>): string {
       : undefined,
     text(contact.message) ? `Message: ${text(contact.message)}` : undefined,
     text(record.initialIntent) ? `Chat intent: ${text(record.initialIntent)}` : undefined,
+    text(record.handoffIntent) ? `Chat handoff intent: ${text(record.handoffIntent)}` : undefined,
     Array.isArray(record.services_requested)
       ? `Services requested: ${record.services_requested.join(", ")}`
       : undefined,
+    text(record.timeline) ? `Timeline: ${text(record.timeline)}` : undefined,
+    text(record.budget) ? `Budget: ${text(record.budget)}` : undefined,
+    text(record.notes) ? `Notes: ${text(record.notes)}` : undefined,
+    text(serviceDetails.currentTools) ? `Current tools: ${text(serviceDetails.currentTools)}` : undefined,
+    text(serviceDetails.automationProcesses)
+      ? `Automation processes: ${text(serviceDetails.automationProcesses)}`
+      : undefined,
+    text(serviceDetails.automationTools) ? `Automation tools: ${text(serviceDetails.automationTools)}` : undefined,
+    text(serviceDetails.marketingPain) ? `Marketing pain: ${text(serviceDetails.marketingPain)}` : undefined,
+    text(serviceDetails.notSureHeadache) ? `Biggest headache: ${text(serviceDetails.notSureHeadache)}` : undefined,
+    text(serviceDetails.notSureAutomate) ? `Would automate: ${text(serviceDetails.notSureAutomate)}` : undefined,
+    text(conversionContext.route) ? `Conversion route: ${text(conversionContext.route)}` : undefined,
+    text(conversionContext.sourceCampaign) ? `Source campaign: ${text(conversionContext.sourceCampaign)}` : undefined,
     typeof record.estimated_value === "number"
       ? `Estimated value: $${record.estimated_value.toLocaleString()}`
       : undefined,
@@ -549,6 +608,7 @@ function inferInterestLevel(record: Record<string, unknown>): string {
 function sourceToBookingSource(source: string): string {
   if (source.includes("voice-agent")) return "website_voice_agent_form";
   if (source.includes("chat")) return "website_chat";
+  if (source.includes("automation-map")) return "website_automation_map";
   if (source.includes("proposal")) return "website_proposal_builder";
   if (source.includes("contact")) return "website_contact_form";
   return "website";

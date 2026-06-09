@@ -150,19 +150,19 @@ export default function ContactPage() {
                   </Card>
                 </AnimatedSection>
 
-                {/* Build your proposal */}
+                {/* Automation Map */}
                 <AnimatedSection delay={300}>
                   <Card className="p-6">
                     <p className="text-xs font-semibold uppercase tracking-widest text-dim mb-2">
                       Know what you want?
                     </p>
                     <p className="text-base text-slate mb-4">
-                      Skip the back and forth. Build a scoped proposal and get a quote in your
+                      Skip the back and forth. Get your Automation Map and a scoped quote in your
                       inbox within 24 hours.
                     </p>
                     <Link href="/build-your-proposal">
                       <Button variant="ghost" size="sm" className="w-full">
-                        Build Your Proposal
+                        Get Your Automation Map
                       </Button>
                     </Link>
                   </Card>

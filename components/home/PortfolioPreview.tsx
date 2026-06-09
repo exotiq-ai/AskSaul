@@ -1,5 +1,5 @@
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import { ExternalLink, ArrowRight } from "lucide-react";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import Badge from "@/components/ui/Badge";
@@ -25,8 +25,21 @@ export default function PortfolioPreview() {
             Recent work
           </h2>
           <p className="text-slate max-w-xl mx-auto">
-            Live projects. Real businesses. Full builds.
+            Live projects. Real businesses. Full builds — sites, CRMs, voice agents, quote flows, and handoffs that actually run.
           </p>
+        </AnimatedSection>
+
+        <AnimatedSection className="mb-10 grid grid-cols-1 gap-4 rounded-3xl border border-cyan/20 bg-cyan/5 p-5 sm:grid-cols-3 sm:p-6">
+          {[
+            ["5+", "live platforms shipped"],
+            ["24/7", "voice + chat intake patterns"],
+            ["GHL", "CRM handoff built in"],
+          ].map(([value, label]) => (
+            <div key={label} className="rounded-2xl border border-wire bg-carbon/80 p-5 text-center">
+              <p className="font-display text-3xl font-bold text-cloud">{value}</p>
+              <p className="mt-1 text-sm font-semibold uppercase tracking-wider text-dim">{label}</p>
+            </div>
+          ))}
         </AnimatedSection>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -37,14 +50,18 @@ export default function PortfolioPreview() {
               className="group bg-carbon border border-wire rounded-2xl overflow-hidden hover:border-cyan/30 hover:shadow-[0_0_40px_rgba(0,212,170,0.06)] transition-all duration-300"
             >
               {/* Screenshot area */}
-              <div className="relative aspect-video bg-graphite overflow-hidden">
+              <div className="relative aspect-video bg-gradient-to-br from-cyan/15 via-graphite to-obsidian overflow-hidden">
                 <Image
                   src={project.images[0]}
-                  alt={`${project.title} screenshot`}
+                  alt={`${project.title} website screenshot`}
                   fill
-                  className="object-cover object-top group-hover:scale-[1.02] transition-transform duration-500"
+                  className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.025]"
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
+                <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-obsidian/45 to-transparent" aria-hidden="true" />
+                <div className="absolute left-4 top-4 rounded-full border border-white/15 bg-obsidian/75 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-cloud backdrop-blur-sm">
+                  Live proof
+                </div>
 
                 {/* Overlay on hover */}
                 {project.url !== "#" && (

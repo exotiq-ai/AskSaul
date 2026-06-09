@@ -264,19 +264,27 @@ export type VoiceAgentLeadData = z.infer<typeof voiceAgentLeadSchema>;
 
 // ─── Chat Widget ─────────────────────────────────────────────────────────────
 
+export const CHAT_HANDOFF_INTENTS = [
+  "waste-demo",
+  "automation-map",
+  "book-demo",
+  "send-context",
+] as const;
+
 export const chatLeadSchema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Valid email is required"),
   phone: z.string().optional(),
+  businessName: z.string().optional(),
+  sourcePath: z.string().optional(),
   chatTranscript: z.array(
     z.object({
       role: z.enum(["user", "assistant"]),
       content: z.string(),
     })
   ),
-  initialIntent: z
-    .enum(["website", "ai-setup", "pricing", "browsing"])
-    .optional(),
+  initialIntent: z.string().optional(),
+  handoffIntent: z.enum(CHAT_HANDOFF_INTENTS).optional(),
 });
 
 export type ChatLeadData = z.infer<typeof chatLeadSchema>;

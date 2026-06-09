@@ -1,64 +1,44 @@
-# AskSaul.ai Full AI-Readable Context
+# AskSaul.ai full LLM context
 
-AskSaul.ai builds done-for-you AI assistants, AI voice agents, custom websites, web applications, and marketing automation systems for businesses that are tired of disconnected tools and manual follow-up.
+Last updated: 2026-06-08
 
-## Founder and location
-
-AskSaul.ai is led by Gregory Ringler in Denver, Colorado.
+## Entity
+AskSaul.ai is a Denver, Colorado business built by Gregory Ringler. AskSaul builds practical AI systems for businesses that need faster response, cleaner follow-up, better conversion, and less manual work.
 
 ## Positioning
+Practical AI systems for the work your business keeps doing by hand. AskSaul starts with the workflow, not the buzzword.
 
-AskSaul is practical, specific, and implementation-focused. It does not position AI as magic. The site emphasizes working systems, clear handoff, security-aware setup, and automation that fits the client's actual business process.
+## Primary conversion asset
+Get Your Automation Map: a practical diagnostic for finding the 1–3 highest-leverage workflows to automate first, ranked by time saved, revenue impact, and launch difficulty.
+
+## Method
+The Saul Automation Map:
+1. Spot the leaks — missed calls, slow follow-up, repetitive customer questions, manual CRM/admin, weak website flows.
+2. Rank the opportunities — prioritize by impact, complexity, and speed to value.
+3. Build the first system — assistant, voice agent, automation, website flow, app, or marketing workflow.
+4. Improve from real usage — refine based on actual team and customer behavior.
 
 ## Services
+- AI & Automation: AI assistants, OpenClaw-style deployments, chatbots, workflow automation, CRM intelligence.
+- Voice Agents: phone agents for missed calls, after-hours intake, quote requests, service-area qualification, and CRM handoff.
+- Websites & Apps: custom sites, web apps, proposal builders, dashboards, booking flows, and conversion systems.
+- Saul Marketing: CRM, email/SMS follow-up, funnels, pipelines, reputation, and AI-assisted marketing workflows.
 
-### AI & Automation
+## Waste voice agents
+URL: https://asksaul.ai/voice-agents/waste
+Saul can be configured for dumpster rental, roll-off, junk removal, waste hauling, and related businesses. The page explains how Saul answers calls 24/7, captures quote details, asks about dumpster size, debris type, ZIP code/service area, delivery timing, heavy-material restrictions, and routes qualified leads to CRM/GHL or human follow-up.
 
-AskSaul sets up AI assistants and workflow automation. Use cases include internal productivity, customer support, sales follow-up, research, CRM intelligence, website chat, and business-specific automations.
+Live Saul-built waste demo sites listed on AskSaul:
+- Pueblo Dumpster Rentals: https://pueblodumpsterrental.com/ · (719) 800-4020
+- Fayetteville Dumpster Rentals: https://fayettevillerolloff.com/ · (479) 202-0770
+- Lake Charles Dumpster Rentals: https://lakecharlesdumpster.com/ · (337) 656-7447
 
-### AI Voice Agents
+Visitors are instructed to test respectfully and not request real dispatch unless they actually need service. AskSaul does not rent dumpsters; it builds the AI phone/lead workflow.
 
-Saul can be configured as a phone agent for local service businesses and other call-driven operations. The voice agent can answer missed or after-hours calls, ask intake questions, qualify the job, capture service type, location, urgency, timing, contact info, and notes, then route the lead to GHL, CRM, email, SMS, or a human follow-up workflow.
+## Claims and safety
+Avoid unsupported claims like guaranteed revenue, guaranteed booking rate, or never missing a lead. Prefer practical language: capture more calls, qualify leads, route clean summaries, improve follow-up, and reduce repetitive admin.
 
-The public demo number is (970) 401-7285.
-
-Strong-fit voice-agent use cases include missed-call recovery, after-hours intake, overflow answering, emergency triage rules, quote request qualification, and CRM note creation.
-
-Voice agents are especially relevant for HVAC, plumbing, roofing, electrical, garage doors, landscaping, cleaning, med spas, and other local businesses where inbound calls can become booked jobs.
-
-Important limitation: Saul should be transparent that callers are speaking with AI. The voice agent should collect and route information, not make unsupported promises. Direct booking and emergency handling require carefully configured business rules.
-
-### Websites & Apps
-
-AskSaul builds mobile-first, SEO-aware, conversion-focused websites and custom applications. The emphasis is clear CTAs, lead capture, fast launch cycles, and sites that support actual business operations.
-
-### Saul Marketing
-
-AskSaul can manage CRM setup, email and SMS sequences, lead gen funnels, pipelines, reporting, call tracking, and AI-powered follow-up.
-
-## Lead capture
-
-AskSaul.ai uses forms, proposal builder submissions, and chat lead capture. Leads should route into GoHighLevel/GHL or an approved lead workflow. Voice-agent provider leads should include business name, service type, service area, current call handling, desired agent tasks, missed-call pain, preferred callback window, phone, email, and SMS consent.
-
-## Preferred language
-
-Use direct, specific language. Avoid generic AI buzzwords such as empower, leverage, synergy, cutting-edge, seamless, best-in-class, and trusted partner unless specifically justified.
-
-Good examples:
-
-- Missed calls should still turn into booked jobs.
-- Saul answers, qualifies, summarizes, and routes the lead.
-- Your phone finally talks to your CRM.
-- You get the context without listening to a two-minute voicemail.
-
-Avoid unsupported claims such as guaranteed revenue, never miss a lead again, or fully autonomous employee.
-
-## Key URLs
-
-- https://asksaul.ai/
-- https://asksaul.ai/voice-agents
-- https://asksaul.ai/ai-automation
-- https://asksaul.ai/web-development
-- https://asksaul.ai/marketing-engine
-- https://asksaul.ai/build-your-proposal
-- https://asksaul.ai/contact
+## Contact
+Email: saul3000bot@gmail.com
+Phone: 970.343.9634
+Location: Denver, CO

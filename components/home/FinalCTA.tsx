@@ -36,32 +36,32 @@ export default function FinalCTA() {
             className="text-4xl sm:text-5xl lg:text-6xl font-bold text-cloud leading-tight mb-6"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Ready to stop duct-taping
+            Start with the part of your business
             <br />
-            <span className="text-cyan">your tech together?</span>
+            <span className="text-cyan">slowing everything else down.</span>
           </h2>
           <p className="text-lg text-slate max-w-xl mx-auto mb-10 leading-relaxed">
-            Tell Saul what you need. Get a custom proposal in 24 hours. Or book
-            a call and figure it out together.
+            Get your Saul Automation Map and see where AI, automation, voice, web,
+            or marketing systems can create the most practical lift.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link href="/build-your-proposal">
               <Button variant="primary" size="lg" className="group">
-                Build Your Proposal
+                Get Your Automation Map
                 <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-0.5" />
               </Button>
             </Link>
             <Link href="/contact">
               <Button variant="ghost" size="lg">
                 <Calendar className="w-5 h-5" />
-                Book a Call
+                Talk Through Your Workflow
               </Button>
             </Link>
           </div>
 
           <p className="mt-8 text-xs text-dim">
-            No commitment required. Proposal delivered within 24 hours.
+            A few questions. A clearer starting point. No AI buzzword maze.
           </p>
         </AnimatedSection>
       </div>

@@ -1,7 +1,7 @@
 export const BRAND = {
   name: "AskSaul",
   domain: "asksaul.ai",
-  tagline: "Your competitors are automating. You are still doing it manually.",
+  tagline: "Practical AI systems for the work your business keeps doing by hand.",
   email: "saul3000bot@gmail.com",
   phone: "970.343.9634",
   location: "Denver, CO",
@@ -31,6 +31,11 @@ export const SERVICES_DROPDOWN = [
     label: "Voice Agents",
     href: "/voice-agents",
     description: "Answer missed calls and qualify service leads",
+  },
+  {
+    label: "Waste Voice Agents",
+    href: "/voice-agents/waste",
+    description: "Dumpster rental and roll-off call intake",
   },
   {
     label: "Saul Marketing",
@@ -142,6 +147,45 @@ export const CONTACT_INFO = {
 };
 
 export const PORTFOLIO_PROJECTS = [
+  {
+    id: "pueblo-dumpster-rental",
+    title: "Pueblo Dumpster Rentals",
+    description:
+      "Rank-and-rent dumpster rental site for Pueblo with local SEO, quote-focused conversion flow, and Saul voice-agent call intake installed.",
+    url: "https://pueblodumpsterrental.com/",
+    images: [
+      "/images/portfolio/rank-rent/pueblo-desktop.png",
+      "/images/portfolio/rank-rent/pueblo-mobile.png",
+    ],
+    tags: ["Rank & Rent", "Dumpster Rental", "Voice Agent"],
+    comingSoon: false,
+  },
+  {
+    id: "fayetteville-rolloff",
+    title: "Fayetteville Rolloff",
+    description:
+      "Local roll-off dumpster lead-gen site for Fayetteville with service-area qualification, quote-ready copy, and Saul-powered phone intake.",
+    url: "https://fayettevillerolloff.com/",
+    images: [
+      "/images/portfolio/rank-rent/fayetteville-desktop.png",
+      "/images/portfolio/rank-rent/fayetteville-mobile.png",
+    ],
+    tags: ["Rank & Rent", "Local SEO", "AI Intake"],
+    comingSoon: false,
+  },
+  {
+    id: "lake-charles-dumpster",
+    title: "Lake Charles Dumpster",
+    description:
+      "Waste lead-gen site for Lake Charles with market-specific SEO, quote flow, and live Saul demo call routing for proof-of-work testing.",
+    url: "https://lakecharlesdumpster.com/",
+    images: [
+      "/images/portfolio/rank-rent/lake-charles-desktop.png",
+      "/images/portfolio/rank-rent/lake-charles-mobile.png",
+    ],
+    tags: ["Rank & Rent", "Waste", "Voice Agent"],
+    comingSoon: false,
+  },
   {
     id: "driveexotiq",
     title: "DriveExotiq.com",

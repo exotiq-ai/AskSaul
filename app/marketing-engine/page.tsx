@@ -400,7 +400,7 @@ export default function MarketingEnginePage() {
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Link href="/build-your-proposal">
                   <Button variant="primary" size="lg">
-                    Build Your Proposal
+                    Get Your Automation Map
                     <ArrowRight className="w-4 h-4" />
                   </Button>
                 </Link>
