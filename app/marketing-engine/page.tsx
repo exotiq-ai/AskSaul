@@ -174,16 +174,21 @@ export default function MarketingEnginePage() {
               <h1 className="font-display text-4xl sm:text-5xl font-bold text-cloud mb-5 leading-tight">
                 Your entire marketing stack.
                 <br className="hidden sm:block" />
-                <span className="text-cyan">One platform. AI built in.</span>
+                <span className="block text-cyan sm:inline">One platform. AI built in.</span>
               </h1>
               <p className="text-slate text-lg max-w-2xl mx-auto mb-8">
                 You are paying for 5+ disconnected tools and leads are still falling through the cracks. Saul Marketing replaces all of them, follows up automatically, and has an AI assistant working your pipeline around the clock.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Link href="/build-your-proposal">
-                  <Button variant="primary" size="lg">
-                    See What Saul Marketing Does for Your Business
-                    <ArrowRight className="w-4 h-4" />
+                <Link href="/build-your-proposal" className="w-full sm:w-auto">
+                  <Button
+                    variant="primary"
+                    size="lg"
+                    className="w-full whitespace-normal px-5 text-center text-base leading-snug sm:w-auto sm:px-8 sm:text-lg"
+                  >
+                    <span className="sm:hidden">Get My Marketing Map</span>
+                    <span className="hidden sm:inline">See What Saul Marketing Does for Your Business</span>
+                    <ArrowRight className="h-4 w-4 shrink-0" />
                   </Button>
                 </Link>
               </div>
@@ -207,32 +212,33 @@ export default function MarketingEnginePage() {
 
               <div className="flex flex-col divide-y divide-wire mb-4">
                 {TOOL_COMPARISON.map((row) => (
-                  <div key={row.tool} className="flex items-center justify-between py-3">
-                    <div className="flex items-center gap-2 flex-1 min-w-0">
+                  <div key={row.tool} className="flex flex-col gap-1 py-3 sm:grid sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:gap-3">
+                    <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 sm:flex-1 sm:flex-nowrap">
                       <X className="w-4 h-4 text-error shrink-0" />
-                      <span className="text-base text-slate truncate">{row.tool}</span>
+                      <span className="min-w-0 text-sm text-slate sm:truncate sm:text-base">{row.tool}</span>
                       <span className="text-xs text-dim hidden sm:inline">({row.example})</span>
                     </div>
-                    <span className="text-sm font-semibold text-error shrink-0 ml-4">{row.cost}/mo</span>
+                    <span className="pl-6 text-left text-sm font-semibold tabular-nums leading-snug text-error sm:ml-4 sm:pl-0 sm:text-right">{row.cost}/mo</span>
                   </div>
                 ))}
-                <div className="flex items-center justify-between py-4">
+                <div className="flex flex-col gap-1 py-4 sm:grid sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:gap-3">
                   <span className="text-sm font-bold text-cloud">Total if you piece it together</span>
-                  <span className="text-sm font-bold text-error">$697 to $2,610/mo</span>
+                  <span className="text-left text-sm font-bold tabular-nums text-error sm:text-right">$697 to $2,610/mo</span>
                 </div>
               </div>
 
-              <div className="bg-graphite border border-cyan/20 rounded-xl p-6">
+              <div className="bg-graphite border border-cyan/20 rounded-xl p-6 pb-16 sm:pb-6">
                 <div className="flex items-center justify-between mb-3">
                   <div>
                     <p className="font-semibold text-cloud">Saul Marketing</p>
                     <p className="text-sm text-slate mt-0.5">All of the above in one platform, configured and managed for you, with AI built in</p>
                   </div>
                 </div>
-                <Link href="/build-your-proposal">
-                  <Button variant="primary" size="sm">
-                    See What Saul Marketing Does for Your Business
-                    <ArrowRight className="w-3.5 h-3.5" />
+                <Link href="/build-your-proposal" className="block w-full sm:inline-block sm:w-auto">
+                  <Button variant="primary" size="sm" className="w-full whitespace-normal text-center leading-snug sm:w-auto">
+                    <span className="sm:hidden">Get My Marketing Map</span>
+                    <span className="hidden sm:inline">See What Saul Marketing Does for Your Business</span>
+                    <ArrowRight className="w-3.5 h-3.5 shrink-0" />
                   </Button>
                 </Link>
                 <p className="text-xs text-dim mt-3">Custom pricing based on your business needs and growth goals.</p>
@@ -390,7 +396,7 @@ export default function MarketingEnginePage() {
         {/* CTA */}
         <section className="pb-24 px-4">
           <AnimatedSection>
-            <div className="max-w-2xl mx-auto text-center bg-graphite border border-wire rounded-2xl p-10">
+            <div className="max-w-2xl mx-auto text-center bg-graphite border border-wire rounded-2xl p-6 sm:p-10">
               <h2 className="font-display text-2xl font-bold text-cloud mb-3">
                 See what Saul Marketing would do for your business
               </h2>
@@ -398,14 +404,14 @@ export default function MarketingEnginePage() {
                 Get a custom proposal with your true ROI, based on your current tools, team size, and where you want to be in 6 months. Takes 3 minutes.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Link href="/build-your-proposal">
-                  <Button variant="primary" size="lg">
+                <Link href="/build-your-proposal" className="w-full sm:w-auto">
+                  <Button variant="primary" size="lg" className="w-full whitespace-normal text-base leading-snug sm:w-auto sm:text-lg">
                     Get Your Automation Map
-                    <ArrowRight className="w-4 h-4" />
+                    <ArrowRight className="w-4 h-4 shrink-0" />
                   </Button>
                 </Link>
-                <Link href="/contact">
-                  <Button variant="ghost" size="lg">
+                <Link href="/contact" className="w-full sm:w-auto">
+                  <Button variant="ghost" size="lg" className="w-full whitespace-normal text-base leading-snug sm:w-auto sm:text-lg">
                     Talk to Gregory
                   </Button>
                 </Link>
