@@ -1,6 +1,7 @@
 import { type NextRequest } from "next/server";
 import { contactSchema } from "@/lib/validation";
-import { buildContactPayload, sendToGHL } from "@/lib/ghl";
+import { buildContactPayload, getAskSaulBookingUrl, sendToGHL } from "@/lib/ghl";
+import { sendInternalLeadAlert } from "@/lib/internal-alerts";
 
 export async function POST(request: NextRequest) {
   let body: unknown;
@@ -19,6 +20,7 @@ export async function POST(request: NextRequest) {
   }
 
   const payload = buildContactPayload(result.data);
+  const bookingUrl = getAskSaulBookingUrl();
 
   try {
     await sendToGHL(payload);
@@ -30,5 +32,19 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  return Response.json({ success: true });
+  const alertResult = await sendInternalLeadAlert({
+    route: "/contact",
+    source: payload.source,
+    leadProject: payload.lead_project,
+    name: `${result.data.firstName} ${result.data.lastName}`.trim(),
+    email: result.data.email,
+    phone: result.data.phone,
+    intent: "contact-form",
+    tags: payload.tags,
+    summary: result.data.message,
+    bookingUrl,
+  });
+  if (!alertResult.ok) console.warn("[contact/route] internal alert failed:", alertResult);
+
+  return Response.json({ success: true, bookingUrl, alert: alertResult });
 }

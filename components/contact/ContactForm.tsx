@@ -15,6 +15,9 @@ const SOURCE_OPTIONS = [
   "Other",
 ];
 
+const BOOKING_URL =
+  "https://api.leadconnectorhq.com/widget/bookings/bookwithusdigitalmarketing-3d837e4b-c899-44ff-b612-275f498c2128";
+
 export default function ContactForm() {
   const [formState, setFormState] = useState<FormState>("idle");
   const [errorMsg, setErrorMsg] = useState("");
@@ -90,10 +93,15 @@ export default function ContactForm() {
         </div>
         <h3 className="font-display text-xl font-bold text-cloud mb-2">Message sent.</h3>
         <p className="text-slate text-sm">
-          We will get back to you within 24 hours. If it is urgent, call 970.343.9634.
+          Your message is in the Ask Saul GHL workflow. If you already know you want to talk through it, grab a 15-minute intro with Gregory now.
         </p>
+        <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className="mt-5 block">
+          <Button variant="primary" size="md" className="w-full">
+            Book 15 Min with Gregory
+          </Button>
+        </a>
         <button
-          className="mt-5 text-xs text-dim hover:text-slate transition-colors"
+          className="mt-4 text-xs text-dim hover:text-slate transition-colors"
           onClick={() => setFormState("idle")}
         >
           Send another message

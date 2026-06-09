@@ -22,6 +22,9 @@ const initialForm: VoiceAgentLeadData = {
 
 type FieldErrors = Partial<Record<keyof VoiceAgentLeadData, string>>;
 
+const BOOKING_URL =
+  "https://api.leadconnectorhq.com/widget/bookings/bookwithusdigitalmarketing-3d837e4b-c899-44ff-b612-275f498c2128";
+
 function hasRequiredFields(form: VoiceAgentLeadData) {
   const errors: FieldErrors = {};
   const required: (keyof VoiceAgentLeadData)[] = [
@@ -144,11 +147,18 @@ export default function VoiceAgentLeadForm({ vertical = "general" }: VoiceAgentL
           Gregory has the context.
         </h3>
         <p className="text-slate leading-relaxed mb-6">
-          We saved your voice-agent setup request. If you want to hear the live demo while you wait, call Saul at (970) 401-7285.
+          We saved your voice-agent setup request in GHL. If you want to hear the live demo while you wait, call Saul at (970) 401-7285, or grab a 15-minute intro with Gregory now.
         </p>
-        <Button type="button" variant="secondary" onClick={() => setSubmitted(false)}>
-          Submit another request
-        </Button>
+        <div className="flex flex-col sm:flex-row justify-center gap-3">
+          <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer">
+            <Button type="button" variant="primary">
+              Book 15 Min with Gregory
+            </Button>
+          </a>
+          <Button type="button" variant="secondary" onClick={() => setSubmitted(false)}>
+            Submit another request
+          </Button>
+        </div>
       </div>
     );
   }

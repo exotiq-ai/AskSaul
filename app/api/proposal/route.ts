@@ -1,14 +1,8 @@
 import { type NextRequest } from "next/server";
 import { proposalSchema } from "@/lib/validation";
-import { buildProposalPayload, sendToGHL } from "@/lib/ghl";
+import { buildProposalPayload, getAskSaulBookingUrl, sendToGHL } from "@/lib/ghl";
+import { sendInternalLeadAlert } from "@/lib/internal-alerts";
 import { sendSendblueMessage } from "@/lib/sendblue";
-
-const DEFAULT_BOOKING_URL =
-  "https://api.leadconnectorhq.com/widget/bookings/bookwithusdigitalmarketing-3d837e4b-c899-44ff-b612-275f498c2128";
-
-function getBookingUrl() {
-  return process.env.ASKSAUL_DEMO_BOOKING_URL || DEFAULT_BOOKING_URL;
-}
 
 export async function POST(request: NextRequest) {
   let body: unknown;
@@ -27,6 +21,7 @@ export async function POST(request: NextRequest) {
   }
 
   const payload = buildProposalPayload(result.data);
+  const bookingUrl = getAskSaulBookingUrl();
 
   try {
     await sendToGHL(payload);
@@ -38,11 +33,26 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  const alertResult = await sendInternalLeadAlert({
+    route: "/build-your-proposal",
+    source: payload.source,
+    leadProject: payload.lead_project,
+    name: result.data.name,
+    email: result.data.email,
+    phone: result.data.phone,
+    businessName: result.data.businessName,
+    intent: result.data.services.join(", "),
+    tags: payload.tags,
+    summary: result.data.notes || `Services: ${result.data.services.join(", ")}; timeline: ${result.data.timeline}; budget: ${result.data.budget ?? "not provided"}`,
+    bookingUrl,
+  });
+  if (!alertResult.ok) console.warn("[proposal/route] internal alert failed:", alertResult);
+
   let smsResult: Awaited<ReturnType<typeof sendSendblueMessage>> | undefined;
   try {
     smsResult = await sendSendblueMessage({
       to: result.data.phone,
-      body: `Thanks for requesting your AskSaul Automation Map. Gregory has your context and will review it. If you want to grab a demo time now: ${getBookingUrl()} Reply STOP to opt out.`,
+      body: `Thanks for requesting your AskSaul Automation Map. Gregory has your context and will review it. If you want to grab a demo time now: ${bookingUrl} Reply STOP to opt out.`,
     });
     if (!smsResult.ok) {
       console.warn("[proposal/route] Sendblue thank-you SMS failed:", smsResult);
@@ -55,6 +65,8 @@ export async function POST(request: NextRequest) {
   return Response.json({
     success: true,
     estimatedValue: payload.estimated_value,
+    bookingUrl,
     sms: smsResult ?? { ok: false, error: "SMS not attempted" },
+    alert: alertResult,
   });
 }

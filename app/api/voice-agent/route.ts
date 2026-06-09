@@ -1,6 +1,7 @@
 import { type NextRequest } from "next/server";
 import { voiceAgentLeadSchema } from "@/lib/validation";
-import { buildVoiceAgentLeadPayload, sendToGHL } from "@/lib/ghl";
+import { buildVoiceAgentLeadPayload, getAskSaulBookingUrl, sendToGHL } from "@/lib/ghl";
+import { sendInternalLeadAlert } from "@/lib/internal-alerts";
 
 export async function POST(request: NextRequest) {
   let body: unknown;
@@ -21,6 +22,7 @@ export async function POST(request: NextRequest) {
   }
 
   const payload = buildVoiceAgentLeadPayload(result.data);
+  const bookingUrl = getAskSaulBookingUrl();
 
   try {
     await sendToGHL(payload);
@@ -32,5 +34,20 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  return Response.json({ success: true });
+  const alertResult = await sendInternalLeadAlert({
+    route: "/voice-agents",
+    source: payload.source,
+    leadProject: payload.lead_project,
+    name: result.data.name,
+    email: result.data.email,
+    phone: result.data.phone,
+    businessName: result.data.businessName,
+    intent: "voice-agent-lead",
+    tags: payload.tags,
+    summary: `${result.data.serviceType} in ${result.data.serviceArea}. Pain: ${result.data.missedCallPain}. Wants: ${result.data.desiredAgentTasks}`,
+    bookingUrl,
+  });
+  if (!alertResult.ok) console.warn("[voice-agent/route] internal alert failed:", alertResult);
+
+  return Response.json({ success: true, bookingUrl, alert: alertResult });
 }

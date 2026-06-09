@@ -9,6 +9,9 @@ import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import ContactForm from "@/components/contact/ContactForm";
 
+const BOOKING_URL =
+  "https://api.leadconnectorhq.com/widget/bookings/bookwithusdigitalmarketing-3d837e4b-c899-44ff-b612-275f498c2128";
+
 export const metadata: Metadata = {
   title: "Contact",
   description:
@@ -135,18 +138,19 @@ export default function ContactPage() {
                       </p>
                     </div>
                     <p className="text-base text-slate mb-4 leading-relaxed">
-                      Want to talk through your project before committing to anything? Email Gregory
-                      directly to request a discovery call. No pitch deck. Just a real conversation
-                      about what you need.
+                      Want to talk through your project before committing to anything? Pick a 15-minute
+                      Ask Saul intro slot. No pitch deck. Just a real conversation about what you need.
                     </p>
                     <a
-                      href="mailto:saul3000bot@gmail.com?subject=Discovery%20Call%20Request&body=Hi%20Gregory%2C%20I'd%20like%20to%20book%20a%20discovery%20call."
+                      href={BOOKING_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
                       <Button variant="secondary" size="sm" className="w-full">
-                        Request a Discovery Call
+                        Book 15 Min with Gregory
                       </Button>
                     </a>
-                    <p className="text-xs text-dim text-center mt-2">(Calendly coming soon)</p>
+                    <p className="text-xs text-dim text-center mt-2">Powered by the Ask Saul GHL calendar</p>
                   </Card>
                 </AnimatedSection>
 

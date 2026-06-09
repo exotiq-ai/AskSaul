@@ -143,7 +143,7 @@ export const CONTACT_INFO = {
   email: "saul3000bot@gmail.com",
   phone: "970.343.9634",
   location: "Denver, CO",
-  calendly: "https://calendly.com/gregoryr/discovery",
+  calendly: "https://api.leadconnectorhq.com/widget/bookings/bookwithusdigitalmarketing-3d837e4b-c899-44ff-b612-275f498c2128",
 };
 
 export const PORTFOLIO_PROJECTS = [

@@ -12,6 +12,10 @@ const DEMO_PHONE_DISPLAY = "(970) 401-7285";
 export const BOOKING_URL =
   "https://api.leadconnectorhq.com/widget/bookings/bookwithusdigitalmarketing-3d837e4b-c899-44ff-b612-275f498c2128";
 
+export function getAskSaulBookingUrl(): string {
+  return process.env.ASKSAUL_BOOKING_URL || BOOKING_URL;
+}
+
 const ASK_SAUL_FIELD_IDS = {
   interestLevel: "koWrZDkgAO9sNC2s2shH",
   businessTypeService: "JgypblSA2JoQr4BEMP7y",
@@ -195,7 +199,7 @@ export function buildProposalPayload(data: ProposalFormData) {
       route: "/build-your-proposal",
       page: "Get Your Automation Map",
       sourceCampaign: "website_automation_map",
-      bookingUrl: BOOKING_URL,
+      bookingUrl: getAskSaulBookingUrl(),
     },
     tags: [
       "ask-saul",
@@ -265,11 +269,12 @@ export function buildChatPayload(data: ChatLeadData) {
       route: data.sourcePath ?? "site-chat",
       page: "AskSaul chat widget",
       sourceCampaign: "website_chat",
-      bookingUrl: BOOKING_URL,
+      bookingUrl: getAskSaulBookingUrl(),
     },
     tags: [
       "ask-saul",
       "chat-assistant",
+      "chat-widget",
       "website-lead",
       "chat-handoff",
       ...(handoffIntent === "book-demo" ? ["booking-requested"] : []),
@@ -574,7 +579,7 @@ function buildQualificationSummary(record: Record<string, unknown>): string {
           .filter(Boolean)
           .join(" | ")}`
       : undefined,
-    `Booking link: ${BOOKING_URL}`,
+    `Booking link: ${getAskSaulBookingUrl()}`,
   ].filter(Boolean);
 
   return lines.join("\n").slice(0, 2800);

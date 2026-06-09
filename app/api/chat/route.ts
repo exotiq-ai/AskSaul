@@ -1,6 +1,7 @@
 import { type NextRequest } from "next/server";
 import { chatLeadSchema } from "@/lib/validation";
-import { BOOKING_URL, buildChatPayload, sendToGHL } from "@/lib/ghl";
+import { BOOKING_URL, buildChatPayload, getAskSaulBookingUrl, sendToGHL } from "@/lib/ghl";
+import { sendInternalLeadAlert } from "@/lib/internal-alerts";
 
 export async function POST(request: NextRequest) {
   let body: unknown;
@@ -19,6 +20,7 @@ export async function POST(request: NextRequest) {
   }
 
   const payload = buildChatPayload(result.data);
+  const bookingUrl = getAskSaulBookingUrl() || BOOKING_URL;
 
   try {
     await sendToGHL(payload);
@@ -30,8 +32,27 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  const lastUserMessage = [...result.data.chatTranscript]
+    .reverse()
+    .find((turn) => turn.role === "user")?.content;
+  const alertResult = await sendInternalLeadAlert({
+    route: result.data.sourcePath ?? "site-chat",
+    source: payload.source,
+    leadProject: payload.lead_project,
+    name: result.data.name,
+    email: result.data.email,
+    phone: result.data.phone,
+    businessName: result.data.businessName,
+    intent: result.data.handoffIntent ?? result.data.initialIntent ?? "send-context",
+    tags: payload.tags,
+    summary: lastUserMessage,
+    bookingUrl,
+  });
+  if (!alertResult.ok) console.warn("[chat/route] internal alert failed:", alertResult);
+
   return Response.json({
     success: true,
-    bookingUrl: result.data.handoffIntent === "book-demo" ? BOOKING_URL : undefined,
+    bookingUrl: result.data.handoffIntent === "book-demo" ? bookingUrl : undefined,
+    alert: alertResult,
   });
 }
