@@ -8,8 +8,8 @@ type StackItem = {
 
 const STACK: StackItem[] = [
   { name: "OpenClaw", role: "agent orchestration", logoSrc: "/brand-logos/openclaw.svg" },
-  { name: "GoHighLevel", role: "CRM + SMS", logoSrc: "/brand-logos/gohighlevel.svg" },
-  { name: "SendBlue", role: "warm iMessage", logoSrc: "/brand-logos/sendblue.svg" },
+  { name: "GoHighLevel", role: "CRM + outbound", logoSrc: "/brand-logos/gohighlevel.svg" },
+  { name: "Resend", role: "email backup", logoSrc: "/brand-logos/resend.svg" },
   { name: "Twilio", role: "phone + routing", logoSrc: "/brand-logos/twilio.svg" },
   { name: "ElevenLabs", role: "voice agents", logoSrc: "/brand-logos/elevenlabs.svg" },
   { name: "Next.js", role: "conversion sites", logoSrc: "/brand-logos/nextjs.svg" },
@@ -48,7 +48,7 @@ export default function StackMarquee() {
           Built with the stack serious operators already use
         </p>
         <p className="mt-2 text-sm text-slate">
-          Phone, voice, CRM, SMS, website, and AI infrastructure wired into one practical workflow.
+          Phone, voice, CRM, email, website, and AI infrastructure wired into one practical workflow.
         </p>
       </div>
 

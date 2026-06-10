@@ -40,6 +40,7 @@ Known API limitation:
    - appointment creation
    - confirmation/reminder flow
    - cancellation/reschedule handling
-3. Add SendBlue confirmation texts to contact/chat/voice-agent routes after Gregory confirms proactive outbound is approved/configured.
-4. Configure internal alert env vars in Netlify once Gregory chooses webhook vs Telegram bot.
-5. Run production route-by-route GHL readback QA and delete disposable contacts.
+3. Keep all proactive outbound on GHL. Current production safety posture is `GHL_OUTBOUND_SMS_ENABLED=0` and `GHL_OUTBOUND_DRY_RUN=1`, so the site captures the lead in GHL, shows the booking link, and leaves personal/manual text follow-up available until the GHL SMS/email workflow is explicitly enabled.
+4. Use email as the safe backup channel if GHL SMS is too much lift or not approved yet; do not re-enable SendBlue for proactive outbound unless SendBlue confirms the number/account is outbound-enabled.
+5. Configure internal alert env vars in Netlify once Gregory chooses webhook vs Telegram bot.
+6. Run production route-by-route GHL readback QA and delete disposable contacts.
