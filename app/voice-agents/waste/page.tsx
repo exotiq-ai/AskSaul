@@ -22,6 +22,9 @@ import FAQSchema from "@/components/seo/FAQSchema";
 import PageSchema from "@/components/seo/PageSchema";
 import VoiceAgentLeadForm from "@/components/voice-agents/VoiceAgentLeadForm";
 
+const PROVIDER_DEMO_PHONE_DISPLAY = "(970) 401-7285";
+const PROVIDER_DEMO_PHONE_TEL = "tel:" + "+1" + "970" + "401" + "7285";
+
 export const metadata: Metadata = {
   title: "AI Voice Agent for Dumpster Rental & Waste Companies",
   description:
@@ -39,8 +42,6 @@ const DEMOS = [
   {
     name: "Pueblo Dumpster Rentals",
     market: "Pueblo, CO",
-    phone: "(719) 800-4020",
-    tel: "tel:" + "+1" + "719" + "800" + "4020",
     url: "https://pueblodumpsterrental.com/",
     notes: "Local quote intake, size guidance, and Pueblo-area service conversation.",
     zip: "81001 or 81003",
@@ -51,8 +52,6 @@ const DEMOS = [
   {
     name: "Fayetteville Dumpster Rentals",
     market: "Fayetteville, AR",
-    phone: "(479) 202-0770",
-    tel: "tel:" + "+1" + "479" + "202" + "0770",
     url: "https://fayettevillerolloff.com/",
     notes: "Roll-off inquiry handling, ZIP/service-area qualification, and project details.",
     zip: "72701",
@@ -63,8 +62,6 @@ const DEMOS = [
   {
     name: "Lake Charles Dumpster Rentals",
     market: "Lake Charles, LA",
-    phone: "(337) 656-7447",
-    tel: "tel:" + "+1" + "337" + "656" + "7447",
     url: "https://lakecharlesdumpster.com/",
     notes: "Waste lead capture, local service-area logic, and quote-flow handoff.",
     zip: "70601",
@@ -295,7 +292,7 @@ export default function WasteVoiceAgentsPage() {
                 You can test live waste-industry Saul agents.
               </h2>
               <p className="text-lg text-slate leading-relaxed">
-                These are live Saul-built dumpster rental lead-gen sites. Call a demo, test the quote intake, then come back here to build one for your market.
+                These are live Saul-built dumpster rental lead-gen sites. Call Saul at {PROVIDER_DEMO_PHONE_DISPLAY}, test the quote intake, then come back here to build one for your market.
               </p>
             </AnimatedSection>
 
@@ -324,10 +321,10 @@ export default function WasteVoiceAgentsPage() {
                     <p className="mt-3">Suggested in-area ZIP: <span className="text-cloud font-semibold">{demo.zip}</span></p>
                   </div>
                   <div className="flex flex-col gap-3">
-                    <a href={demo.tel} data-analytics-label={`Call waste demo: ${demo.name}`}>
+                    <a href={PROVIDER_DEMO_PHONE_TEL} data-analytics-label={`Call waste demo: ${demo.name}`}>
                       <Button variant="primary" className="w-full">
                         <PhoneCall className="w-4 h-4" />
-                        Call Saul: {demo.phone}
+                        Call Saul: {PROVIDER_DEMO_PHONE_DISPLAY}
                       </Button>
                     </a>
                     <a href={demo.url} target="_blank" rel="noopener noreferrer" data-analytics-label={`View waste demo site: ${demo.name}`} className="inline-flex items-center justify-center gap-2 text-sm font-semibold text-cyan hover:text-cloud transition-colors">

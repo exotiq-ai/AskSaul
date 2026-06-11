@@ -18,8 +18,8 @@ import FAQSchema from "@/components/seo/FAQSchema";
 import VoiceAgentFlow from "@/components/voice-agents/VoiceAgentFlow";
 import VoiceAgentLeadForm from "@/components/voice-agents/VoiceAgentLeadForm";
 
-const DEMO_PHONE_DISPLAY = "(720) 292-7554";
-const DEMO_PHONE_HREF = "tel:" + "+1" + "720" + "292" + "7554";
+const DEMO_PHONE_DISPLAY = "(970) 401-7285";
+const DEMO_PHONE_HREF = "tel:" + "+1" + "970" + "401" + "7285";
 const BOOKING_URL =
   "https://api.leadconnectorhq.com/widget/bookings/bookwithusdigitalmarketing-3d837e4b-c899-44ff-b612-275f498c2128";
 

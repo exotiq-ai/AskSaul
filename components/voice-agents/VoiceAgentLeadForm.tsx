@@ -126,7 +126,7 @@ export default function VoiceAgentLeadForm({ vertical = "general" }: VoiceAgentL
       setForm(initialForm);
     } catch {
       setSubmitError(
-        "Something went wrong saving this. Please call Saul at (720) 292-7554 or email saul3000bot@gmail.com."
+        "Something went wrong saving this. Please call Saul at (970) 401-7285 or email saul3000bot@gmail.com."
       );
     } finally {
       setSubmitting(false);
@@ -143,7 +143,7 @@ export default function VoiceAgentLeadForm({ vertical = "general" }: VoiceAgentL
           Gregory has the context.
         </h3>
         <p className="text-slate leading-relaxed mb-6">
-          We saved your voice-agent setup request in GHL. If you want to hear the live demo while you wait, call Saul at (720) 292-7554, or grab a 15-minute intro with Gregory now.
+          We saved your voice-agent setup request in GHL. If you want to hear the live demo while you wait, call Saul at (970) 401-7285, or grab a 15-minute intro with Gregory now.
         </p>
         <div className="flex flex-col sm:flex-row justify-center gap-3">
           <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer">
@@ -264,7 +264,7 @@ export default function VoiceAgentLeadForm({ vertical = "general" }: VoiceAgentL
           {submitting ? "Sending..." : "Map My Call Flow"}
         </Button>
         <p className="text-xs text-dim leading-relaxed">
-          Prefer to test it first? Call Saul at <a className="text-cyan hover:text-cyan/80" href={"tel:" + "+1" + "720" + "292" + "7554"}>(720) 292-7554</a>.
+          Prefer to test it first? Call Saul at <a className="text-cyan hover:text-cyan/80" href={"tel:" + "+1" + "970" + "401" + "7285"}>(970) 401-7285</a>.
         </p>
       </div>
     </form>
