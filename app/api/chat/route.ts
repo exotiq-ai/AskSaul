@@ -22,8 +22,9 @@ export async function POST(request: NextRequest) {
   const payload = buildChatPayload(result.data);
   const bookingUrl = getAskSaulBookingUrl() || BOOKING_URL;
 
+  let ghlResult: Awaited<ReturnType<typeof sendToGHL>>;
   try {
-    await sendToGHL(payload);
+    ghlResult = await sendToGHL(payload);
   } catch (err) {
     console.error("[chat/route] GHL webhook error:", err);
     return Response.json(
@@ -53,6 +54,7 @@ export async function POST(request: NextRequest) {
   return Response.json({
     success: true,
     bookingUrl: result.data.handoffIntent === "book-demo" ? bookingUrl : undefined,
+    ghl: ghlResult,
     alert: alertResult,
   });
 }

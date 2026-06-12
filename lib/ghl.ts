@@ -9,6 +9,10 @@ const ASK_SAUL_LOCATION_ID = "RxCVQeGoQ3RTJbbLG5gY";
 const GHL_BASE_URL = "https://services.leadconnectorhq.com";
 const GHL_VERSION = "2021-07-28";
 const DEMO_PHONE_DISPLAY = "(970) 401-7285";
+const ASK_SAUL_PIPELINE_ID = "QnDY45LoOWXl3VIuBa1w";
+const ASK_SAUL_HOT_LEAD_STAGE_ID = "66bf5184-206f-4bfd-9944-e3d0cb0fffe4";
+const WEBSITE_EMAIL_SENT_TAG = "ask-saul-website-email-1-sent";
+const EMAIL_FOLLOWUP_SENT_TAG = "ask-saul-email-followup-sent";
 export const BOOKING_URL =
   "https://api.leadconnectorhq.com/widget/bookings/bookwithusdigitalmarketing-3d837e4b-c899-44ff-b612-275f498c2128";
 
@@ -336,6 +340,8 @@ export function buildVoiceAgentLeadPayload(data: VoiceAgentLeadData) {
 
 export type GhlLeadCaptureResult = {
   contactId?: string;
+  opportunity?: GhlOutboundResult & { opportunityId?: string };
+  email?: GhlOutboundResult;
 };
 
 export type GhlOutboundResult =
@@ -356,8 +362,11 @@ export async function sendToGHL(payload: unknown): Promise<GhlLeadCaptureResult>
         `[GHL] Refusing to send AskSaul.ai lead to non-Ask-Saul location ${locationId}`
       );
     }
-    const contactId = await upsertAskSaulContact(payload, { apiKey, locationId });
-    return { contactId };
+    const cfg = { apiKey, locationId };
+    const contactId = await upsertAskSaulContact(payload, cfg);
+    const opportunity = await ensureAskSaulOpportunity(payload, contactId, cfg);
+    const email = await sendAskSaulLeadEmail(payload, contactId, cfg);
+    return { contactId, opportunity, email };
   }
 
   const webhookUrl = process.env.GHL_WEBHOOK_URL;
@@ -484,6 +493,186 @@ export async function sendGhlSmsMessage({
   } catch {
     return { ok: true };
   }
+}
+
+async function ensureAskSaulOpportunity(
+  payload: unknown,
+  contactId: string | undefined,
+  cfg: GhlConfig
+): Promise<GhlOutboundResult & { opportunityId?: string }> {
+  if (!contactId) return { ok: true, skipped: true, reason: "No GHL contact ID returned from lead capture" };
+
+  const pipelineId = process.env.GHL_ASKSAUL_PIPELINE_ID || ASK_SAUL_PIPELINE_ID;
+  const pipelineStageId = process.env.GHL_ASKSAUL_HOT_LEAD_STAGE_ID || ASK_SAUL_HOT_LEAD_STAGE_ID;
+  if (!pipelineId || !pipelineStageId) {
+    return { ok: true, skipped: true, reason: "AskSaul pipeline/stage IDs are not configured" };
+  }
+
+  try {
+    const existing = await fetch(
+      `${GHL_BASE_URL}/opportunities/search?location_id=${encodeURIComponent(cfg.locationId)}&contact_id=${encodeURIComponent(contactId)}`,
+      { method: "GET", headers: ghlHeaders(cfg.apiKey) }
+    );
+    if (existing.ok) {
+      const found = (await existing.json().catch(() => ({}))) as { opportunities?: Array<{ id?: string }> };
+      const firstId = found.opportunities?.[0]?.id;
+      if (firstId) return { ok: true, skipped: true, reason: "Opportunity already exists", opportunityId: firstId };
+    }
+
+    const record = isRecord(payload) ? payload : {};
+    const contact = isRecord(record.contact) ? record.contact : {};
+    const business = isRecord(record.business) ? record.business : {};
+    const companyOrName =
+      text(business.name) ||
+      text(contact.name) ||
+      [text(contact.firstName), text(contact.lastName)].filter(Boolean).join(" ") ||
+      "AskSaul.ai lead";
+    const name = `${companyOrName} - ${sourceToBookingSource(text(record.source) || "website")}`;
+    const monetaryValue = typeof record.estimated_value === "number" ? record.estimated_value : 0;
+
+    const res = await fetch(`${GHL_BASE_URL}/opportunities/`, {
+      method: "POST",
+      headers: ghlHeaders(cfg.apiKey),
+      body: JSON.stringify({
+        locationId: cfg.locationId,
+        pipelineId,
+        pipelineStageId,
+        name,
+        status: "open",
+        contactId,
+        monetaryValue,
+        source: text(record.source) || "asksaul.ai website",
+      }),
+    });
+    const body = await res.text();
+    if (!res.ok) return { ok: false, status: res.status, error: body.slice(0, 500) || "GHL opportunity create failed" };
+    const data = safeJson(body);
+    const opportunityId = text((data?.opportunity as Record<string, unknown> | undefined)?.id) || text(data?.id);
+    return { ok: true, opportunityId };
+  } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : "GHL opportunity create threw" };
+  }
+}
+
+async function sendAskSaulLeadEmail(
+  payload: unknown,
+  contactId: string | undefined,
+  cfg: GhlConfig
+): Promise<GhlOutboundResult> {
+  if (!contactId) return { ok: true, skipped: true, reason: "No GHL contact ID returned from lead capture" };
+
+  const record = isRecord(payload) ? payload : {};
+  const contact = isRecord(record.contact) ? record.contact : {};
+  const emailTo = text(contact.email);
+  if (!emailTo) return { ok: true, skipped: true, reason: "No lead email provided" };
+
+  const existingTags = await getGhlContactTags(contactId, cfg);
+  if (existingTags.includes(WEBSITE_EMAIL_SENT_TAG) || existingTags.includes(EMAIL_FOLLOWUP_SENT_TAG)) {
+    return { ok: true, skipped: true, reason: "Lead email already sent" };
+  }
+
+  const fromEmail = process.env.ASKSAUL_GHL_FROM_EMAIL || process.env.RESEND_FROM_EMAIL || "saul3000bot@gmail.com";
+  const fromName = process.env.ASKSAUL_GHL_FROM_NAME || process.env.RESEND_FROM_NAME || "Saul from AskSaul.ai";
+  const copy = buildLeadEmailCopy(record);
+
+  try {
+    const res = await fetch(`${GHL_BASE_URL}/conversations/messages`, {
+      method: "POST",
+      headers: ghlHeaders(cfg.apiKey),
+      body: JSON.stringify({
+        type: "Email",
+        contactId,
+        subject: copy.subject,
+        html: copy.html,
+        message: copy.text,
+        emailFrom: fromEmail,
+        emailTo,
+        fromEmail,
+        fromName,
+      }),
+    });
+    const body = await res.text();
+    if (!res.ok) return { ok: false, status: res.status, error: body.slice(0, 500) || "GHL lead email failed" };
+    await addGhlContactTags(contactId, [WEBSITE_EMAIL_SENT_TAG, EMAIL_FOLLOWUP_SENT_TAG], cfg);
+    await addGhlNote(contactId, `Automated AskSaul lead email queued.\nSubject: ${copy.subject}`, cfg);
+    const data = safeJson(body);
+    const messageId = text(data?.messageId) || text(data?.id) || text((data?.message as Record<string, unknown> | undefined)?.id);
+    return { ok: true, messageId };
+  } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : "GHL lead email threw" };
+  }
+}
+
+async function getGhlContactTags(contactId: string, cfg: GhlConfig): Promise<string[]> {
+  try {
+    const res = await fetch(`${GHL_BASE_URL}/contacts/${encodeURIComponent(contactId)}`, {
+      method: "GET",
+      headers: ghlHeaders(cfg.apiKey),
+    });
+    if (!res.ok) return [];
+    const data = (await res.json().catch(() => ({}))) as { contact?: { tags?: unknown }; tags?: unknown };
+    return arrayOfStrings(data.contact?.tags ?? data.tags).map((tag) => tag.toLowerCase());
+  } catch {
+    return [];
+  }
+}
+
+async function addGhlContactTags(contactId: string, tags: string[], cfg: GhlConfig): Promise<void> {
+  const cleanTags = uniqueStrings(tags.map((tag) => tag.trim()).filter(Boolean));
+  if (!cleanTags.length) return;
+  const res = await fetch(`${GHL_BASE_URL}/contacts/${encodeURIComponent(contactId)}/tags`, {
+    method: "POST",
+    headers: ghlHeaders(cfg.apiKey),
+    body: JSON.stringify({ tags: cleanTags }),
+  });
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    console.warn(`[GHL] Email sent but tag add failed: ${res.status} ${body.slice(0, 300)}`);
+  }
+}
+
+function buildLeadEmailCopy(record: Record<string, unknown>): { subject: string; html: string; text: string } {
+  const contact = isRecord(record.contact) ? record.contact : {};
+  const business = isRecord(record.business) ? record.business : {};
+  const voiceAgent = isRecord(record.voice_agent) ? record.voice_agent : {};
+  const name = text(contact.firstName) || splitName(text(contact.name)).first || "there";
+  const businessName = text(business.name);
+  const source = text(record.source) || "asksaul.ai";
+  const routeLabel = sourceToBookingSource(source).replace(/_/g, " ");
+  const contextLines = [
+    businessName ? `Business: ${businessName}` : undefined,
+    text(business.industry) ? `Industry: ${text(business.industry)}` : undefined,
+    text(voiceAgent.serviceType) ? `Service type: ${text(voiceAgent.serviceType)}` : undefined,
+    text(business.serviceArea) ? `Service area: ${text(business.serviceArea)}` : undefined,
+    Array.isArray(record.services_requested) ? `Services requested: ${record.services_requested.join(", ")}` : undefined,
+    text(record.timeline) ? `Timeline: ${text(record.timeline)}` : undefined,
+    text(record.budget) ? `Budget: ${text(record.budget)}` : undefined,
+    text(voiceAgent.missedCallPain) ? `Pain point: ${text(voiceAgent.missedCallPain)}` : undefined,
+    text(record.notes) ? `Notes: ${text(record.notes)}` : undefined,
+  ].filter(Boolean) as string[];
+
+  const subject = source.includes("voice-agent") ? "Got your AskSaul voice-agent request" : "Got your AskSaul assessment";
+  const textBody = [
+    `Hi ${name},`,
+    "",
+    `Thanks for filling out the ${routeLabel} form. Gregory has the context now and can review where AskSaul may be useful before following up.`,
+    "",
+    contextLines.length
+      ? `What came through:\n${contextLines.map((line) => `- ${line}`).join("\n")}`
+      : "What came through: you are exploring whether an AI workflow or phone agent can help capture more intent and reduce follow-up gaps.",
+    "",
+    `If texting is easier, text us at (720) 292-7554. If you want to hear the provider voice demo, call Saul at ${DEMO_PHONE_DISPLAY}.`,
+    "",
+    "Talk soon,",
+    "Saul from AskSaul.ai",
+  ].join("\n");
+
+  const html = textBody
+    .split("\n\n")
+    .map((block) => `<p>${escapeHtml(block).replace(/\n/g, "<br />")}</p>`)
+    .join("\n");
+
+  return { subject, text: textBody, html };
 }
 
 function normalizeForGhl(payload: unknown, locationId: string): {
@@ -704,6 +893,23 @@ function splitName(value: string | undefined): { first?: string; last?: string }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
+function safeJson(value: string): Record<string, unknown> | undefined {
+  try {
+    const parsed = JSON.parse(value || "{}");
+    return isRecord(parsed) ? parsed : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
 }
 
 function text(value: unknown): string | undefined {

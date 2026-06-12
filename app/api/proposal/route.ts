@@ -1,6 +1,6 @@
 import { type NextRequest } from "next/server";
 import { proposalSchema } from "@/lib/validation";
-import { buildProposalPayload, getAskSaulBookingUrl, sendGhlSmsMessage, sendToGHL } from "@/lib/ghl";
+import { buildProposalPayload, getAskSaulBookingUrl, sendToGHL } from "@/lib/ghl";
 import { sendInternalLeadAlert } from "@/lib/internal-alerts";
 
 export async function POST(request: NextRequest) {
@@ -48,27 +48,12 @@ export async function POST(request: NextRequest) {
   });
   if (!alertResult.ok) console.warn("[proposal/route] internal alert failed:", alertResult);
 
-  let smsResult: Awaited<ReturnType<typeof sendGhlSmsMessage>> | undefined;
-  try {
-    smsResult = result.data.smsConsent
-      ? await sendGhlSmsMessage({
-          contactId: ghlResult.contactId,
-          message: `Thanks for requesting your AskSaul Automation Map. Gregory has your context and will review it. If you want to grab a demo time now: ${bookingUrl} Reply STOP to opt out.`,
-        })
-      : { ok: true, skipped: true, reason: "SMS consent not provided" };
-    if (!smsResult.ok) {
-      console.warn("[proposal/route] GHL thank-you SMS failed:", smsResult);
-    }
-  } catch (err) {
-    console.warn("[proposal/route] GHL thank-you SMS threw after lead capture succeeded:", err);
-    smsResult = { ok: false, error: "GHL outbound request threw after lead capture succeeded" };
-  }
-
   return Response.json({
     success: true,
     estimatedValue: payload.estimated_value,
     bookingUrl,
-    sms: smsResult ?? { ok: false, error: "GHL SMS not attempted" },
+    sms: { ok: true, skipped: true, reason: "SMS intentionally disabled" },
+    ghl: ghlResult,
     alert: alertResult,
   });
 }

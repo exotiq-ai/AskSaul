@@ -22,8 +22,9 @@ export async function POST(request: NextRequest) {
   const payload = buildContactPayload(result.data);
   const bookingUrl = getAskSaulBookingUrl();
 
+  let ghlResult: Awaited<ReturnType<typeof sendToGHL>>;
   try {
-    await sendToGHL(payload);
+    ghlResult = await sendToGHL(payload);
   } catch (err) {
     console.error("[contact/route] GHL webhook error:", err);
     return Response.json(
@@ -46,5 +47,5 @@ export async function POST(request: NextRequest) {
   });
   if (!alertResult.ok) console.warn("[contact/route] internal alert failed:", alertResult);
 
-  return Response.json({ success: true, bookingUrl, alert: alertResult });
+  return Response.json({ success: true, bookingUrl, ghl: ghlResult, alert: alertResult });
 }

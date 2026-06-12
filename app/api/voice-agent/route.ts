@@ -24,8 +24,9 @@ export async function POST(request: NextRequest) {
   const payload = buildVoiceAgentLeadPayload(result.data);
   const bookingUrl = getAskSaulBookingUrl();
 
+  let ghlResult: Awaited<ReturnType<typeof sendToGHL>>;
   try {
-    await sendToGHL(payload);
+    ghlResult = await sendToGHL(payload);
   } catch (err) {
     console.error("[voice-agent/route] GHL webhook error:", err);
     return Response.json(
@@ -49,5 +50,5 @@ export async function POST(request: NextRequest) {
   });
   if (!alertResult.ok) console.warn("[voice-agent/route] internal alert failed:", alertResult);
 
-  return Response.json({ success: true, bookingUrl, alert: alertResult });
+  return Response.json({ success: true, bookingUrl, ghl: ghlResult, alert: alertResult });
 }
