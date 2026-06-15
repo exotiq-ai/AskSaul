@@ -1,6 +1,9 @@
 # *
 User-agent: *
 Allow: /
+Disallow: /internal/*
+Disallow: /voice-agents/roi
+Disallow: /voice-agents/revenue-leak-report
 
 # GPTBot
 User-agent: GPTBot

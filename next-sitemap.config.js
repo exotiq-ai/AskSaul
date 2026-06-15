@@ -4,7 +4,7 @@ module.exports = {
   generateRobotsTxt: true,
   robotsTxtOptions: {
     policies: [
-      { userAgent: '*', allow: '/' },
+      { userAgent: '*', allow: '/', disallow: ['/internal/*', '/voice-agents/roi', '/voice-agents/revenue-leak-report'] },
       { userAgent: 'GPTBot', allow: '/' },
       { userAgent: 'ChatGPT-User', allow: '/' },
       { userAgent: 'OAI-SearchBot', allow: '/' },
@@ -16,7 +16,7 @@ module.exports = {
       { userAgent: 'CCBot', allow: '/' },
     ],
   },
-  exclude: ['/api/*', '/opengraph-image', '/twitter-image', '/icon', '/apple-icon'],
+  exclude: ['/api/*', '/opengraph-image', '/twitter-image', '/icon', '/apple-icon', '/internal/*', '/voice-agents/roi', '/voice-agents/revenue-leak-report'],
   changefreq: 'weekly',
   priority: 0.7,
   transform: async (config, path) => {

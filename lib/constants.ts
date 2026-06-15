@@ -2,7 +2,7 @@ export const BRAND = {
   name: "AskSaul",
   domain: "asksaul.ai",
   tagline: "Practical AI systems for the work your business keeps doing by hand.",
-  email: "saul3000bot@gmail.com",
+  email: "Saul@asksaul.ai",
   phone: "970.343.9634",
   location: "Denver, CO",
 };
