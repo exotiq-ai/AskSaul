@@ -80,9 +80,9 @@ function TierCard({ tier }: { tier: Tier }) {
         <Button
           variant={tier.popular ? "primary" : "ghost"}
           size="sm"
-          className="w-full"
+          className="w-full truncate"
         >
-          Get Your Automation Map for Pricing
+          Get Your Automation Map
         </Button>
       </Link>
     </div>
