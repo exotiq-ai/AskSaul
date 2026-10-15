@@ -58,6 +58,13 @@ export default function Hero() {
             <p className="text-sm text-slate max-w-xl">
               3 minutes · real proposal in 24 hours · no sales call unless you ask.
             </p>
+            <Link
+              href="/voice-agents"
+              className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-cyan hover:gap-3 transition-all duration-200"
+            >
+              Front Range roofing or HVAC shop? See how Saul answers the calls you miss.
+              <ArrowRight className="w-4 h-4" />
+            </Link>
 
             <div className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl">
               {bottlenecks.map((item) => (

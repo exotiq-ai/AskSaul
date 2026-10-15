@@ -122,10 +122,11 @@ export default function ServiceLanes() {
           </p>
           <div className="flex flex-wrap justify-center gap-2">
             {[
-              "Service Businesses",
+              "HVAC",
+              "Roofing",
+              "Home Services",
               "Real Estate",
               "Legal & Consulting",
-              "HVAC & Home Services",
               "Marketing Agencies",
               "Med Spas & Dental",
               "E-Commerce",
