@@ -111,7 +111,7 @@ const FOUNDING_TERMS = [
   },
   {
     title: "Your city is yours.",
-    body: "One roofer and one HVAC company per city while you are a client: Denver metro, Boulder, Fort Collins, Colorado Springs, Loveland, Longmont, Greeley.",
+    body: "On our marketing + Saul packages, we work with one roofer and one HVAC company per city while you are a client: Denver metro, Boulder, Fort Collins, Colorado Springs, Loveland, Longmont, Greeley.",
   },
   {
     title: "Month 2 free if Saul misses.",
