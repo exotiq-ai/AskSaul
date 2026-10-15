@@ -17,11 +17,10 @@ import AnimatedSection from "@/components/ui/AnimatedSection";
 import FAQSchema from "@/components/seo/FAQSchema";
 import VoiceAgentFlow from "@/components/voice-agents/VoiceAgentFlow";
 import VoiceAgentLeadForm from "@/components/voice-agents/VoiceAgentLeadForm";
+import { BOOKING_URL } from "@/lib/constants";
 
 const DEMO_PHONE_DISPLAY = "(970) 401-7285";
 const DEMO_PHONE_HREF = "tel:" + "+1" + "970" + "401" + "7285";
-const BOOKING_URL =
-  "https://api.leadconnectorhq.com/widget/bookings/bookwithusdigitalmarketing-3d837e4b-c899-44ff-b612-275f498c2128";
 
 export const metadata: Metadata = {
   title: "AI Voice Agents for Local Service Businesses",
@@ -105,15 +104,33 @@ const CUSTOMER_CALL_EXAMPLES = [
   "Can someone come out tomorrow?",
 ];
 
+const FOUNDING_TERMS = [
+  {
+    title: "Setup and build on us.",
+    body: "Your monthly rate is locked in for 12 months.",
+  },
+  {
+    title: "Your city is yours.",
+    body: "On our marketing + Saul packages, we work with one roofer and one HVAC company per city while you are a client: Denver metro, Boulder, Fort Collins, Colorado Springs, Loveland, Longmont, Greeley.",
+  },
+  {
+    title: "Month 2 free if Saul misses.",
+    body: "If Saul does not capture your qualified-lead target in the first 30 days, month 2 is free. Most shops start at 10. We set yours together before go-live, based on your real call volume.",
+  },
+  {
+    title: "90 days, then month-to-month.",
+    body: "No long contract after the initial term.",
+  },
+];
+
 const INDUSTRIES = [
+  "Roofing",
   "HVAC",
   "Plumbing",
-  "Roofing",
   "Electrical",
   "Garage Doors",
   "Landscaping",
   "Cleaning",
-  "Med Spas",
 ];
 
 export default function VoiceAgentsPage() {
@@ -132,7 +149,7 @@ export default function VoiceAgentsPage() {
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_440px] gap-12 items-center">
               <AnimatedSection>
                 <p className="text-xs font-semibold tracking-widest uppercase text-cyan mb-5">
-                  AI Voice Agents for Local Service Businesses
+                  For Front Range roofing, HVAC, and home service shops
                 </p>
                 <h1
                   className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-[0.95] text-cloud mb-7"
@@ -140,6 +157,9 @@ export default function VoiceAgentsPage() {
                 >
                   Stop losing jobs because nobody picked up the phone.
                 </h1>
+                <p className="text-xl sm:text-2xl font-semibold text-cloud leading-snug max-w-2xl mb-4">
+                  We make your phone ring. Saul makes sure it gets answered.
+                </p>
                 <p className="text-lg sm:text-xl text-slate leading-relaxed max-w-2xl mb-8">
                   This demo line is for service providers. Call Saul to hear the voice, ask how missed-call handling works, and get routed to a personalized human demo with Gregory.
                 </p>
@@ -412,16 +432,26 @@ export default function VoiceAgentsPage() {
             <div className="grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr] gap-12 items-start">
               <AnimatedSection>
                 <p className="text-xs font-semibold tracking-widest uppercase text-cyan mb-3">
-                  Current provider pilot
+                  Founding Client Program
                 </p>
                 <h2 className="text-3xl sm:text-5xl font-bold text-cloud leading-tight mb-5" style={{ fontFamily: "var(--font-display)" }}>
-                  Start with one phone workflow. Prove it works. Then expand.
+                  The first 10 Front Range shops Gregory builds himself.
                 </h2>
                 <p className="text-lg text-slate leading-relaxed mb-6">
-                  For qualified local service businesses, Gregory is testing a provider program around free setup, no contract, and pay-on-close terms when attribution is clean.
+                  The tech works. Founding clients pay full price for the package they choose and get founding bonuses on top.
                 </p>
+                <ul className="space-y-4 mb-6">
+                  {FOUNDING_TERMS.map((term) => (
+                    <li key={term.title} className="flex gap-3">
+                      <BadgeCheck className="w-5 h-5 text-cyan shrink-0 mt-1" />
+                      <p className="text-slate leading-relaxed">
+                        <span className="font-semibold text-cloud">{term.title}</span> {term.body}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
                 <p className="text-sm text-dim leading-relaxed">
-                  Offer terms depend on business type, call volume, service area, and whether closed jobs can be tracked back to Saul-handled calls.
+                  What we ask in return: a case study, permission to use call recordings (Saul tells every caller up front), and one referral intro at day 60. Closes at 10 shops or December 31, 2026, whichever comes first.
                 </p>
               </AnimatedSection>
               <AnimatedSection delay={120}>

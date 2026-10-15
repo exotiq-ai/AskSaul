@@ -139,11 +139,14 @@ export const SAUL_MARKETING_PRICING = {
   monthly: 1000,
 };
 
+export const BOOKING_URL =
+  "https://api.leadconnectorhq.com/widget/bookings/bookwithusdigitalmarketing-3d837e4b-c899-44ff-b612-275f498c2128";
+
 export const CONTACT_INFO = {
-  email: "saul3000bot@gmail.com",
+  email: BRAND.email,
   phone: "970.343.9634",
   location: "Denver, CO",
-  calendly: "https://api.leadconnectorhq.com/widget/bookings/bookwithusdigitalmarketing-3d837e4b-c899-44ff-b612-275f498c2128",
+  calendly: BOOKING_URL,
 };
 
 export const PORTFOLIO_PROJECTS = [
@@ -242,7 +245,7 @@ export const PORTFOLIO_PROJECTS = [
     title: "Lou's Heating & Cooling",
     description:
       "Full business website for a local HVAC company. Local SEO optimization, service area mapping, Google Reviews integration, and bilingual support.",
-    url: "#",
+    url: "https://loushvac303.com",
     images: ["/images/portfolio/lous-hvac.jpg"],
     tags: ["Next.js", "Local SEO", "Bilingual"],
     comingSoon: false,

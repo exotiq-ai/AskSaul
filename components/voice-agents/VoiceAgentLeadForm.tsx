@@ -4,6 +4,7 @@ import { useState } from "react";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import type { VoiceAgentLeadData } from "@/lib/validation";
+import { BOOKING_URL, BRAND } from "@/lib/constants";
 
 const initialForm: VoiceAgentLeadData = {
   name: "",
@@ -21,9 +22,6 @@ const initialForm: VoiceAgentLeadData = {
 };
 
 type FieldErrors = Partial<Record<keyof VoiceAgentLeadData, string>>;
-
-const BOOKING_URL =
-  "https://api.leadconnectorhq.com/widget/bookings/bookwithusdigitalmarketing-3d837e4b-c899-44ff-b612-275f498c2128";
 
 function hasRequiredFields(form: VoiceAgentLeadData) {
   const errors: FieldErrors = {};
@@ -126,7 +124,7 @@ export default function VoiceAgentLeadForm({ vertical = "general" }: VoiceAgentL
       setForm(initialForm);
     } catch {
       setSubmitError(
-        "Something went wrong saving this. Please call Saul at (970) 401-7285 or email saul3000bot@gmail.com."
+        `Something went wrong saving this. Please call Saul at (970) 401-7285 or email ${BRAND.email}.`
       );
     } finally {
       setSubmitting(false);
