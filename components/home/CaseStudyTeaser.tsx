@@ -68,6 +68,37 @@ export default function CaseStudyTeaser() {
             </Link>
           </div>
         </AnimatedSection>
+
+        <AnimatedSection delay={120}>
+          <div className="mt-8 bg-graphite border border-wire rounded-3xl p-8 sm:p-10">
+            <div className="flex flex-wrap items-center gap-2 mb-4">
+              <Badge variant="cyan">Case Study</Badge>
+              <Badge variant="muted">Lou&apos;s Heating &amp; Cooling</Badge>
+            </div>
+            <h2 className="font-display text-2xl sm:text-3xl font-bold text-cloud mb-4 leading-snug">
+              Front Range HVAC shop. Website visits up 300%.
+            </h2>
+            <p className="text-base text-slate leading-relaxed mb-8 max-w-2xl">
+              We rebuilt the website for Lou&apos;s Heating &amp; Cooling, cleaned up their Google Business Profile, and set them up to show in AI search. Since the rebuild, website visits are up 300% and contact form submissions doubled.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
+              <Link
+                href="/case-studies/lous-hvac"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-cyan hover:gap-3 transition-all duration-200"
+              >
+                Read the Lou&apos;s case study
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link
+                href="/voice-agents"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-slate hover:text-cloud hover:gap-3 transition-all duration-200"
+              >
+                Run a roofing or HVAC shop? See the Founding Client Program
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+        </AnimatedSection>
       </div>
     </section>
   );
