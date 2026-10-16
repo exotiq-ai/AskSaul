@@ -19,7 +19,7 @@ The Automation Map remains a general-services intake. Its phone-agent guidance a
 - `npm run build`: passed (Next.js 16.2.7, 61 generated pages).
 - Independent review: no blocking security or logic issues.
 - Gregory separately reported a successful live voice-chat → lead → GHL → Telegram notification test before this change.
-- Live proposal and audit preview submissions: pending verification. Gregory authorized using his name and `gregory.ringler@gmail.com` as the customer. Keep test submissions clearly labeled; leave SMS and after-hours test-call consent off.
+- Live proposal and audit submissions: pending verification. Gregory authorized using his name and customer email. Keep the personal test address out of repository handoffs, clearly label test submissions, and leave SMS and after-hours test-call consent off. Production integration keys are intentionally unavailable in deploy previews.
 
 ## Fulfillment boundary
 
