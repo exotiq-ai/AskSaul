@@ -186,6 +186,9 @@ export function FounderNote() {
             <a href={`tel:+1${BRAND.phone.replace(/\D/g, "")}`} className="text-cyan hover:underline">
               Call me directly: {BRAND.phone}
             </a>
+            <a href="mailto:gregory@asksaul.ai" className="text-cyan hover:underline">
+              gregory@asksaul.ai
+            </a>
           </figcaption>
         </figure>
       </div>
