@@ -1,18 +1,8 @@
-import type { Metadata } from "next";
 import VerticalLanding, { type VerticalContent } from "@/components/voice-agents/VerticalLanding";
 import { HVAC_STORY } from "@/components/voice-agents/stories";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "AI Receptionist for HVAC Companies on the Front Range",
-  description:
-    "Every no-heat call answered. Saul, an AI receptionist for Front Range HVAC shops, plus Google and AI search visibility. Founding Client Program: one HVAC company per city, closes Dec 31.",
-  alternates: { canonical: "https://asksaul.ai/voice-agents/hvac" },
-  openGraph: {
-    title: "More homeowners find you. Every no-heat call gets answered.",
-    description: "AI receptionist + local visibility for Front Range HVAC shops. One HVAC company per city.",
-    url: "https://asksaul.ai/voice-agents/hvac",
-  },
-};
+export const metadata = pageMetadata("/voice-agents/hvac");
 
 const content: VerticalContent = {
   trade: "hvac",

@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, ExternalLink, Check } from "lucide-react";
@@ -11,12 +10,11 @@ import Badge from "@/components/ui/Badge";
 import Accordion from "@/components/ui/Accordion";
 import FAQSchema from "@/components/seo/FAQSchema";
 import { PORTFOLIO_PROJECTS } from "@/lib/constants";
+import { pageMetadata } from "@/lib/seo";
+import PageSeoSchema from "@/components/seo/PageSeoSchema";
+import { serviceSchema } from "@/components/seo/schema";
 
-export const metadata: Metadata = {
-  title: "Web Development",
-  description:
-    "Custom websites and web apps built mobile-first, SEO-optimized, and engineered to convert. Every project scoped and priced per spec. Portfolio includes DriveExotiq, Exotiq.ai, and more.",
-};
+export const metadata = pageMetadata("/web-development");
 
 const SERVICES = [
   {
@@ -86,6 +84,7 @@ export default function WebDevelopmentPage() {
   return (
     <>
       <FAQSchema questions={FAQ_ITEMS} />
+      <PageSeoSchema path="/web-development" extra={[serviceSchema({ path: "/web-development", name: "Website and web app development", serviceType: "Web development", description: "Fast, mobile-first websites and web apps built to convert, with quote flows, booking, CRM handoff, and local SEO.", local: false })]} />
       <Navbar />
       <main id="main-content">
         {/* Hero */}

@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
@@ -7,22 +6,15 @@ import AnimatedSection from "@/components/ui/AnimatedSection";
 import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
 import { INDUSTRIES } from "@/lib/industries";
+import { pageMetadata } from "@/lib/seo";
+import PageSeoSchema from "@/components/seo/PageSeoSchema";
 
-export const metadata: Metadata = {
-  title: "Industries We Serve",
-  description:
-    "AskSaul builds AI, automation, and web systems for MSPs, property managers, home services, title insurance, professional services, real estate, startups, and PE portfolio companies.",
-  openGraph: {
-    title: "Industries We Serve | AskSaul.ai",
-    description:
-      "Built for businesses that sell, schedule, and serve. See how Saul delivers impact across 8 industries.",
-    url: "https://asksaul.ai/industries",
-  },
-};
+export const metadata = pageMetadata("/industries");
 
 export default function IndustriesPage() {
   return (
     <>
+      <PageSeoSchema path="/industries" />
       <Navbar />
       <main id="main-content">
         {/* Hero */}

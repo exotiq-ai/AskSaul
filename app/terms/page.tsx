@@ -1,16 +1,14 @@
-import type { Metadata } from "next";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { pageMetadata } from "@/lib/seo";
+import PageSeoSchema from "@/components/seo/PageSeoSchema";
 
-export const metadata: Metadata = {
-  title: "Terms of Service",
-  description:
-    "Terms governing access to asksaul.ai and related services. AskSaul.ai is a subsidiary of Ask Saul Inc..",
-};
+export const metadata = pageMetadata("/terms");
 
 export default function TermsPage() {
   return (
     <>
+      <PageSeoSchema path="/terms" />
       <Navbar />
       <main className="pt-24 pb-16 px-4">
         <div className="max-w-3xl mx-auto">

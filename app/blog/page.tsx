@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
@@ -7,22 +6,15 @@ import AnimatedSection from "@/components/ui/AnimatedSection";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 import { BLOG_POSTS } from "@/lib/blog-data";
+import { pageMetadata } from "@/lib/seo";
+import PageSeoSchema from "@/components/seo/PageSeoSchema";
 
-export const metadata: Metadata = {
-  title: "Blog",
-  description:
-    "AI automation tips, web development insights, and business growth strategies from Gregory Ringler.",
-  openGraph: {
-    title: "Blog | AskSaul.ai",
-    description:
-      "AI automation tips, web development insights, and business growth strategies.",
-    url: "https://asksaul.ai/blog",
-  },
-};
+export const metadata = pageMetadata("/blog");
 
 export default function BlogPage() {
   return (
     <>
+      <PageSeoSchema path="/blog" />
       <Navbar />
       <main id="main-content">
         {/* Hero */}

@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Mail, Phone, MapPin, Calendar } from "lucide-react";
@@ -8,18 +7,10 @@ import AnimatedSection from "@/components/ui/AnimatedSection";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
+import { pageMetadata } from "@/lib/seo";
+import PageSeoSchema from "@/components/seo/PageSeoSchema";
 
-export const metadata: Metadata = {
-  title: "About",
-  description:
-    "Gregory Ringler built a fleet management platform solo with 1,120+ commits. Now he builds AI systems, websites, and automation for other businesses.",
-  openGraph: {
-    title: "About Gregory Ringler | AskSaul.ai",
-    description:
-      "Gregory Ringler built a fleet management platform solo with 1,120+ commits. Now he builds AI systems, websites, and automation for other businesses.",
-    url: "https://asksaul.ai/about",
-  },
-};
+export const metadata = pageMetadata("/about");
 
 const SKILLS = [
   "React",
@@ -45,6 +36,7 @@ const SKILLS = [
 export default function AboutPage() {
   return (
     <>
+      <PageSeoSchema path="/about" />
       <Navbar />
       <main id="main-content">
         {/* Hero */}

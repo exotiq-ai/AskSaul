@@ -1,22 +1,14 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import AuditRequestForm from "@/components/audit/AuditRequestForm";
 import { FounderNote } from "@/components/voice-agents/blocks";
+import { pageMetadata } from "@/lib/seo";
+import PageSeoSchema from "@/components/seo/PageSeoSchema";
+import { serviceSchema } from "@/components/seo/schema";
 
-export const metadata: Metadata = {
-  title: "Free Missed-Call & Visibility Audit for Roofing & HVAC",
-  description:
-    "A free one-page report for Front Range roofing and HVAC shops: your Google profile, reviews vs the top 3 in your city, AI search presence, website on a phone, and the top 3 fixes. You keep it either way.",
-  alternates: { canonical: "https://asksaul.ai/audit" },
-  openGraph: {
-    title: "See where your calls are leaking.",
-    description: "Free Missed-Call & Visibility Audit for Front Range roofing and HVAC shops.",
-    url: "https://asksaul.ai/audit",
-  },
-};
+export const metadata = pageMetadata("/audit");
 
 const CHECKS = [
   { title: "Google Business Profile", body: "Scored item by item: categories, service areas, hours, photos, posts, review replies." },
@@ -38,6 +30,7 @@ const SAMPLE = [
 export default function AuditPage() {
   return (
     <>
+      <PageSeoSchema path="/audit" extra={[serviceSchema({ path: "/audit", name: "Free Missed-Call & Visibility Audit", serviceType: "Local SEO and call-handling audit", description: "A free one-page report on a roofing or HVAC shop's Google Business Profile, reviews vs the top 3 competitors, AI search presence, mobile website, and top 3 fixes.", audience: "Roofing and HVAC contractors", free: true })]} />
       <Navbar />
       <main id="main-content" className="overflow-x-clip">
         <section className="grain relative overflow-hidden bg-obsidian pb-24 pt-36 sm:pt-40">

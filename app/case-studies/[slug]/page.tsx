@@ -8,6 +8,9 @@ import AnimatedSection from "@/components/ui/AnimatedSection";
 import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
 import { CASE_STUDIES } from "@/lib/case-studies";
+import { SITE_URL, breadcrumbs, seoMetadata } from "@/lib/seo";
+import { breadcrumbSchema } from "@/components/seo/schema";
+import PageSchema from "@/components/seo/PageSchema";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -21,15 +24,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const study = CASE_STUDIES.find((c) => c.slug === slug);
   if (!study) return { title: "Case Study Not Found" };
-  return {
-    title: `${study.client}: ${study.title}`,
-    description: study.tagline,
-    openGraph: {
-      title: `${study.client}: ${study.title} | AskSaul.ai`,
-      description: study.tagline,
-      url: `https://asksaul.ai/case-studies/${study.slug}`,
-    },
-  };
+  const title = `${study.client}: ${study.title}`;
+  return seoMetadata({
+    path: `/case-studies/${study.slug}`,
+    title: title.length > 60 ? title : `${title} | AskSaul.ai`,
+    description: [study.tagline, study.results[0]].filter(Boolean).join(" ").slice(0, 160),
+    social: title,
+    type: "article",
+  });
 }
 
 export default async function CaseStudyDetailPage({ params }: Props) {
@@ -37,8 +39,26 @@ export default async function CaseStudyDetailPage({ params }: Props) {
   const study = CASE_STUDIES.find((c) => c.slug === slug);
   if (!study) notFound();
 
+  const url = `${SITE_URL}/case-studies/${study.slug}`;
+  const schema = [
+    {
+      "@type": "Article",
+      "@id": `${url}#article`,
+      headline: `${study.client}: ${study.title}`,
+      description: study.tagline,
+      about: { "@type": "Organization", name: study.client },
+      author: { "@id": `${SITE_URL}/#founder` },
+      publisher: { "@id": `${SITE_URL}/#org` },
+      image: `${SITE_URL}/opengraph-image`,
+      url,
+      mainEntityOfPage: url,
+    },
+    breadcrumbSchema(breadcrumbs(`/case-studies/${study.slug}`, study.client)),
+  ];
+
   return (
     <>
+      <PageSchema graph={schema} />
       <Navbar />
       <main id="main-content">
         <section className="pt-24 pb-12 px-4 dot-pattern">

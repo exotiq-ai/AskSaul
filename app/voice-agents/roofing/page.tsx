@@ -1,18 +1,8 @@
-import type { Metadata } from "next";
 import VerticalLanding, { type VerticalContent } from "@/components/voice-agents/VerticalLanding";
 import { ROOFING_STORY } from "@/components/voice-agents/stories";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "AI Receptionist for Roofing Companies on the Front Range",
-  description:
-    "Every storm call answered, even when you're on a roof. Saul, an AI receptionist for Front Range roofers, plus Google and AI search visibility. Founding Client Program: one roofer per city, closes Dec 31.",
-  alternates: { canonical: "https://asksaul.ai/voice-agents/roofing" },
-  openGraph: {
-    title: "More homeowners find you. Every call gets answered, even when you're on a roof.",
-    description: "AI receptionist + local visibility for Front Range roofers. One roofer per city.",
-    url: "https://asksaul.ai/voice-agents/roofing",
-  },
-};
+export const metadata = pageMetadata("/voice-agents/roofing");
 
 const content: VerticalContent = {
   trade: "roofing",

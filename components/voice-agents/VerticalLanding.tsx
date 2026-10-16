@@ -3,6 +3,8 @@ import { ArrowRight, PhoneIncoming, Search } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import FAQSchema from "@/components/seo/FAQSchema";
+import PageSeoSchema from "@/components/seo/PageSeoSchema";
+import { serviceSchema } from "@/components/seo/schema";
 import CallStory from "@/components/voice-agents/CallStory";
 import MobileActionBar from "@/components/site/MobileActionBar";
 import type { CallStoryData } from "@/components/voice-agents/stories";
@@ -36,6 +38,18 @@ export default function VerticalLanding({ c }: { c: VerticalContent }) {
   return (
     <>
       <FAQSchema questions={c.faqs} />
+      <PageSeoSchema
+        path={`/voice-agents/${c.trade}`}
+        extra={[
+          serviceSchema({
+            path: `/voice-agents/${c.trade}`,
+            name: c.trade === "hvac" ? "AI receptionist for HVAC companies" : "AI receptionist for roofing companies",
+            serviceType: "AI receptionist",
+            description: c.answered,
+            audience: c.trade === "hvac" ? "HVAC contractors" : "Roofing contractors",
+          }),
+        ]}
+      />
       <Navbar />
       <main id="main-content" className="overflow-x-clip">
         <VoiceHero eyebrow={c.eyebrow} line1={c.line1} line2={c.line2} sub={c.sub} trade={c.trade} />
