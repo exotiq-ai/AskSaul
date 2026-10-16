@@ -5,6 +5,7 @@ import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import type { VoiceAgentLeadData } from "@/lib/validation";
 import { BOOKING_URL, BRAND } from "@/lib/constants";
+import { getAttribution, trackLead } from "@/lib/analytics";
 
 const initialForm: VoiceAgentLeadData = {
   name: "",
@@ -114,7 +115,7 @@ export default function VoiceAgentLeadForm({ vertical = "general", defaultServic
       const res = await fetch("/api/voice-agent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, attribution: getAttribution() }),
       });
 
       if (!res.ok) {
@@ -123,6 +124,7 @@ export default function VoiceAgentLeadForm({ vertical = "general", defaultServic
       }
 
       setSubmitted(true);
+      trackLead(isWaste ? "waste_demo" : "founding");
       setForm(startingForm);
     } catch {
       setSubmitError(

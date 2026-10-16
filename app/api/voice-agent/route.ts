@@ -2,6 +2,7 @@ import { type NextRequest } from "next/server";
 import { voiceAgentLeadSchema } from "@/lib/validation";
 import { buildVoiceAgentLeadPayload, getAskSaulBookingUrl, sendToGHL } from "@/lib/ghl";
 import { sendInternalLeadAlert } from "@/lib/internal-alerts";
+import { readAttribution } from "@/lib/attribution-server";
 
 export async function POST(request: NextRequest) {
   let body: unknown;
@@ -21,7 +22,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const payload = buildVoiceAgentLeadPayload(result.data);
+  const payload = { ...buildVoiceAgentLeadPayload(result.data), attribution: readAttribution(body) };
   const bookingUrl = getAskSaulBookingUrl();
 
   let ghlResult: Awaited<ReturnType<typeof sendToGHL>>;

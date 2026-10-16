@@ -820,6 +820,7 @@ function normalizeForGhl(payload: unknown, locationId: string): {
     "website-lead",
     ...arrayOfStrings(record.tags),
     sourceToTag(source),
+    ...attributionTags(record),
   ]);
   const leadProject =
     text(record.lead_project) ||
@@ -901,6 +902,31 @@ function ghlHeaders(apiKey: string): HeadersInit {
   };
 }
 
+function attributionTags(record: Record<string, unknown>): string[] {
+  const attr = isRecord(record.attribution) ? record.attribution : {};
+  const last = isRecord(attr.last) ? attr.last : {};
+  const first = isRecord(attr.first) ? attr.first : {};
+  const touch = text(last.gclid) || text(last.gbraid) || text(last.wbraid) ? last : first;
+  const tags: string[] = [];
+  if (text(touch.gclid) || text(touch.gbraid) || text(touch.wbraid)) tags.push("paid:google-ads");
+  if (text(touch.msclkid)) tags.push("paid:microsoft-ads");
+  const src = text(touch.utm_source);
+  if (src) tags.push(`utm-source:${src.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 40)}`);
+  return tags;
+}
+
+function attributionLines(record: Record<string, unknown>): string[] {
+  const attr = isRecord(record.attribution) ? record.attribution : {};
+  const fmt = (label: string, t: unknown) => {
+    if (!isRecord(t)) return undefined;
+    const parts = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "gclid", "landing", "referrer"]
+      .map((k) => (text(t[k]) ? `${k}=${text(t[k])}` : undefined))
+      .filter(Boolean);
+    return parts.length ? `${label}: ${parts.join(" | ")}` : undefined;
+  };
+  return [fmt("First touch", attr.first), fmt("Last touch", attr.last)].filter(Boolean) as string[];
+}
+
 function buildQualificationSummary(record: Record<string, unknown>): string {
   const business = isRecord(record.business) ? record.business : {};
   const voiceAgent = isRecord(record.voice_agent) ? record.voice_agent : {};
@@ -912,6 +938,7 @@ function buildQualificationSummary(record: Record<string, unknown>): string {
     `Source: ${text(record.source) || "asksaul.ai"}`,
     text(record.timestamp) ? `Submitted: ${text(record.timestamp)}` : undefined,
     text(record.lead_project) ? `Lead project: ${text(record.lead_project)}` : undefined,
+    ...attributionLines(record),
     text(business.name) ? `Business: ${text(business.name)}` : undefined,
     text(business.industry) ? `Industry: ${text(business.industry)}` : undefined,
     text(business.teamSize) ? `Team size: ${text(business.teamSize)}` : undefined,

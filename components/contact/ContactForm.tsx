@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
+import { getAttribution, trackLead } from "@/lib/analytics";
 
 type FormState = "idle" | "loading" | "success" | "error";
 
@@ -51,7 +52,7 @@ export default function ContactForm() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, attribution: getAttribution() }),
       });
 
       if (!res.ok) {
@@ -60,6 +61,7 @@ export default function ContactForm() {
         setFormState("error");
         return;
       }
+      trackLead("contact");
 
       setFormState("success");
       form.reset();
