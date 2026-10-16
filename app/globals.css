@@ -112,3 +112,188 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ------------------------------------------------------------------ */
+/* Motion system (2026-10 overhaul)                                    */
+/* Content is always visible by default. Motion is layered on only     */
+/* when the browser supports it and the user has not asked to reduce.  */
+/* ------------------------------------------------------------------ */
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 7rem;
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0.01;
+    transform: translateY(28px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+@keyframes rise-text {
+  from {
+    transform: translateY(24px);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(56px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes parallax-drift {
+  from {
+    transform: translateY(8%);
+  }
+  to {
+    transform: translateY(-8%);
+  }
+}
+
+@keyframes wave {
+  0%, 100% {
+    transform: scaleY(0.25);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes ring-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .rise {
+    animation: rise-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: var(--d, 0ms);
+  }
+
+  /* Transform-only entrance for hero text, so the LCP paints immediately */
+  .rise-text {
+    animation: rise-text 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: var(--d, 0ms);
+  }
+
+  .wave-bar {
+    animation: wave 1.2s ease-in-out infinite;
+    animation-delay: var(--d, 0ms);
+  }
+
+  .ring-pulse {
+    animation: ring-pulse 2.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+
+  .text-shimmer {
+    background: linear-gradient(90deg, #00d4aa 0%, #4ac6e8 30%, #f3f5fa 50%, #4ac6e8 70%, #00d4aa 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmer 8s linear infinite;
+  }
+
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: reveal-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 28%;
+    }
+
+    .parallax {
+      animation: parallax-drift linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+  }
+}
+
+.wave-bar {
+  transform-origin: center;
+}
+
+.text-gradient {
+  background: linear-gradient(100deg, #00d4aa, #4ac6e8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Film grain, very light, for depth on large dark fields */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Native <details> accordion */
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+details[open] .faq-icon {
+  transform: rotate(45deg);
+}
+
+/* Lift the chat launcher above the sticky mobile action bar */
+@media (max-width: 767px) {
+  body:has(.mobile-action-bar) .chat-launcher {
+    bottom: 6.25rem;
+  }
+}
+
+@keyframes feed-scroll {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .feed-scroll {
+    animation: feed-scroll 28s linear infinite;
+  }
+}
+
+.mask-fade-y {
+  mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+}

@@ -161,15 +161,15 @@ export default function VoiceAgentLeadForm({ vertical = "general" }: VoiceAgentL
     <form onSubmit={handleSubmit} className="rounded-3xl border border-wire bg-carbon/80 p-5 sm:p-8 shadow-[0_24px_80px_rgba(0,0,0,0.35)]" noValidate>
       <div className="mb-8">
         <p className="text-xs font-semibold tracking-widest uppercase text-cyan/80 mb-3">
-          Get your call flow mapped
+          {isWaste ? "Get your call flow mapped" : "Founding spot request"}
         </p>
         <h2 className="text-2xl sm:text-3xl font-bold text-cloud mb-3" style={{ fontFamily: "var(--font-display)" }}>
-          {isWaste ? "Tell us where waste calls get missed or messy." : "Tell us where the phone process breaks."}
+          {isWaste ? "Tell us where waste calls get missed or messy." : "Tell us about your shop."}
         </h2>
         <p className="text-slate leading-relaxed">
           {isWaste
             ? "This goes to the AskSaul lead workflow so Gregory can see your markets, current call handling, dumpster quote flow, and what Saul should collect first."
-            : "This goes to the AskSaul lead workflow so Gregory can see your service area, current call handling, and what Saul should cover first."}
+            : "Gregory reads every request himself and calls you to map where Saul fits. No obligation."}
         </p>
       </div>
 
@@ -259,7 +259,7 @@ export default function VoiceAgentLeadForm({ vertical = "general" }: VoiceAgentL
 
       <div className="mt-7 flex flex-col sm:flex-row gap-3 sm:items-center">
         <Button type="submit" variant="primary" size="lg" disabled={submitting} className="w-full sm:w-auto">
-          {submitting ? "Sending..." : "Map My Call Flow"}
+          {submitting ? "Sending..." : isWaste ? "Map My Call Flow" : "Request my founding spot"}
         </Button>
         <p className="text-xs text-dim leading-relaxed">
           Prefer to test it first? Call Saul at <a className="text-cyan hover:text-cyan/80" href={"tel:" + "+1" + "970" + "401" + "7285"}>(970) 401-7285</a>.

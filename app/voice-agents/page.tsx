@@ -1,136 +1,75 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import {
-  ArrowRight,
-  BadgeCheck,
-  CalendarCheck,
-  Clock3,
-  Headphones,
-  PhoneCall,
-  ShieldCheck,
-  Workflow,
-} from "lucide-react";
+import { ArrowRight, Check, PhoneCall, Plus, X } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import Button from "@/components/ui/Button";
-import AnimatedSection from "@/components/ui/AnimatedSection";
 import FAQSchema from "@/components/seo/FAQSchema";
-import VoiceAgentFlow from "@/components/voice-agents/VoiceAgentFlow";
 import VoiceAgentLeadForm from "@/components/voice-agents/VoiceAgentLeadForm";
-import { BOOKING_URL } from "@/lib/constants";
-
-const DEMO_PHONE_DISPLAY = "(970) 401-7285";
-const DEMO_PHONE_HREF = "tel:" + "+1" + "970" + "401" + "7285";
+import CallStory from "@/components/voice-agents/CallStory";
+import Waveform from "@/components/site/Waveform";
+import MobileActionBar from "@/components/site/MobileActionBar";
+import { DEMO_PHONE_DISPLAY, DEMO_PHONE_HREF } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "AI Voice Agents for Local Service Businesses",
+  title: "AI Receptionist for Front Range Roofing & HVAC",
   description:
-    "Saul answers missed and after-hours calls, qualifies callers, captures job details, and routes lead information into your CRM. Built for local service businesses that cannot afford to miss the phone.",
+    "We make your phone ring. Saul makes sure it gets answered. An AI receptionist plus Google visibility for Front Range roofing and HVAC shops. Founding Client Program: 10 shops, closes Dec 31.",
   openGraph: {
-    title: "Stop missing calls. Let Saul answer.",
+    title: "We make your phone ring. Saul makes sure it gets answered.",
     description:
-      "A practical AI voice agent for local service businesses. Saul answers calls, qualifies leads, captures job context, and sends the details where your team already works.",
+      "AI receptionist + local visibility for Front Range roofing and HVAC shops. 10 founding spots, closes Dec 31.",
     url: "https://asksaul.ai/voice-agents",
   },
 };
 
 const FAQS = [
   {
-    question: "What does Saul do on a phone call?",
+    question: "Will callers know they are talking to an AI?",
     answer:
-      "Saul answers the call, asks intake questions, captures job context, and sends the lead details where your team can act on them. For a local service business, that usually means service needed, location, urgency, contact info, timing, and a summary of what the caller said.",
+      "Yes. Saul says so at the start of every call. The goal is to get the homeowner help fast, not to trick anyone.",
   },
   {
-    question: "Can I try it before booking a call?",
-    answer: `Yes. Service providers can call the live demo at ${DEMO_PHONE_DISPLAY} to hear Saul's voice, ask how the system works, and request a personalized demo with Gregory.`,
-  },
-  {
-    question: "Will callers know they are speaking with AI?",
+    question: "What does Saul actually do on a call?",
     answer:
-      "They should. Saul should be transparent. The goal is not to trick callers. The goal is to answer quickly, collect the right information, and help your team follow up.",
+      "Answers, asks your intake questions (service, address, urgency, timing), and then books or routes the job by your rules. You get a clean summary every time.",
   },
   {
-    question: "Can Saul answer after-hours calls?",
+    question: "Does it work with my CRM?",
     answer:
-      "Yes, if your phone routing is configured to send after-hours calls to Saul. This is one of the strongest use cases for local service businesses.",
+      "Saul writes leads straight into GoHighLevel with tags, notes, and next steps. Other tools depend on access, and we check that on the first call.",
   },
   {
-    question: "Can Saul book appointments?",
+    question: "How much of my time does setup take?",
     answer:
-      "Possibly. It depends on your scheduling system, availability rules, and how much control you want to give the agent. Many businesses should start with qualified intake and human confirmation before enabling direct booking.",
+      "About 30 minutes of owner time. We build it, tune it, and report on it. You approve the intake rules before anything goes live.",
   },
   {
-    question: "Does Saul integrate with GoHighLevel?",
+    question: "Does it replace my office staff?",
     answer:
-      "Yes, the intended workflow includes routing lead details into GHL. The exact setup depends on your current GHL account, pipeline, custom fields, and webhook or API access.",
+      "No. Saul covers after-hours, overflow, and the calls nobody can grab while they are on a roof or in an attic. Your team keeps every call they can take.",
   },
-];
-
-const PAIN_POINTS = [
-  {
-    title: "After-hours calls disappear",
-    body: "A homeowner has a problem at 8:43 PM. If nobody answers, they are not waiting patiently until morning. They are calling the next company.",
-  },
-  {
-    title: "Missed calls turn into missed jobs",
-    body: "A voicemail still puts work back on the caller. Saul keeps the conversation moving while the intent is fresh.",
-  },
-  {
-    title: "Lead details get scattered",
-    body: "One call becomes a note, a text, a voicemail, and a memory. Saul turns it into a clean record.",
-  },
-];
-
-const USE_CASES = [
-  "Missed-call recovery",
-  "After-hours intake",
-  "Overflow answering",
-  "Emergency triage rules",
-  "Quote request qualification",
-  "GHL notes and lead routing",
-];
-
-const PROVIDER_DEMO_PROMPTS = [
-  "I run an HVAC company. How would this work for missed calls?",
-  "Can you send call summaries into GoHighLevel?",
-  "What would setup look like for my service area?",
-  "Can you book me a demo with Gregory?",
-];
-
-const CUSTOMER_CALL_EXAMPLES = [
-  "My furnace stopped working.",
-  "I need a quote for a water heater.",
-  "Do you service my area?",
-  "Can someone come out tomorrow?",
 ];
 
 const FOUNDING_TERMS = [
+  { title: "Setup and build on us.", body: "No setup fee for founding clients." },
+  { title: "Rate locked for 12 months.", body: "Full price for the package you choose, held for a year." },
   {
-    title: "Setup and build on us.",
-    body: "Your monthly rate is locked in for 12 months.",
+    title: "Month 2 free if Saul misses.",
+    body: "Miss your qualified-lead target in the first 30 days and month 2 is on us. Most shops start at 10; we set yours together before go-live, based on your real call volume.",
   },
   {
     title: "Your city is yours.",
-    body: "On our marketing + Saul packages, we work with one roofer and one HVAC company per city while you are a client: Denver metro, Boulder, Fort Collins, Colorado Springs, Loveland, Longmont, Greeley.",
+    body: "On our marketing + Saul packages, we work with one roofer and one HVAC company per city while you are a client.",
   },
-  {
-    title: "Month 2 free if Saul misses.",
-    body: "If Saul does not capture your qualified-lead target in the first 30 days, month 2 is free. Most shops start at 10. We set yours together before go-live, based on your real call volume.",
-  },
-  {
-    title: "90 days, then month-to-month.",
-    body: "No long contract after the initial term.",
-  },
+  { title: "90 days, then month-to-month.", body: "No long contract after the initial term." },
 ];
 
-const INDUSTRIES = [
-  "Roofing",
-  "HVAC",
-  "Plumbing",
-  "Electrical",
-  "Garage Doors",
-  "Landscaping",
-  "Cleaning",
+const CITIES = ["Denver metro", "Boulder", "Fort Collins", "Colorado Springs", "Loveland", "Longmont", "Greeley"];
+
+const COMPARE = [
+  { name: "Voicemail", points: ["Caller does the work", "Most hang up and call the next shop", "You find out tomorrow"], good: false },
+  { name: "Answering service", points: ["Takes a message", "Quality varies by who picks up", "You still re-key it into the CRM"], good: false },
+  { name: "Saul", points: ["Answers every call, 24/7", "Asks your intake questions", "Books or routes, logs it in your CRM"], good: true },
 ];
 
 export default function VoiceAgentsPage() {
@@ -138,379 +77,256 @@ export default function VoiceAgentsPage() {
     <>
       <FAQSchema questions={FAQS} />
       <Navbar />
-      <main id="main-content">
-        <section className="relative min-h-screen flex items-center pt-28 pb-20 bg-obsidian overflow-hidden">
-          <div className="absolute inset-0 dot-pattern opacity-50" aria-hidden="true" />
-          <div
-            className="absolute top-20 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-cyan/10 blur-3xl"
-            aria-hidden="true"
-          />
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_440px] gap-12 items-center">
-              <AnimatedSection>
-                <p className="text-xs font-semibold tracking-widest uppercase text-cyan mb-5">
-                  For Front Range roofing, HVAC, and home service shops
-                </p>
-                <h1
-                  className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-[0.95] text-cloud mb-7"
-                  style={{ fontFamily: "var(--font-display)" }}
+      <main id="main-content" className="overflow-x-clip">
+        {/* HERO */}
+        <section className="grain relative flex min-h-svh items-center overflow-hidden bg-obsidian pb-20 pt-36 sm:pt-40">
+          <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+            <div className="absolute -top-40 left-1/3 h-[680px] w-[680px] rounded-full bg-cyan/10 blur-[140px]" />
+            <div className="absolute bottom-0 right-0 h-[420px] w-[420px] rounded-full bg-ice/10 blur-[120px]" />
+          </div>
+
+          <div className="relative mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-16 px-4 sm:px-6 lg:grid-cols-[1.15fr_0.85fr] lg:gap-20 lg:px-8">
+            <div>
+              <div className="rise mb-8 inline-flex items-center gap-3 rounded-full border border-wire bg-carbon/60 py-1.5 pl-3 pr-4 text-xs font-semibold uppercase tracking-[0.2em] text-slate backdrop-blur">
+                <Waveform bars={7} className="h-3.5" />
+                Front Range roofing + HVAC
+              </div>
+
+              <h1 className="font-display text-[2.6rem] font-bold leading-[1] tracking-tight text-cloud sm:text-6xl lg:text-[4.1rem] xl:text-[4.6rem]">
+                <span className="rise-text block" style={{ ["--d" as string]: "80ms" }}>We make your phone ring.</span>
+                <span className="rise-text text-shimmer block" style={{ ["--d" as string]: "200ms" }}>
+                  Saul makes sure it gets answered.
+                </span>
+              </h1>
+
+              <p className="rise-text mt-7 max-w-xl text-lg leading-relaxed text-slate sm:text-xl" style={{ ["--d" as string]: "320ms" }}>
+                An AI receptionist that picks up when your crew can&apos;t, plus the Google work that brings the calls in.
+              </p>
+
+              <div className="rise mt-9 flex flex-col gap-4 sm:flex-row" style={{ ["--d" as string]: "440ms" }}>
+                <Link
+                  href="#founding"
+                  className="group inline-flex items-center justify-center gap-2 rounded-xl bg-cyan px-8 py-4 text-lg font-semibold text-obsidian shadow-[0_0_40px_rgba(0,212,170,0.35)] transition-all hover:shadow-[0_0_60px_rgba(0,212,170,0.5)]"
                 >
-                  Stop losing jobs because nobody picked up the phone.
-                </h1>
-                <p className="text-xl sm:text-2xl font-semibold text-cloud leading-snug max-w-2xl mb-4">
-                  We make your phone ring. Saul makes sure it gets answered.
-                </p>
-                <p className="text-lg sm:text-xl text-slate leading-relaxed max-w-2xl mb-8">
-                  This demo line is for service providers. Call Saul to hear the voice, ask how missed-call handling works, and get routed to a personalized human demo with Gregory.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                  <a href={DEMO_PHONE_HREF}>
-                    <Button variant="primary" size="lg" className="w-full sm:w-auto">
-                      <PhoneCall className="w-5 h-5" />
-                      Call Saul: {DEMO_PHONE_DISPLAY}
-                    </Button>
-                  </a>
-                  <Link href="#provider-form">
-                    <Button variant="ghost" size="lg" className="w-full sm:w-auto">
-                      Map My Call Flow
-                      <ArrowRight className="w-5 h-5" />
-                    </Button>
-                  </Link>
-                </div>
-                <p className="text-sm text-dim max-w-xl">
-                  This is not a replacement for your team. It is a safety net for the calls you are already missing.
-                </p>
-              </AnimatedSection>
-
-              <AnimatedSection delay={160}>
-                <div className="relative rounded-3xl border border-cyan/30 bg-carbon/80 p-6 shadow-[0_0_80px_rgba(0,212,170,0.10)] overflow-hidden">
-                  <div className="absolute inset-0 dot-pattern opacity-40" aria-hidden="true" />
-                  <div className="relative">
-                    <div className="flex items-center justify-between mb-8">
-                      <div className="flex items-center gap-3">
-                        <div className="h-12 w-12 rounded-2xl bg-cyan text-obsidian flex items-center justify-center font-display text-xl font-bold">
-                          S
-                        </div>
-                        <div>
-                          <p className="text-cloud font-semibold">Saul Provider Agent</p>
-                          <p className="text-sm text-cyan">Provider demo line</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2 text-xs text-success">
-                        <span className="h-2 w-2 rounded-full bg-success" />
-                        Online
-                      </div>
-                    </div>
-
-                    <div className="space-y-4">
-                      <div className="rounded-2xl rounded-tl-sm bg-graphite border border-wire p-4">
-                        <p className="text-sm text-slate leading-relaxed">
-                          Thanks for calling. Are you a service provider wanting to hear how Saul handles missed calls?
-                        </p>
-                      </div>
-                      <div className="ml-8 rounded-2xl rounded-tr-sm bg-cyan/10 border border-cyan/30 p-4">
-                        <p className="text-sm text-cloud leading-relaxed">
-                          I run a plumbing company. How would you handle a missed emergency call?
-                        </p>
-                      </div>
-                      <div className="rounded-2xl rounded-tl-sm bg-graphite border border-wire p-4">
-                        <p className="text-sm text-slate leading-relaxed">
-                          I can explain the flow, ask about your current call handling, and help book a personalized demo with Gregory.
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="mt-8 grid grid-cols-3 gap-2">
-                      {[
-                        "Voice preview",
-                        "Use-case fit",
-                        "Book Gregory",
-                      ].map((label) => (
-                        <div key={label} className="rounded-xl border border-wire bg-obsidian/70 px-3 py-2 text-center text-xs text-slate">
-                          {label}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </AnimatedSection>
-            </div>
-          </div>
-        </section>
-
-        <section className="py-24 bg-carbon/40">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <AnimatedSection className="text-center max-w-3xl mx-auto mb-12">
-              <p className="text-xs font-semibold tracking-widest uppercase text-dim mb-3">
-                The missed-call problem
-              </p>
-              <h2 className="text-3xl sm:text-4xl font-bold text-cloud mb-4" style={{ fontFamily: "var(--font-display)" }}>
-                Your next job probably starts with a phone call. That is the problem.
-              </h2>
-              <p className="text-lg text-slate leading-relaxed">
-                Local service businesses do not lose leads because they are bad at the work. They lose leads because the phone rings while someone is on a job, driving, asleep, or already talking to another customer.
-              </p>
-            </AnimatedSection>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {PAIN_POINTS.map((point, index) => (
-                <AnimatedSection key={point.title} delay={index * 100} className="rounded-2xl border border-wire bg-graphite p-6">
-                  <h3 className="text-xl font-semibold text-cloud mb-3">{point.title}</h3>
-                  <p className="text-slate leading-relaxed">{point.body}</p>
-                </AnimatedSection>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <VoiceAgentFlow />
-
-        <section className="py-16 bg-obsidian border-y border-wire">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <p className="text-xs font-semibold tracking-widest uppercase text-cyan mb-3">
-              Vertical voice agents
-            </p>
-            <h2 className="text-3xl sm:text-4xl font-bold text-cloud mb-4" style={{ fontFamily: "var(--font-display)" }}>
-              Need dumpster rental call intake?
-            </h2>
-            <p className="text-slate leading-relaxed max-w-2xl mx-auto mb-7">
-              Saul now has a dedicated waste-industry flow for roll-off dumpster, junk removal, and hauling businesses: ZIP-code qualification, debris details, size guidance, scheduling, and GHL handoff.
-            </p>
-            <Link href="/voice-agents/waste">
-              <Button variant="primary" size="lg">
-                See Waste Voice Agents
-                <ArrowRight className="w-5 h-5" />
-              </Button>
-            </Link>
-          </div>
-        </section>
-
-        <section className="py-24 bg-carbon/40">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <AnimatedSection>
-                <p className="text-xs font-semibold tracking-widest uppercase text-cyan mb-3">
-                  Try it yourself
-                </p>
-                <h2 className="text-3xl sm:text-5xl font-bold text-cloud leading-tight mb-5" style={{ fontFamily: "var(--font-display)" }}>
-                  Call Saul to hear the provider demo before you book.
-                </h2>
-                <p className="text-lg text-slate leading-relaxed mb-8">
-                  The 970-401 number is for business owners, not your customers. Ask Saul how the phone agent would handle missed calls, GHL notes, after-hours intake, and then have it route you to a personalized demo with Gregory.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <a href={DEMO_PHONE_HREF}>
-                    <Button variant="primary" size="lg" className="w-full sm:w-auto">
-                      <PhoneCall className="w-5 h-5" />
-                      Call {DEMO_PHONE_DISPLAY}
-                    </Button>
-                  </a>
-                  <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer">
-                    <Button variant="secondary" size="lg" className="w-full sm:w-auto">
-                      <CalendarCheck className="w-5 h-5" />
-                      Book a 15-minute intro
-                    </Button>
-                  </a>
-                </div>
-              </AnimatedSection>
-
-              <AnimatedSection delay={120} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="rounded-2xl border border-cyan/30 bg-cyan/10 p-5 sm:col-span-2">
-                  <p className="text-xs font-semibold tracking-widest uppercase text-cyan/80 mb-3">
-                    What you ask the demo line
-                  </p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {PROVIDER_DEMO_PROMPTS.map((prompt) => (
-                      <p key={prompt} className="rounded-xl border border-cyan/20 bg-obsidian/60 p-3 text-sm text-cloud leading-relaxed">
-                        “{prompt}”
-                      </p>
-                    ))}
-                  </div>
-                </div>
-                <div className="rounded-2xl border border-wire bg-obsidian/70 p-5 sm:col-span-2">
-                  <p className="text-xs font-semibold tracking-widest uppercase text-dim mb-3">
-                    What your customers might ask your deployed agent later
-                  </p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {CUSTOMER_CALL_EXAMPLES.map((prompt) => (
-                      <p key={prompt} className="rounded-xl border border-wire bg-graphite/70 p-3 text-sm text-slate leading-relaxed">
-                        “{prompt}”
-                      </p>
-                    ))}
-                  </div>
-                </div>
-              </AnimatedSection>
-            </div>
-          </div>
-        </section>
-
-        <section className="py-24 bg-obsidian">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <AnimatedSection className="text-center max-w-3xl mx-auto mb-12">
-              <p className="text-xs font-semibold tracking-widest uppercase text-dim mb-3">
-                Built for businesses that live by the phone
-              </p>
-              <h2 className="text-3xl sm:text-4xl font-bold text-cloud mb-4" style={{ fontFamily: "var(--font-display)" }}>
-                Use Saul where your current phone process breaks.
-              </h2>
-              <p className="text-lg text-slate leading-relaxed">
-                Voice agents make the most sense when calls are tied directly to revenue.
-              </p>
-            </AnimatedSection>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div className="rounded-3xl border border-wire bg-carbon p-6 sm:p-8">
-                <Headphones className="w-8 h-8 text-cyan mb-5" />
-                <h3 className="text-2xl font-bold text-cloud mb-5" style={{ fontFamily: "var(--font-display)" }}>
-                  Common use cases
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {USE_CASES.map((useCase) => (
-                    <div key={useCase} className="flex items-center gap-2 text-sm text-slate">
-                      <BadgeCheck className="w-4 h-4 text-cyan shrink-0" />
-                      {useCase}
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="rounded-3xl border border-wire bg-carbon p-6 sm:p-8">
-                <Workflow className="w-8 h-8 text-cyan mb-5" />
-                <h3 className="text-2xl font-bold text-cloud mb-5" style={{ fontFamily: "var(--font-display)" }}>
-                  Strong-fit industries
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {INDUSTRIES.map((industry) => (
-                    <span key={industry} className="rounded-full border border-wire bg-graphite px-4 py-2 text-sm text-slate">
-                      {industry}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="py-24 bg-carbon/40">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {[
-                {
-                  icon: Clock3,
-                  title: "Voicemail",
-                  points: ["Caller does the work", "Incomplete context", "Follow-up happens later"],
-                },
-                {
-                  icon: Headphones,
-                  title: "Answering service",
-                  points: ["Better than voicemail", "Quality varies", "CRM routing may still be manual"],
-                },
-                {
-                  icon: ShieldCheck,
-                  title: "Saul voice agent",
-                  points: ["Asks your intake questions", "Captures structured context", "Routes details into your workflow"],
-                },
-              ].map((card, index) => {
-                const Icon = card.icon;
-                return (
-                  <AnimatedSection key={card.title} delay={index * 100} className="rounded-3xl border border-wire bg-obsidian/80 p-6">
-                    <Icon className="w-8 h-8 text-cyan mb-5" />
-                    <h3 className="text-2xl font-bold text-cloud mb-5" style={{ fontFamily: "var(--font-display)" }}>
-                      {card.title}
-                    </h3>
-                    <ul className="space-y-3">
-                      {card.points.map((point) => (
-                        <li key={point} className="text-slate leading-relaxed">{point}</li>
-                      ))}
-                    </ul>
-                  </AnimatedSection>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        <section id="provider-form" className="py-24 bg-obsidian">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr] gap-12 items-start">
-              <AnimatedSection>
-                <p className="text-xs font-semibold tracking-widest uppercase text-cyan mb-3">
-                  Founding Client Program
-                </p>
-                <h2 className="text-3xl sm:text-5xl font-bold text-cloud leading-tight mb-5" style={{ fontFamily: "var(--font-display)" }}>
-                  The first 10 Front Range shops Gregory builds himself.
-                </h2>
-                <p className="text-lg text-slate leading-relaxed mb-6">
-                  The tech works. Founding clients pay full price for the package they choose and get founding bonuses on top.
-                </p>
-                <ul className="space-y-4 mb-6">
-                  {FOUNDING_TERMS.map((term) => (
-                    <li key={term.title} className="flex gap-3">
-                      <BadgeCheck className="w-5 h-5 text-cyan shrink-0 mt-1" />
-                      <p className="text-slate leading-relaxed">
-                        <span className="font-semibold text-cloud">{term.title}</span> {term.body}
-                      </p>
-                    </li>
-                  ))}
-                </ul>
-                <p className="text-sm text-dim leading-relaxed">
-                  What we ask in return: a case study, permission to use call recordings (Saul tells every caller up front), and one referral intro at day 60. Closes at 10 shops or December 31, 2026, whichever comes first.
-                </p>
-              </AnimatedSection>
-              <AnimatedSection delay={120}>
-                <VoiceAgentLeadForm />
-              </AnimatedSection>
-            </div>
-          </div>
-        </section>
-
-        <section className="py-24 bg-carbon/40">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <AnimatedSection className="text-center mb-12">
-              <p className="text-xs font-semibold tracking-widest uppercase text-dim mb-3">
-                Fair questions
-              </p>
-              <h2 className="text-3xl sm:text-4xl font-bold text-cloud" style={{ fontFamily: "var(--font-display)" }}>
-                No, this does not mean handing your phone to a random bot.
-              </h2>
-            </AnimatedSection>
-            <div className="space-y-4">
-              {FAQS.map((faq) => (
-                <AnimatedSection key={faq.question} className="rounded-2xl border border-wire bg-obsidian/70 p-6">
-                  <h3 className="text-lg font-semibold text-cloud mb-3">{faq.question}</h3>
-                  <p className="text-slate leading-relaxed">{faq.answer}</p>
-                </AnimatedSection>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="relative py-28 bg-obsidian overflow-hidden">
-          <div className="absolute inset-0 dot-pattern opacity-40" aria-hidden="true" />
-          <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <AnimatedSection>
-              <h2 className="text-4xl sm:text-5xl font-bold text-cloud mb-5" style={{ fontFamily: "var(--font-display)" }}>
-                Your phone is already ringing. Saul just makes sure someone answers.
-              </h2>
-              <p className="text-lg text-slate leading-relaxed max-w-2xl mx-auto mb-8">
-                Call the provider demo, then map your call flow. If it is a fit, Gregory will show you exactly where Saul plugs into your business.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href={DEMO_PHONE_HREF}>
-                  <Button variant="primary" size="lg" className="w-full sm:w-auto">
-                    <PhoneCall className="w-5 h-5" />
-                    Call the Provider Demo
-                  </Button>
-                </a>
-                <Link href="#provider-form">
-                  <Button variant="ghost" size="lg" className="w-full sm:w-auto">
-                    Map My Call Flow
-                    <ArrowRight className="w-5 h-5" />
-                  </Button>
+                  Claim a founding spot
+                  <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </Link>
+                <a
+                  href={DEMO_PHONE_HREF}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-wire px-8 py-4 text-lg font-semibold text-cloud transition-colors hover:border-cyan/50 hover:text-cyan"
+                >
+                  <PhoneCall className="h-5 w-5" />
+                  Call Saul: {DEMO_PHONE_DISPLAY}
+                </a>
               </div>
-            </AnimatedSection>
+              <p className="rise mt-5 text-sm text-dim" style={{ ["--d" as string]: "520ms" }}>
+                Call the demo line and try to break it.
+              </p>
+            </div>
+
+            {/* Founder offer card */}
+            <div className="rise relative" style={{ ["--d" as string]: "360ms" }}>
+              <div className="absolute -inset-px rounded-[2rem] bg-gradient-to-br from-cyan/60 via-ice/20 to-transparent" aria-hidden="true" />
+              <div className="relative rounded-[2rem] bg-carbon/95 p-8 backdrop-blur sm:p-10">
+                <div className="mb-6 flex items-center justify-between gap-4">
+                  <span className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan">Founding Client Program</span>
+                  <span className="rounded-full bg-warning/15 px-3 py-1 text-xs font-semibold text-warning">Closes Dec 31</span>
+                </div>
+                <p className="font-display text-3xl font-bold leading-tight text-cloud">
+                  The first 10 Front Range shops Gregory builds himself.
+                </p>
+                <ul className="mt-8 space-y-4">
+                  {["Setup and build on us", "Rate locked for 12 months", "Month 2 free if Saul misses", "One roofer + one HVAC shop per city*"].map(
+                    (t) => (
+                      <li key={t} className="flex items-center gap-3 text-[17px] text-slate">
+                        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-cyan/15">
+                          <Check className="h-3.5 w-3.5 text-cyan" />
+                        </span>
+                        {t}
+                      </li>
+                    )
+                  )}
+                </ul>
+                <Link
+                  href="#founding"
+                  className="group mt-9 flex items-center justify-between rounded-xl border border-cyan/40 bg-cyan/10 px-5 py-4 font-semibold text-cyan transition-colors hover:bg-cyan/20"
+                >
+                  Claim your city
+                  <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+                </Link>
+                <p className="mt-4 text-xs text-dim">*On marketing + Saul packages. Full terms below.</p>
+              </div>
+            </div>
           </div>
         </section>
+
+        {/* PROOF */}
+        <section className="border-y border-wire/60 bg-carbon/40">
+          <div className="mx-auto grid max-w-7xl grid-cols-1 divide-y divide-wire/60 px-4 sm:grid-cols-3 sm:divide-x sm:divide-y-0 sm:px-6 lg:px-8">
+            {[
+              { n: "+300%", l: "website visits for Lou's Heating & Cooling since the rebuild" },
+              { n: "2x", l: "contact form submissions for Lou's, same period" },
+              { n: "24/7", l: "after-hours and overflow calls answered by Saul" },
+            ].map((s) => (
+              <div key={s.n} className="reveal px-2 py-10 sm:px-10">
+                <p className="text-gradient font-display text-5xl font-bold sm:text-6xl">{s.n}</p>
+                <p className="mt-3 max-w-[16rem] text-sm leading-relaxed text-slate">{s.l}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <CallStory />
+
+        {/* COMPARE */}
+        <section className="bg-carbon/30 py-32 sm:py-40">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <h2 className="reveal mb-20 max-w-3xl font-display text-4xl font-bold leading-[1.02] text-cloud sm:text-6xl">
+              Voicemail is not a plan.
+            </h2>
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+              {COMPARE.map((c) => (
+                <div
+                  key={c.name}
+                  className={`reveal rounded-3xl p-8 sm:p-10 ${
+                    c.good ? "bg-cyan text-obsidian shadow-[0_30px_100px_rgba(0,212,170,0.25)]" : "border border-wire bg-obsidian"
+                  }`}
+                >
+                  <p className={`mb-8 font-display text-2xl font-bold ${c.good ? "text-obsidian" : "text-cloud"}`}>{c.name}</p>
+                  <ul className="space-y-4">
+                    {c.points.map((p) => (
+                      <li key={p} className={`flex gap-3 ${c.good ? "font-medium text-obsidian" : "text-slate"}`}>
+                        {c.good ? <Check className="mt-1 h-4 w-4 shrink-0" /> : <X className="mt-1 h-4 w-4 shrink-0 text-dim" />}
+                        {p}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* FOUNDING + FORM */}
+        <section id="founding" className="relative bg-obsidian py-32 sm:py-40">
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan/50 to-transparent" aria-hidden="true" />
+          <div className="mx-auto grid max-w-7xl grid-cols-1 gap-16 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20 lg:px-8">
+            <div>
+              <p className="mb-5 text-xs font-semibold uppercase tracking-[0.25em] text-cyan">Founding Client Program</p>
+              <h2 className="font-display text-4xl font-bold leading-[1.02] text-cloud sm:text-6xl">
+                Claim your city before a competitor does.
+              </h2>
+              <p className="mt-6 max-w-lg text-lg leading-relaxed text-slate">
+                Not a pilot. The tech works. Founding clients pay full price and get bonuses no one gets after Dec 31.
+              </p>
+
+              <ul className="mt-12 space-y-7">
+                {FOUNDING_TERMS.map((t) => (
+                  <li key={t.title} className="reveal flex gap-4">
+                    <span className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-cyan/15">
+                      <Check className="h-3.5 w-3.5 text-cyan" />
+                    </span>
+                    <div>
+                      <p className="font-semibold text-cloud">{t.title}</p>
+                      <p className="mt-1 leading-relaxed text-slate">{t.body}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-10 flex flex-wrap gap-2">
+                {CITIES.map((c) => (
+                  <span key={c} className="rounded-full border border-wire px-3 py-1.5 text-sm text-slate">
+                    {c}
+                  </span>
+                ))}
+              </div>
+
+              <p className="mt-10 max-w-lg text-sm leading-relaxed text-dim">
+                In return: a case study, permission to use call recordings (Saul tells every caller up front), and one referral intro at day 60. Closes at 10 shops or December 31, 2026, whichever comes first.
+              </p>
+            </div>
+
+            <div className="reveal">
+              <VoiceAgentLeadForm />
+            </div>
+          </div>
+        </section>
+
+        {/* TRY TO BREAK IT */}
+        <section className="grain relative overflow-hidden bg-carbon py-32 sm:py-40">
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-25" aria-hidden="true">
+            <Waveform bars={40} barClassName="w-1.5 sm:w-2.5" className="parallax h-72 w-full max-w-6xl justify-between px-4" />
+          </div>
+          <div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6">
+            <p className="reveal mb-6 text-xs font-semibold uppercase tracking-[0.25em] text-cyan">Hear it for yourself</p>
+            <h2 className="reveal font-display text-4xl font-bold leading-[1.02] text-cloud sm:text-6xl">Try to break it.</h2>
+            <p className="reveal mx-auto mt-6 max-w-xl text-lg text-slate">
+              Ask what a homeowner would ask. Then ask it to book you a call with Gregory.
+            </p>
+            <a
+              href={DEMO_PHONE_HREF}
+              className="reveal mt-12 inline-block font-display text-5xl font-bold tracking-tight text-cloud transition-colors hover:text-cyan sm:text-7xl"
+            >
+              {DEMO_PHONE_DISPLAY}
+            </a>
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section className="bg-obsidian py-32 sm:py-40">
+          <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-4 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20 lg:px-8">
+            <h2 className="reveal font-display text-4xl font-bold leading-[1.02] text-cloud sm:text-5xl">Fair questions.</h2>
+            <div className="divide-y divide-wire border-y border-wire">
+              {FAQS.map((f) => (
+                <details key={f.question} className="group py-2">
+                  <summary className="flex cursor-pointer items-center justify-between gap-6 py-5 text-lg font-semibold text-cloud transition-colors hover:text-cyan">
+                    {f.question}
+                    <Plus className="faq-icon h-5 w-5 shrink-0 text-cyan transition-transform duration-300" />
+                  </summary>
+                  <p className="max-w-2xl pb-6 leading-relaxed text-slate">{f.answer}</p>
+                </details>
+              ))}
+              <p className="py-6 text-sm text-dim">
+                Run a dumpster or hauling business?{" "}
+                <Link href="/voice-agents/waste" className="font-semibold text-cyan hover:underline">
+                  See the waste-industry flow
+                </Link>
+                .
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* FINAL CTA */}
+        <section className="relative overflow-hidden bg-obsidian pb-40 pt-16">
+          <div className="mx-auto max-w-5xl px-4 text-center sm:px-6">
+            <h2 className="reveal font-display text-5xl font-bold leading-[0.98] text-cloud sm:text-7xl">
+              Your phone is already ringing.
+              <span className="text-gradient block">Answer every call.</span>
+            </h2>
+            <div className="reveal mt-12 flex flex-col justify-center gap-4 sm:flex-row">
+              <Link
+                href="#founding"
+                className="group inline-flex items-center justify-center gap-2 rounded-xl bg-cyan px-8 py-4 text-lg font-semibold text-obsidian shadow-[0_0_40px_rgba(0,212,170,0.35)]"
+              >
+                Claim a founding spot
+                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </Link>
+              <a
+                href={DEMO_PHONE_HREF}
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-wire px-8 py-4 text-lg font-semibold text-cloud hover:border-cyan/50 hover:text-cyan"
+              >
+                <PhoneCall className="h-5 w-5" />
+                Call the demo line
+              </a>
+            </div>
+          </div>
+        </section>
+        <div className="h-20 md:hidden" aria-hidden="true" />
       </main>
       <Footer />
+      <MobileActionBar />
     </>
   );
 }
