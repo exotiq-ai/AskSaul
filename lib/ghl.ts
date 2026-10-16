@@ -462,10 +462,13 @@ type GhlContactPayload = {
 
 async function upsertAskSaulContact(payload: unknown, cfg: GhlConfig): Promise<string | undefined> {
   const normalized = normalizeForGhl(payload, cfg.locationId);
+  // Including tags in a LeadConnector upsert replaces existing tags. Keep
+  // confirmation markers and unrelated CRM workflow tags, then append ours.
+  const { tags, ...contact } = normalized.contact;
   const res = await fetch(`${GHL_BASE_URL}/contacts/upsert`, {
     method: "POST",
     headers: ghlHeaders(cfg.apiKey),
-    body: JSON.stringify(normalized.contact),
+    body: JSON.stringify(contact),
   });
 
   const text = await res.text();
@@ -481,8 +484,9 @@ async function upsertAskSaulContact(payload: unknown, cfg: GhlConfig): Promise<s
     // The upsert succeeded, but the body was not JSON. Do not fail the submission.
   }
 
-  if (contactId && normalized.note) {
-    await addGhlNote(contactId, normalized.note, cfg);
+  if (contactId) {
+    await addGhlContactTags(contactId, tags, cfg);
+    if (normalized.note) await addGhlNote(contactId, normalized.note, cfg);
   }
 
   return contactId;
@@ -687,7 +691,7 @@ async function addGhlContactTags(contactId: string, tags: string[], cfg: GhlConf
   });
   if (!res.ok) {
     const body = await res.text().catch(() => "");
-    console.warn(`[GHL] Email sent but tag add failed: ${res.status} ${body.slice(0, 300)}`);
+    console.warn(`[GHL] Contact tag append failed: ${res.status} ${body.slice(0, 300)}`);
   }
 }
 
