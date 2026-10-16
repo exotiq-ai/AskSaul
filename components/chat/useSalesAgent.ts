@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { Conversation } from "@elevenlabs/client";
 import { SALES_AGENT_ID } from "@/lib/sales-agent/agent-id";
 import { parseAgentMessage, type ChatAction } from "@/lib/sales-agent/actions";
+import { getAttribution, trackEvent, trackLead } from "@/lib/analytics";
 
 export type ChatMessage = {
   id: string;
@@ -19,22 +20,6 @@ type Status = "idle" | "connecting" | "connected" | "error";
 
 const STORAGE_KEY = "asksaul-chat-v2";
 const MAX_STORED = 40;
-
-declare global {
-  interface Window {
-    gtag?: (command: "event", action: string, params?: Record<string, unknown>) => void;
-    plausible?: (event: string, options?: { props?: Record<string, unknown> }) => void;
-  }
-}
-
-function track(action: string, props: Record<string, unknown> = {}) {
-  try {
-    window.gtag?.("event", action, { event_category: "conversion", ...props });
-    window.plausible?.(action, { props });
-  } catch {
-    /* analytics must never break chat */
-  }
-}
 
 const uid = () => Math.random().toString(36).slice(2, 10);
 
@@ -131,13 +116,14 @@ export function useSalesAgent() {
               chatTranscript: transcriptFor(messagesRef.current),
               initialIntent: "site-chat-agent",
               handoffIntent: intentMap[String(p.intent)] ?? "send-context",
+              attribution: getAttribution(),
             }),
           });
           if (!res.ok) {
             const body = (await res.json().catch(() => ({}))) as { error?: string };
             return `Error: could not save (${body.error ?? res.status}). Offer the form at /voice-agents#founding or Gregory's direct line.`;
           }
-          track("chat_lead_captured", { intent: p.intent });
+          trackLead("chat_lead", { intent: p.intent });
           return "Saved. Gregory has the visitor's details and this chat transcript.";
         } catch {
           return "Error: network problem saving the details. Offer the form at /voice-agents#founding or Gregory's direct line.";
@@ -159,6 +145,7 @@ export function useSalesAgent() {
               website: p.website ? String(p.website) : "",
               afterHoursTestOk: p.after_hours_test_ok === true,
               smsConsent: false,
+              attribution: getAttribution(),
             }),
           });
           if (!res.ok) {
@@ -166,7 +153,7 @@ export function useSalesAgent() {
             const why = body.issues?.map((i) => i.message).join("; ") || String(res.status);
             return `Error: audit request not saved (${why}). Ask for the missing details or send them to /audit.`;
           }
-          track("chat_audit_requested", { trade });
+          trackLead("chat_audit", { trade });
           return "Audit request saved. A confirmation email is on its way to the visitor.";
         } catch {
           return "Error: network problem. Send them to /audit.";
@@ -289,7 +276,7 @@ export function useSalesAgent() {
       conversation.current = null;
       setMode("voice");
       await connect("voice");
-      track("chat_voice_started");
+      trackEvent("chat_voice_started");
     } catch {
       setMode("text");
       addNotice("I couldn't start voice here (microphone blocked?). You can call me instead at (970) 401-7285.");
