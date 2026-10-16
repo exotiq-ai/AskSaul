@@ -205,7 +205,7 @@ export default function BuildYourProposalPage() {
               Get Your Automation Map
             </h1>
             <p className="text-slate text-base max-w-md mx-auto">
-              Answer a few questions and Saul will map the 1–3 workflows most worth automating first. Takes about 3 minutes; real proposal back within 24 hours.
+              Tell us where work gets stuck. Gregory will identify the 1–3 workflows worth automating first and email a scoped proposal within 24 hours. About 3 minutes. No call required.
             </p>
           </div>
 
@@ -286,7 +286,7 @@ export default function BuildYourProposalPage() {
                   onClick={onSubmit}
                   disabled={submitting}
                 >
-                  {submitting ? "Submitting..." : "Submit Proposal"}
+                  {submitting ? "Sending your request..." : "Get my Automation Map"}
                 </Button>
               )}
             </div>
@@ -299,7 +299,7 @@ export default function BuildYourProposalPage() {
           </div>
 
           <p className="text-center text-xs text-dim mt-6">
-            No spam. No sales calls you did not ask for. Just a real proposal.
+              A scoped proposal in your inbox within 24 hours. No obligation and no call unless you ask.
           </p>
         </div>
       </main>

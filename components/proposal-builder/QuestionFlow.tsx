@@ -464,9 +464,11 @@ export default function QuestionFlow({ services }: QuestionFlowProps) {
           {service === "marketing" && <MarketingQuestions />}
           {service === "automation" && <AutomationQuestions />}
           {service === "voice-agent" && (
-            <p className="text-slate text-sm">
-              Voice agents are scoped per project. Tell us more about your needs in the notes field on the next step.
-            </p>
+            <div className="space-y-3 text-sm leading-relaxed text-slate">
+              <p>Saul answers, qualifies, and routes calls when your team can&apos;t. In the notes on the next step, tell us your trade, city, how calls are handled now, and what should happen after Saul answers.</p>
+              <p>Front Range roofing or HVAC shop? The Founding Client Program includes setup and build on us, a 12-month rate lock, and a 90-day initial term. Gregory confirms your package, lead target, and city availability with you.</p>
+              <a href="/voice-agents#founding" target="_blank" rel="noopener noreferrer" className="font-medium text-cyan underline underline-offset-4">See the founding program and guarantee</a>
+            </div>
           )}
           {service === "custom-app" && (
             <p className="text-slate text-sm">

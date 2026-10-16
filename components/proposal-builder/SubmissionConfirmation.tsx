@@ -1,8 +1,6 @@
 import Link from "next/link";
 import Button from "@/components/ui/Button";
-
-const BOOKING_URL =
-  "https://api.leadconnectorhq.com/widget/bookings/bookwithusdigitalmarketing-3d837e4b-c899-44ff-b612-275f498c2128";
+import { BOOKING_URL } from "@/lib/constants";
 
 export default function SubmissionConfirmation() {
   return (
@@ -20,10 +18,10 @@ export default function SubmissionConfirmation() {
       {/* Message */}
       <div className="flex flex-col gap-2 max-w-sm">
         <h2 className="font-display text-2xl font-bold text-cloud">
-          Saul sent your map to Gregory.
+          Your request is with Gregory.
         </h2>
         <p className="text-slate text-base leading-relaxed">
-          Your context is in the Ask Saul GHL workflow. Gregory can review it and follow up, or you can grab a 15-minute intro slot now.
+          He&apos;ll review your answers and email a scoped proposal within 24 hours. Want to talk through it sooner? Pick a 15-minute call below.
         </p>
       </div>
 
@@ -32,9 +30,9 @@ export default function SubmissionConfirmation() {
         <p className="text-xs font-semibold uppercase tracking-widest text-dim mb-3">What happens next</p>
         <div className="flex flex-col gap-3">
           {[
-            { step: "1", text: "GHL saves your Automation Map with the source, tags, and summary" },
-            { step: "2", text: "Gregory gets the lead context and reviews the best first system" },
-            { step: "3", text: "You can book directly now, or wait for the 24-hour follow-up" },
+            { step: "1", text: "Your answers are saved, so you won’t have to start again on a call." },
+            { step: "2", text: "Gregory identifies the 1–3 workflows worth automating first, with scope and a clear next step." },
+            { step: "3", text: "Your proposal arrives by email within 24 hours. A call is optional." },
           ].map(({ step, text }) => (
             <div key={step} className="flex items-start gap-3">
               <div className="w-6 h-6 rounded-full bg-cyan/20 text-cyan text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
@@ -55,7 +53,7 @@ export default function SubmissionConfirmation() {
           className="flex-1"
         >
           <Button variant="primary" size="md" className="w-full">
-            Book 15 Min with Gregory
+            Book a 15-minute call
           </Button>
         </a>
         <Link href="/" className="flex-1">

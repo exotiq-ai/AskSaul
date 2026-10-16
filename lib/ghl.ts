@@ -616,7 +616,18 @@ async function sendAskSaulLeadEmail(
   if (!emailTo) return { ok: true, skipped: true, reason: "No lead email provided" };
 
   const existingTags = await getGhlContactTags(contactId, cfg);
-  if (existingTags.includes(WEBSITE_EMAIL_SENT_TAG) || existingTags.includes(EMAIL_FOLLOWUP_SENT_TAG)) {
+  const source = text(record.source) || "";
+  const confirmationTag = source.includes("audit")
+    ? "ask-saul-audit-confirmation-sent"
+    : source.includes("automation-map") || source.includes("proposal")
+      ? "ask-saul-automation-map-confirmation-sent"
+      : undefined;
+  // An audit and an Automation Map are separate requests, even for the same
+  // contact. Keep the legacy guard for other capture paths such as chat.
+  const alreadySent = confirmationTag
+    ? existingTags.includes(confirmationTag)
+    : existingTags.includes(WEBSITE_EMAIL_SENT_TAG) || existingTags.includes(EMAIL_FOLLOWUP_SENT_TAG);
+  if (alreadySent) {
     return { ok: true, skipped: true, reason: "Lead email already sent" };
   }
 
@@ -642,7 +653,7 @@ async function sendAskSaulLeadEmail(
     });
     const body = await res.text();
     if (!res.ok) return { ok: false, status: res.status, error: body.slice(0, 500) || "GHL lead email failed" };
-    await addGhlContactTags(contactId, [WEBSITE_EMAIL_SENT_TAG, EMAIL_FOLLOWUP_SENT_TAG], cfg);
+    await addGhlContactTags(contactId, [WEBSITE_EMAIL_SENT_TAG, EMAIL_FOLLOWUP_SENT_TAG, ...(confirmationTag ? [confirmationTag] : [])], cfg);
     await addGhlNote(contactId, `Automated AskSaul lead email queued.\nSubject: ${copy.subject}`, cfg);
     const data = safeJson(body);
     const messageId = text(data?.messageId) || text(data?.id) || text((data?.message as Record<string, unknown> | undefined)?.id);
@@ -687,14 +698,23 @@ function buildLeadEmailCopy(record: Record<string, unknown>): { subject: string;
   const name = text(contact.firstName) || splitName(text(contact.name)).first || "there";
   const businessName = text(business.name);
   const source = text(record.source) || "asksaul.ai";
-  const routeLabel = sourceToBookingSource(source).replace(/_/g, " ");
+  const isMap = source.includes("automation-map") || source.includes("proposal");
+  const services = arrayOfStrings(record.services_requested);
+  const serviceLabels: Record<string, string> = {
+    "ai-assistant": "AI assistant / chatbot", website: "website build or redesign",
+    marketing: "marketing automation / CRM", automation: "workflow automation",
+    "voice-agent": "AI phone agent", "custom-app": "custom app", "not-sure": "help choosing the first system",
+  };
+  const timelineLabels: Record<string, string> = {
+    asap: "as soon as possible", "1-2-weeks": "1 to 2 weeks", "1-2-months": "1 to 2 months", exploring: "just exploring",
+  };
   const contextLines = [
     businessName ? `Business: ${businessName}` : undefined,
     text(business.industry) ? `Industry: ${text(business.industry)}` : undefined,
     text(voiceAgent.serviceType) ? `Service type: ${text(voiceAgent.serviceType)}` : undefined,
     text(business.serviceArea) ? `Service area: ${text(business.serviceArea)}` : undefined,
-    Array.isArray(record.services_requested) ? `Services requested: ${record.services_requested.join(", ")}` : undefined,
-    text(record.timeline) ? `Timeline: ${text(record.timeline)}` : undefined,
+    services.length ? `Interested in: ${services.map((service) => serviceLabels[service] || service).join(", ")}` : undefined,
+    text(record.timeline) ? `Timeline: ${timelineLabels[text(record.timeline)!] || text(record.timeline)}` : undefined,
     text(record.budget) ? `Budget: ${text(record.budget)}` : undefined,
     text(voiceAgent.missedCallPain) ? `Pain point: ${text(voiceAgent.missedCallPain)}` : undefined,
     text(record.notes) ? `Notes: ${text(record.notes)}` : undefined,
@@ -702,17 +722,26 @@ function buildLeadEmailCopy(record: Record<string, unknown>): { subject: string;
 
   if (source.includes("audit")) return buildAuditEmailCopy(record, name);
 
-  const subject = source.includes("voice-agent") ? "Got your AskSaul voice-agent request" : "Got your AskSaul assessment";
+  const subject = isMap ? "Your Automation Map request is with Gregory" : source.includes("voice-agent") ? "Your AskSaul phone-agent request is with Gregory" : "Gregory has your AskSaul request";
   const textBody = [
     `Hi ${name},`,
     "",
-    `Thanks for filling out the ${routeLabel} form. Gregory has the context now and can review where AskSaul may be useful before following up.`,
+    isMap
+      ? "Thanks for sharing where work gets stuck. Gregory will review your answers, identify the 1–3 workflows most worth automating first, and email you a scoped proposal within 24 hours."
+      : "Thanks for sharing what you need. Gregory has your request and will review the best next step for your business.",
     "",
     contextLines.length
       ? `What came through:\n${contextLines.map((line) => `- ${line}`).join("\n")}`
       : "What came through: you are exploring whether an AI workflow or phone agent can help capture more intent and reduce follow-up gaps.",
     "",
-    `If texting is easier, text us at (720) 292-7554. If you want to hear the provider voice demo, call Saul at ${DEMO_PHONE_DISPLAY}.`,
+    ...(services.includes("voice-agent") ? [
+      "Roofing or HVAC shop in the Front Range? Ask Gregory about the Founding Client Program: setup and build on us, a 12-month rate lock, and month 2 free if Saul misses the qualified-lead target agreed before go-live. The initial term is 90 days, then month-to-month. City exclusivity applies to marketing + Saul packages only. Gregory confirms fit and city availability with you.",
+      "Program details: https://asksaul.ai/voice-agents#founding",
+      "",
+    ] : []),
+    `Want to talk it through sooner? Book a 15-minute call with Gregory: ${getAskSaulBookingUrl()}`,
+    "",
+    `You can also reply to this email. To hear Saul answer a call, try the demo line at ${DEMO_PHONE_DISPLAY}.`,
     "",
     "Talk soon,",
     "Saul from AskSaul.ai",
@@ -748,9 +777,15 @@ function buildAuditEmailCopy(record: Record<string, unknown>, name: string): { s
     `Got your audit request for ${businessName}. Here's what we'll check:`,
     checks.map((line) => `- ${line}`).join("\n"),
     "",
-    "Every line comes from a check we actually run. The one-page report comes to this inbox, and you keep it either way. No pitch attached.",
+    "This email confirms your request. Gregory will review your business, run the checks, and email a one-page report with the top 3 fixes to this address. If we need anything else or need to confirm timing, we'll reply here. You keep the report whether or not you work with us.",
     "",
-    `Want to hear Saul in the meantime? Call the demo line at ${DEMO_PHONE_DISPLAY}. Questions? Reply here or text (720) 292-7554.`,
+    audit.afterHoursTestOk === true
+      ? "You gave permission for one after-hours test call. We'll use it only to check what a homeowner hears."
+      : "We will only place an after-hours test call with your permission. You have not authorized one with this request.",
+    "",
+    `Want to talk through your shop's call flow? Book a 15-minute call with Gregory: ${getAskSaulBookingUrl()}`,
+    "",
+    `Want to hear Saul in the meantime? Call the demo line at ${DEMO_PHONE_DISPLAY}. Questions? Reply to this email.`,
     "",
     "Talk soon,",
     "Saul from AskSaul.ai",
@@ -812,7 +847,7 @@ function normalizeForGhl(payload: unknown, locationId: string): {
     [
       ASK_SAUL_FIELD_IDS.payPerCloseTerms,
       tags.includes("voice-agent-lead")
-        ? "Free setup/no contract/pay-per-close framing to be confirmed by Gregory"
+        ? "Founding Client Program for qualified Front Range roofing and HVAC shops: setup and build on us; rate locked for 12 months; 90 days then month-to-month; month 2 free if the agreed qualified-lead target is missed in the first 30 days. City exclusivity on marketing + Saul packages only. Gregory confirms fit, city availability, package and lead target before go-live."
         : undefined,
     ],
     [
