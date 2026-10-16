@@ -1,413 +1,338 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
-import Button from "@/components/ui/Button";
-import Input from "@/components/ui/Input";
-import type { ChatLeadData } from "@/lib/validation";
+import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import { ArrowUp, Mic, MicOff, MessageSquare, PhoneOff, RotateCcw, X } from "lucide-react";
+import { useSalesAgent, type ChatMessage } from "./useSalesAgent";
+import type { ChatAction } from "@/lib/sales-agent/actions";
 
-type Step = "chat" | "capture";
-type HandoffIntent = "waste-demo" | "automation-map" | "book-demo" | "send-context";
-type ChatAction = {
-  id: "waste-demos" | "automation-map" | "book-demo" | "send-context";
-  label: string;
-  description?: string;
-  kind: "link" | "capture";
-  href?: string;
-  handoffIntent?: HandoffIntent;
-};
+const TEASER_KEY = "asksaul-chat-teaser-dismissed";
 
-interface Message {
-  role: "user" | "assistant";
-  content: string;
+function startersFor(path: string): { greeting: string; chips: string[] } {
+  if (path.startsWith("/voice-agents/roofing"))
+    return {
+      greeting: "Hey, I'm Saul, the AI you'd be hiring. Ask me how I'd handle your storm calls, or what the founding program includes.",
+      chips: ["How would you handle a hail-day rush?", "What does it cost?", "Is my city still open?"],
+    };
+  if (path.startsWith("/voice-agents/hvac"))
+    return {
+      greeting: "Hey, I'm Saul, the AI you'd be hiring. Ask me how I'd handle a 9 p.m. no-heat call, or what the founding program includes.",
+      chips: ["How do you handle a no-heat call?", "What does it cost?", "Is my city still open?"],
+    };
+  if (path.startsWith("/voice-agents/waste"))
+    return {
+      greeting: "Hey, I'm Saul. I answer dumpster and roll-off calls for operators. Want to see how the quote intake works?",
+      chips: ["How does dumpster intake work?", "Can I test a live demo?", "What does it cost?"],
+    };
+  if (path.startsWith("/voice-agents") || path.startsWith("/audit"))
+    return {
+      greeting: "Hey, I'm Saul, the AI that answers the calls your crew can't. This chat is a live demo. What do you want to know?",
+      chips: ["What's the founding program?", "What does it cost?", "How does the free audit work?"],
+    };
+  return {
+    greeting: "Hey, I'm Saul, AskSaul's AI assistant. Tell me what your business does and what's slowing you down, and I'll point you to what fits.",
+    chips: ["I run a roofing or HVAC company", "What can you automate for us?", "I want to talk to Gregory"],
+  };
 }
 
-const BOOKING_URL =
-  "https://api.leadconnectorhq.com/widget/bookings/bookwithusdigitalmarketing-3d837e4b-c899-44ff-b612-275f498c2128";
-
-const GREETING =
-  "Hey, I'm Saul. Ask me anything about voice agents, Automation Maps, websites, follow-up systems, or what Gregory should build first.";
-
-const QUICK_PROMPTS = [
-  "Show me waste voice-agent demos",
-  "Help me map what to automate",
-  "What can Saul do for missed calls?",
-  "I want to book a demo",
-];
-
-const DEFAULT_ACTIONS: ChatAction[] = [
-  {
-    id: "waste-demos",
-    label: "Test live waste demos",
-    description: "Dumpster, roll-off, and junk-removal voice-agent examples.",
-    kind: "link",
-    href: "/voice-agents/waste#live-demos",
-    handoffIntent: "waste-demo",
-  },
-  {
-    id: "automation-map",
-    label: "Get Automation Map",
-    description: "3-minute intake to find your highest-leverage workflows.",
-    kind: "link",
-    href: "/build-your-proposal",
-    handoffIntent: "automation-map",
-  },
-  {
-    id: "book-demo",
-    label: "Book a demo",
-    description: "Send this context, then open Gregory's calendar.",
-    kind: "capture",
-    handoffIntent: "book-demo",
-  },
-];
-
-function parseLinks(text: string): React.ReactNode[] {
-  const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
-  const parts: React.ReactNode[] = [];
-  let lastIndex = 0;
-  let match: RegExpExecArray | null;
-
-  while ((match = linkRegex.exec(text)) !== null) {
-    if (match.index > lastIndex) parts.push(text.slice(lastIndex, match.index));
-    parts.push(
-      <a key={match.index} href={match[2]} className="text-cyan underline underline-offset-2 hover:text-cyan/80 transition-colors">
-        {match[1]}
-      </a>
-    );
-    lastIndex = match.index + match[0].length;
+function renderInline(text: string, keyBase: string) {
+  // **bold**, [label](url), bare /paths, and phone numbers.
+  const pattern = /(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\)|(?<![\w.])\/[a-z0-9][a-z0-9\-/#]*[a-z0-9]|\(\d{3}\) \d{3}-\d{4}|\d{3}\.\d{3}\.\d{4})/gi;
+  const out: React.ReactNode[] = [];
+  let last = 0;
+  for (const m of text.matchAll(pattern)) {
+    const i = m.index ?? 0;
+    if (i > last) out.push(text.slice(last, i));
+    const tok = m[0];
+    const key = `${keyBase}-${i}`;
+    if (tok.startsWith("**")) out.push(<strong key={key} className="font-semibold text-cloud">{tok.slice(2, -2)}</strong>);
+    else if (tok.startsWith("[")) {
+      const [, label, href] = tok.match(/\[([^\]]+)\]\(([^)]+)\)/) ?? [];
+      out.push(
+        <a key={key} href={href} className="font-medium text-cyan underline underline-offset-2" {...(href?.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
+          {label}
+        </a>
+      );
+    } else if (tok.startsWith("/")) out.push(<Link key={key} href={tok} className="font-medium text-cyan underline underline-offset-2">{tok}</Link>);
+    else out.push(<a key={key} href={`tel:+1${tok.replace(/\D/g, "")}`} className="font-medium text-cyan underline underline-offset-2">{tok}</a>);
+    last = i + tok.length;
   }
-
-  if (lastIndex < text.length) parts.push(text.slice(lastIndex));
-  return parts;
+  if (last < text.length) out.push(text.slice(last));
+  return out;
 }
 
-function Spinner({ className = "" }: { className?: string }) {
+function RichText({ text }: { text: string }) {
+  const blocks = text.split(/\n{2,}/);
   return (
-    <svg className={`animate-spin ${className}`} viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-    </svg>
+    <div className="space-y-2.5">
+      {blocks.map((block, b) => {
+        const lines = block.split("\n");
+        const isList = lines.every((l) => /^\s*([-*•]|\d+[.)])\s+/.test(l));
+        if (isList)
+          return (
+            <ul key={b} className="space-y-1.5">
+              {lines.map((l, i) => (
+                <li key={i} className="flex gap-2">
+                  <span className="mt-[0.6em] h-1.5 w-1.5 shrink-0 rounded-full bg-cyan" aria-hidden="true" />
+                  <span>{renderInline(l.replace(/^\s*([-*•]|\d+[.)])\s+/, ""), `${b}-${i}`)}</span>
+                </li>
+              ))}
+            </ul>
+          );
+        return <p key={b}>{lines.map((l, i) => <span key={i}>{i > 0 && <br />}{renderInline(l, `${b}-${i}`)}</span>)}</p>;
+      })}
+    </div>
   );
 }
 
-function MessageBubble({ message }: { message: Message }) {
-  const isAssistant = message.role === "assistant";
+function ActionButtons({ actions }: { actions: ChatAction[] }) {
   return (
-    <div className={`flex ${isAssistant ? "justify-start" : "justify-end"}`}>
-      <div
-        className={`max-w-[85%] px-4 py-3 text-base leading-relaxed ${
-          isAssistant
-            ? "bg-graphite text-cloud rounded-2xl rounded-tl-none"
-            : "bg-cyan/15 border border-cyan/30 text-cloud rounded-2xl rounded-tr-none"
-        }`}
-      >
-        {isAssistant ? parseLinks(message.content) : message.content}
+    <div className="mt-3 flex flex-wrap gap-2">
+      {actions.map((a) => {
+        const cls = `inline-flex items-center rounded-full px-3.5 py-2 text-sm font-semibold transition-colors ${
+          a.primary ? "bg-cyan text-obsidian hover:bg-cyan/90" : "border border-cyan/40 text-cyan hover:bg-cyan/10"
+        }`;
+        if (a.external || a.href.startsWith("tel:"))
+          return (
+            <a key={a.id} href={a.href} className={cls} {...(a.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
+              {a.label}
+            </a>
+          );
+        return (
+          <Link key={a.id} href={a.href} className={cls}>
+            {a.label}
+          </Link>
+        );
+      })}
+    </div>
+  );
+}
+
+function Bubble({ m }: { m: ChatMessage }) {
+  if (m.role === "user")
+    return (
+      <div className="flex justify-end">
+        <div className="max-w-[85%] rounded-2xl rounded-br-md bg-cyan px-4 py-2.5 text-[15px] leading-relaxed text-obsidian">{m.text}</div>
+      </div>
+    );
+  return (
+    <div className="flex gap-2.5">
+      <span className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-cyan/15 font-display text-xs font-bold text-cyan ring-1 ring-cyan/30" aria-hidden="true">
+        S
+      </span>
+      <div className="min-w-0 max-w-[88%]">
+        <div className={`rounded-2xl rounded-tl-md px-4 py-2.5 text-[15px] leading-relaxed ${m.notice ? "bg-warning/10 text-slate" : "bg-graphite text-slate"}`}>
+          <RichText text={m.text} />
+          {m.streaming && <span className="ml-0.5 inline-block h-4 w-1.5 animate-pulse rounded-sm bg-cyan align-middle" aria-hidden="true" />}
+        </div>
+        {!m.streaming && m.actions && m.actions.length > 0 && <ActionButtons actions={m.actions} />}
+      </div>
+    </div>
+  );
+}
+
+function Typing() {
+  return (
+    <div className="flex gap-2.5" aria-label="Saul is typing">
+      <span className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-cyan/15 font-display text-xs font-bold text-cyan ring-1 ring-cyan/30">S</span>
+      <div className="flex items-center gap-1 rounded-2xl rounded-tl-md bg-graphite px-4 py-3.5">
+        {[0, 150, 300].map((d) => (
+          <span key={d} className="h-2 w-2 animate-bounce rounded-full bg-dim" style={{ animationDelay: `${d}ms` }} />
+        ))}
       </div>
     </div>
   );
 }
 
 export default function ChatWidget() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [step, setStep] = useState<Step>("chat");
-  const [captureIntent, setCaptureIntent] = useState<HandoffIntent>("send-context");
-  const [suggestedActions, setSuggestedActions] = useState<ChatAction[]>(DEFAULT_ACTIONS);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [businessName, setBusinessName] = useState("");
-  const [nameError, setNameError] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [transcript, setTranscript] = useState<Message[]>([{ role: "assistant", content: GREETING }]);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isThinking, setIsThinking] = useState(false);
-  const [currentMessage, setCurrentMessage] = useState("");
-  const [submitError, setSubmitError] = useState("");
-  const [leadSubmitted, setLeadSubmitted] = useState(false);
-  const [bookingUrl, setBookingUrl] = useState(BOOKING_URL);
-
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const pathname = usePathname() ?? "/";
+  const [open, setOpen] = useState(false);
+  const [teaser, setTeaser] = useState(false);
+  const [input, setInput] = useState("");
+  const { messages, mode, thinking, speaking, send, startVoice, stopVoice, reset } = useSalesAgent();
+  const scroller = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const { greeting, chips } = startersFor(pathname);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [transcript, suggestedActions, step]);
-
-  useEffect(() => {
-    if (isOpen) setTimeout(() => closeButtonRef.current?.focus(), 50);
-  }, [isOpen]);
-
-  const handleKeyDown = useCallback(
-    (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isOpen) setIsOpen(false);
-    },
-    [isOpen]
-  );
-
-  useEffect(() => {
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [handleKeyDown]);
-
-  function validateCapture(): boolean {
-    let valid = true;
-    if (!name.trim()) {
-      setNameError("Name is required");
-      valid = false;
-    } else setNameError("");
-
-    if (!email.trim()) {
-      setEmailError("Email is required");
-      valid = false;
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
-      setEmailError("Enter a valid email");
-      valid = false;
-    } else setEmailError("");
-
-    return valid;
-  }
-
-  async function sendFreeformMessage(override?: string) {
-    const value = (override ?? currentMessage).trim();
-    if (!value || isSubmitting || isThinking) return;
-
-    const nextTranscript: Message[] = [...transcript, { role: "user", content: value }];
-    setTranscript(nextTranscript);
-    setCurrentMessage("");
-    setIsThinking(true);
-    setSubmitError("");
-    setStep("chat");
-
+    if (pathname.startsWith("/admin")) return;
+    let dismissed = false;
     try {
-      const res = await fetch("/api/chat/respond", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: nextTranscript }),
-      });
-      if (!res.ok) throw new Error("chat response failed");
+      dismissed = sessionStorage.getItem(TEASER_KEY) === "1";
+    } catch {}
+    if (dismissed) return;
+    const t = setTimeout(() => setTeaser(true), pathname.startsWith("/voice-agents") || pathname.startsWith("/audit") ? 9000 : 20000);
+    return () => clearTimeout(t);
+  }, [pathname]);
 
-      const json = (await res.json()) as { reply?: string; actions?: ChatAction[] };
-      setTranscript((prev) => [
-        ...prev,
-        {
-          role: "assistant",
-          content:
-            json.reply ||
-            "I can help route you. Tell me if the leak is missed calls, slow follow-up, admin drag, or website conversion.",
-        },
-      ]);
-      setSuggestedActions(json.actions?.length ? json.actions : DEFAULT_ACTIONS);
-    } catch {
-      setTranscript((prev) => [
-        ...prev,
-        {
-          role: "assistant",
-          content:
-            "I couldn't reach the live chat brain, but I can still point you around: start with [Get Your Automation Map](/build-your-proposal), test [waste voice demos](/voice-agents/waste), or send Gregory this chat context.",
-        },
-      ]);
-      setSuggestedActions(DEFAULT_ACTIONS);
-    } finally {
-      setIsThinking(false);
-    }
-  }
+  useEffect(() => {
+    scroller.current?.scrollTo({ top: scroller.current.scrollHeight, behavior: "smooth" });
+  }, [messages, thinking, open]);
 
-  function handleAction(action: ChatAction) {
-    if (action.kind === "link" && action.href) {
-      window.location.href = action.href;
-      return;
-    }
+  useEffect(() => {
+    if (open) setTimeout(() => inputRef.current?.focus(), 50);
+  }, [open]);
 
-    const intent = action.handoffIntent ?? "send-context";
-    setCaptureIntent(intent);
-    setStep("capture");
-    setLeadSubmitted(false);
-    setSubmitError("");
-    setTranscript((prev) => [
-      ...prev,
-      {
-        role: "assistant",
-        content:
-          intent === "book-demo"
-            ? "Yes. I can send Gregory this chat context first, then open the demo booking link. What name and email should he use?"
-            : "Absolutely. I can send Gregory this chat context so he has the details before following up. What name and email should he use?",
-      },
-    ]);
-  }
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
-  async function handleCaptureSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    if (!validateCapture()) return;
+  if (pathname.startsWith("/admin")) return null;
 
-    const successText =
-      captureIntent === "book-demo"
-        ? "Got it. I sent this context to Gregory. You can book the demo now."
-        : "Got it. I sent this context to Gregory so he can follow up with the right details.";
-
-    const fullTranscript: Message[] = [...transcript, { role: "assistant", content: successText }];
-    setTranscript(fullTranscript);
-    setIsSubmitting(true);
-    setSubmitError("");
-
-    const payload: ChatLeadData = {
-      name: name.trim(),
-      email: email.trim(),
-      phone: phone.trim() || undefined,
-      businessName: businessName.trim() || undefined,
-      sourcePath: window.location.pathname,
-      chatTranscript: fullTranscript,
-      initialIntent: captureIntent,
-      handoffIntent: captureIntent,
-    };
-
+  const dismissTeaser = () => {
+    setTeaser(false);
     try {
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+      sessionStorage.setItem(TEASER_KEY, "1");
+    } catch {}
+  };
 
-      if (!res.ok) {
-        const json = await res.json().catch(() => ({}));
-        setSubmitError((json as { error?: string }).error || "Couldn't send your details. You can still browse the site.");
-      } else {
-        const json = (await res.json().catch(() => ({}))) as { bookingUrl?: string };
-        setBookingUrl(json.bookingUrl || BOOKING_URL);
-        setLeadSubmitted(true);
-        setStep("chat");
-        setSuggestedActions(
-          captureIntent === "book-demo"
-            ? [
-                {
-                  id: "book-demo",
-                  label: "Open booking calendar",
-                  description: "Pick a time with Gregory.",
-                  kind: "link",
-                  href: json.bookingUrl || BOOKING_URL,
-                  handoffIntent: "book-demo",
-                },
-              ]
-            : DEFAULT_ACTIONS
-        );
-      }
-    } catch {
-      setSubmitError("Network error. Your details weren't saved, but you can keep chatting or use the Automation Map.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  }
+  const openChat = () => {
+    dismissTeaser();
+    setOpen(true);
+  };
+
+  const submit = (text: string) => {
+    if (!text.trim() || thinking) return;
+    setInput("");
+    void send(text);
+  };
 
   return (
     <>
-      {!isOpen && (
-        <div className="chat-launcher fixed bottom-6 right-6 z-50">
-          <span className="absolute inset-0 rounded-full bg-cyan/30 animate-ping" aria-hidden="true" />
+      {!open && (
+        <div className="chat-launcher fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+          {teaser && (
+            <div className="rise relative max-w-[260px] rounded-2xl rounded-br-md border border-wire bg-carbon p-4 pr-8 text-sm text-slate shadow-[0_20px_60px_rgba(0,0,0,0.5)]">
+              <button onClick={dismissTeaser} className="absolute right-2 top-2 p-1 text-dim hover:text-cloud" aria-label="Dismiss">
+                <X className="h-3.5 w-3.5" />
+              </button>
+              <button onClick={openChat} className="text-left">
+                <span className="font-semibold text-cloud">Questions? Ask Saul.</span> I&apos;m the AI you&apos;d be hiring, so this chat is the demo.
+              </button>
+            </div>
+          )}
           <button
-            onClick={() => setIsOpen(true)}
-            aria-label="Open chat with Saul"
-            className="relative flex items-center justify-center w-14 h-14 bg-cyan rounded-full shadow-lg hover:bg-cyan/90 hover:shadow-[0_0_20px_rgba(0,212,170,0.4)] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan/60 focus-visible:ring-offset-2 focus-visible:ring-offset-obsidian cursor-pointer"
+            onClick={openChat}
+            className="group relative flex h-14 items-center gap-2 rounded-full bg-cyan pl-4 pr-5 font-semibold text-obsidian shadow-[0_10px_40px_rgba(0,212,170,0.45)] transition-transform hover:scale-[1.03]"
+            aria-label="Chat with Saul"
           >
-            <svg className="w-6 h-6 text-obsidian" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-            </svg>
+            <span className="ring-pulse absolute inset-0 rounded-full bg-cyan/40" aria-hidden="true" />
+            <MessageSquare className="relative h-5 w-5" />
+            <span className="relative hidden sm:inline">Ask Saul</span>
           </button>
         </div>
       )}
 
-      {isOpen && (
-        <div role="dialog" aria-modal="true" aria-label="Chat with Saul" className="fixed bottom-6 right-6 z-50 w-[calc(100vw-3rem)] max-w-[420px] flex flex-col" style={{ maxHeight: "620px" }}>
-          <div className="flex flex-col h-full bg-carbon/95 backdrop-blur-xl border border-wire/60 rounded-2xl shadow-2xl overflow-hidden">
-            <div className="flex items-center justify-between px-4 py-3 border-b border-wire/60 shrink-0">
-              <div className="flex items-center gap-2.5">
-                <span className="w-2 h-2 rounded-full bg-cyan shrink-0" aria-hidden="true" />
-                <span className="font-display font-semibold text-cloud text-sm">Chat with Saul</span>
-                <span className="rounded-full border border-cyan/25 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-cyan">Live assistant</span>
+      {open && (
+        <div
+          role="dialog"
+          aria-label="Chat with Saul"
+          className="fixed inset-0 z-50 flex flex-col bg-obsidian sm:inset-auto sm:bottom-6 sm:right-6 sm:h-[min(680px,calc(100vh-3rem))] sm:w-[400px] sm:overflow-hidden sm:rounded-3xl sm:border sm:border-wire sm:shadow-[0_30px_100px_rgba(0,0,0,0.6)]"
+        >
+          <header className="flex items-center gap-3 border-b border-wire bg-carbon px-4 py-3.5">
+            <span className="relative flex h-10 w-10 items-center justify-center rounded-full bg-cyan/15 font-display font-bold text-cyan ring-1 ring-cyan/40">
+              S
+              <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-carbon bg-success" />
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="font-semibold leading-tight text-cloud">Saul</p>
+              <p className="truncate text-xs text-dim">AI assistant · replies instantly</p>
+            </div>
+            {messages.length > 0 && mode === "text" && (
+              <button onClick={() => void reset()} className="rounded-full p-2 text-dim hover:bg-graphite hover:text-cloud" aria-label="Start over" title="Start over">
+                <RotateCcw className="h-4 w-4" />
+              </button>
+            )}
+            <button
+              onClick={() => void (mode === "voice" ? stopVoice() : startVoice())}
+              className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
+                mode === "voice" ? "bg-error/15 text-error" : "bg-cyan/10 text-cyan hover:bg-cyan/20"
+              }`}
+              aria-label={mode === "voice" ? "End voice" : "Talk to Saul by voice"}
+            >
+              {mode === "voice" ? <PhoneOff className="h-3.5 w-3.5" /> : <Mic className="h-3.5 w-3.5" />}
+              {mode === "voice" ? "End" : "Talk"}
+            </button>
+            <button onClick={() => setOpen(false)} className="rounded-full p-2 text-dim hover:bg-graphite hover:text-cloud" aria-label="Close chat">
+              <X className="h-5 w-5" />
+            </button>
+          </header>
+
+          <div ref={scroller} className="flex-1 space-y-4 overflow-y-auto overscroll-contain px-4 py-5" aria-live="polite">
+            <Bubble m={{ id: "greeting", role: "assistant", text: greeting }} />
+            {messages.length === 0 && (
+              <div className="flex flex-wrap gap-2 pl-9">
+                {chips.map((c) => (
+                  <button key={c} onClick={() => submit(c)} className="rounded-full border border-wire bg-carbon px-3.5 py-2 text-left text-sm text-cloud transition-colors hover:border-cyan/50">
+                    {c}
+                  </button>
+                ))}
               </div>
-              <button ref={closeButtonRef} onClick={() => setIsOpen(false)} aria-label="Close chat" className="flex items-center justify-center w-7 h-7 rounded-lg text-slate hover:text-cloud hover:bg-graphite transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan/60 cursor-pointer">
-                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <line x1="18" y1="6" x2="6" y2="18" />
-                  <line x1="6" y1="6" x2="18" y2="18" />
-                </svg>
+            )}
+            {messages.map((m) => (
+              <Bubble key={m.id} m={m} />
+            ))}
+            {thinking && <Typing />}
+          </div>
+
+          {mode === "voice" ? (
+            <div className="flex flex-col items-center gap-3 border-t border-wire bg-carbon px-4 py-5">
+              <div className="flex h-10 items-end gap-1" aria-hidden="true">
+                {Array.from({ length: 9 }, (_, i) => (
+                  <span
+                    key={i}
+                    className={`w-1.5 rounded-full bg-cyan ${speaking ? "wave-bar" : ""}`}
+                    style={{ height: speaking ? `${30 + ((i * 37) % 70)}%` : "20%", ["--d" as string]: `${i * 90}ms` }}
+                  />
+                ))}
+              </div>
+              <p className="text-sm text-slate">{speaking ? "Saul is talking…" : "Listening. Go ahead and talk."}</p>
+              <button onClick={() => void stopVoice()} className="flex items-center gap-2 rounded-full bg-error/15 px-4 py-2 text-sm font-semibold text-error">
+                <MicOff className="h-4 w-4" /> End voice
               </button>
             </div>
-
-            <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3 min-h-0" aria-live="polite" aria-atomic="false">
-              {transcript.map((msg, i) => <MessageBubble key={i} message={msg} />)}
-
-              {transcript.length === 1 && step === "chat" && (
-                <div className="flex flex-wrap gap-2 pt-1">
-                  {QUICK_PROMPTS.map((label) => (
-                    <button key={label} onClick={() => void sendFreeformMessage(label)} className="border border-cyan/40 text-cyan text-sm rounded-full px-4 py-2 hover:bg-cyan/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan/60 cursor-pointer">
-                      {label}
-                    </button>
-                  ))}
-                </div>
-              )}
-
-              {step === "chat" && suggestedActions.length > 0 && transcript.length > 1 && (
-                <div className="grid gap-2 pt-1">
-                  {suggestedActions.map((action) => (
-                    <button key={action.id} onClick={() => handleAction(action)} className="text-left rounded-2xl border border-wire bg-obsidian/55 p-3 hover:border-cyan/35 hover:bg-cyan/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan/60">
-                      <span className="block text-sm font-semibold text-cloud">{action.label}</span>
-                      {action.description ? <span className="mt-1 block text-xs leading-relaxed text-slate">{action.description}</span> : null}
-                    </button>
-                  ))}
-                </div>
-              )}
-
-              {step === "capture" && (
-                <div className="pt-1">
-                  <form onSubmit={handleCaptureSubmit} className="space-y-3" noValidate>
-                    <Input id="chat-name" name="chat-name" label="Name" placeholder="Your name" autoComplete="name" value={name} onChange={(e) => setName(e.target.value)} error={nameError} className="text-sm py-2" />
-                    <Input id="chat-email" name="chat-email" type="email" label="Email" placeholder="you@example.com" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} error={emailError} className="text-sm py-2" />
-                    <Input id="chat-phone" name="chat-phone" type="tel" label="Phone (optional)" placeholder="Best callback number" autoComplete="tel" value={phone} onChange={(e) => setPhone(e.target.value)} className="text-sm py-2" />
-                    <Input id="chat-business" name="chat-business" label="Business (optional)" placeholder="Company / market" autoComplete="organization" value={businessName} onChange={(e) => setBusinessName(e.target.value)} className="text-sm py-2" />
-                    <div className="grid grid-cols-2 gap-2">
-                      <Button type="button" variant="ghost" size="sm" className="w-full" onClick={() => setStep("chat")}>Keep chatting</Button>
-                      <Button type="submit" variant="primary" size="sm" className="w-full" disabled={isSubmitting}>{isSubmitting ? <><Spinner className="w-3.5 h-3.5" />Sending...</> : "Send context"}</Button>
-                    </div>
-                  </form>
-                </div>
-              )}
-
-              {submitError && <div className="text-xs text-error bg-error/10 border border-error/20 rounded-lg px-3 py-2">{submitError}</div>}
-              {isSubmitting && <div className="flex items-center gap-2 text-xs text-slate"><Spinner className="w-3 h-3" />Saving your details...</div>}
-              {isThinking && <div className="flex items-center gap-2 text-xs text-slate"><Spinner className="w-3 h-3" />Saul is thinking...</div>}
-              {leadSubmitted && (
-                <div className="rounded-2xl border border-cyan/25 bg-cyan/10 p-3 text-sm text-cloud">
-                  Context sent to Gregory. {captureIntent === "book-demo" ? <a href={bookingUrl} className="font-semibold text-cyan underline underline-offset-2">Open the booking calendar.</a> : "He has the transcript now."}
-                </div>
-              )}
-              <div ref={messagesEndRef} />
-            </div>
-
-            <div className="px-4 py-3 border-t border-wire/60 shrink-0">
-              <div className="flex items-center gap-2">
-                <input
-                  type="text"
-                  placeholder={step === "capture" ? "Finish or cancel the form above..." : "Ask Saul anything..."}
-                  disabled={step === "capture" || isSubmitting || isThinking}
-                  aria-label="Ask Saul a question"
-                  value={currentMessage}
-                  onChange={(e) => setCurrentMessage(e.target.value)}
-                  className="flex-1 bg-graphite border border-wire rounded-lg px-3 py-2 text-sm text-cloud placeholder:text-dim focus:outline-none focus:border-cyan/60 focus:ring-1 focus:ring-cyan/30 transition-colors duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+          ) : (
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                submit(input);
+              }}
+              className="border-t border-wire bg-carbon p-3"
+            >
+              <div className="flex items-end gap-2 rounded-2xl border border-wire bg-obsidian p-1.5 pl-4 focus-within:border-cyan/60">
+                <textarea
+                  ref={inputRef}
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => {
-                    if (e.key === "Enter" && !e.shiftKey && step !== "capture" && !isSubmitting && !isThinking) {
+                    if (e.key === "Enter" && !e.shiftKey) {
                       e.preventDefault();
-                      void sendFreeformMessage();
+                      submit(input);
                     }
                   }}
+                  rows={1}
+                  maxLength={1500}
+                  placeholder="Ask anything about AskSaul…"
+                  aria-label="Message Saul"
+                  className="max-h-32 flex-1 resize-none bg-transparent py-2 text-[15px] text-cloud placeholder:text-dim focus:outline-none"
                 />
-                <button aria-label="Send message" disabled={step === "capture" || isSubmitting || isThinking || !currentMessage.trim()} className="flex items-center justify-center w-9 h-9 rounded-lg bg-cyan/15 border border-cyan/30 text-cyan hover:bg-cyan/25 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan/60 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer" onClick={() => void sendFreeformMessage()}>
-                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <line x1="22" y1="2" x2="11" y2="13" />
-                    <polygon points="22 2 15 22 11 13 2 9 22 2" />
-                  </svg>
+                <button
+                  type="submit"
+                  disabled={!input.trim() || thinking}
+                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-cyan text-obsidian transition-opacity disabled:opacity-30"
+                  aria-label="Send"
+                >
+                  <ArrowUp className="h-5 w-5" />
                 </button>
               </div>
-            </div>
-
-            <div className="pb-2 shrink-0"><p className="text-dim text-xs text-center">Powered by AskSaul</p></div>
-          </div>
+              <p className="mt-2 px-1 text-center text-[11px] text-dim">
+                Saul is an AI and can make mistakes. Chats may be saved to follow up. <Link href="/privacy" className="underline">Privacy</Link>
+              </p>
+            </form>
+          )}
         </div>
       )}
     </>
