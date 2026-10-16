@@ -14,7 +14,7 @@ The Automation Map remains a general-services intake. Its phone-agent guidance a
 
 ## Verification
 
-- `npm test`: 7 regression tests passed, including cross-flow confirmations, same-flow retries, current CRM terms, failed-email retries, consent, and legacy chat suppression.
+- `npm test`: 9 regression tests passed, including cross-flow confirmations, same-flow retries, current CRM terms, failed-email retries, consent, unrelated tag preservation, both submission orders, and legacy chat suppression.
 - Changed files pass ESLint and `tsc --noEmit`.
 - `npm run build`: passed (Next.js 16.2.7, 61 generated pages).
 - Independent review: no blocking security or logic issues.
