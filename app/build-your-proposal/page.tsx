@@ -22,6 +22,7 @@ import {
   VERTICAL_SLUG_TO_INDUSTRY,
 } from "@/lib/validation";
 import type { ProposalFormData, ServiceOption } from "@/lib/validation";
+import { getAttribution, trackLead } from "@/lib/analytics";
 
 const STEP_LABELS = [
   "What do you need?",
@@ -165,11 +166,12 @@ export default function BuildYourProposalPage() {
       const res = await fetch("/api/proposal", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, attribution: getAttribution() }),
       });
       if (!res.ok) throw new Error("Submission failed");
       sessionStorage.removeItem(STORAGE_KEY);
       setSubmitted(true);
+      trackLead("automation_map");
     } catch {
       setSubmitError("Something went wrong. Please try again or email us directly.");
     } finally {

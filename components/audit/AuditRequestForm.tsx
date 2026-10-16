@@ -6,6 +6,7 @@ import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import { auditRequestSchema, type AuditRequestData } from "@/lib/validation";
 import { BOOKING_URL, BRAND, DEMO_PHONE_DISPLAY } from "@/lib/constants";
+import { getAttribution, trackLead } from "@/lib/analytics";
 
 const TRADES = ["Roofing", "HVAC", "Other"] as const;
 const CITIES = ["Denver metro", "Boulder", "Fort Collins", "Colorado Springs", "Loveland", "Longmont", "Greeley", "Other"];
@@ -91,10 +92,11 @@ export default function AuditRequestForm() {
       const res = await fetch("/api/audit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(parsed.data),
+        body: JSON.stringify({ ...parsed.data, attribution: getAttribution() }),
       });
       if (!res.ok) throw new Error("Submission failed");
       setSubmitted(true);
+      trackLead("audit");
     } catch {
       setSubmitError(`Something went wrong saving this. Please call Saul at ${DEMO_PHONE_DISPLAY} or email ${BRAND.email}.`);
     } finally {

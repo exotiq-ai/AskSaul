@@ -1,10 +1,11 @@
 import Script from "next/script";
+import { ADS_ID, GA_ID } from "@/lib/analytics";
 
 export default function AnalyticsScripts() {
   const plausibleDomain = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
   const plausibleSrc = process.env.NEXT_PUBLIC_PLAUSIBLE_SRC || "https://plausible.io/js/script.js";
   const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
-  const gaId = process.env.NEXT_PUBLIC_GA_ID;
+  const tagId = GA_ID || ADS_ID;
 
   return (
     <>
@@ -22,14 +23,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </Script>
       ) : null}
 
-      {gaId ? (
+      {tagId ? (
         <>
-          <Script src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} strategy="afterInteractive" />
-          <Script id="ga4-base" strategy="afterInteractive">
+          <Script src={`https://www.googletagmanager.com/gtag/js?id=${tagId}`} strategy="afterInteractive" />
+          <Script id="gtag-base" strategy="afterInteractive">
             {`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
-gtag('config', '${gaId}');`}
+${GA_ID ? `gtag('config', '${GA_ID}');` : ""}
+${ADS_ID ? `gtag('config', '${ADS_ID}', { allow_enhanced_conversions: true });` : ""}`}
           </Script>
         </>
       ) : null}

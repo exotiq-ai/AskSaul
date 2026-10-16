@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { captureAttribution, trackPhoneClick } from "@/lib/analytics";
 
 type EventPayload = {
   category: string;
@@ -99,7 +100,9 @@ export default function ConversionTracker() {
     function onClick(event: MouseEvent) {
       if (!(event.target instanceof Element)) return;
       const payload = classifyClick(event.target);
-      if (payload) track(payload);
+      if (!payload) return;
+      if (payload.action === "phone_click") trackPhoneClick(payload.href?.replace("tel:", "") ?? "");
+      else track(payload);
     }
 
     function onSubmit(event: SubmitEvent) {
@@ -114,9 +117,11 @@ export default function ConversionTracker() {
           ? "voice_agent_form_submit"
           : "contact_form_submit";
 
-      track({ category: "conversion", action, label: formText, path });
+      // Attempt only. Real conversions fire from each form after the API confirms (lib/analytics trackLead).
+      track({ category: "engagement", action: `${action}_attempt`, label: formText, path });
     }
 
+    captureAttribution();
     document.addEventListener("click", onClick, { capture: true });
     document.addEventListener("submit", onSubmit, { capture: true });
 

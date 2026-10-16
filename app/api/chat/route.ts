@@ -2,6 +2,7 @@ import { type NextRequest } from "next/server";
 import { chatLeadSchema } from "@/lib/validation";
 import { BOOKING_URL, buildChatPayload, getAskSaulBookingUrl, sendToGHL } from "@/lib/ghl";
 import { sendInternalLeadAlert } from "@/lib/internal-alerts";
+import { readAttribution } from "@/lib/attribution-server";
 
 export async function POST(request: NextRequest) {
   let body: unknown;
@@ -19,7 +20,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const payload = buildChatPayload(result.data);
+  const payload = { ...buildChatPayload(result.data), attribution: readAttribution(body) };
   const bookingUrl = getAskSaulBookingUrl() || BOOKING_URL;
 
   let ghlResult: Awaited<ReturnType<typeof sendToGHL>>;
