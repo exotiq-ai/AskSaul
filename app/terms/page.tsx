@@ -223,10 +223,10 @@ export default function TermsPage() {
             <p>
               <strong className="text-cloud">Email:</strong>{" "}
               <a
-                href="mailto:saul3000bot@gmail.com"
+                href="mailto:saul@asksaul.ai"
                 className="text-cyan hover:text-cyan/80 transition-colors"
               >
-                saul3000bot@gmail.com
+                saul@asksaul.ai
               </a>
             </p>
             <p>

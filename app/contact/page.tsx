@@ -28,8 +28,8 @@ const CONTACT_DETAILS = [
   {
     icon: Mail,
     label: "Email",
-    value: "saul3000bot@gmail.com",
-    href: "mailto:saul3000bot@gmail.com",
+    value: "saul@asksaul.ai",
+    href: "mailto:saul@asksaul.ai",
   },
   {
     icon: Phone,

@@ -36,7 +36,7 @@ Use the exact legal details that match the EIN / CP575 / IRS letter if registeri
 - EIN: TODO Gregory to provide in GHL Trust Center
 - Business address: 1001 S Main St #6709, Kalispell, MT 59901 (verify exact IRS address)
 - Website: https://asksaul.ai
-- Support email: saul3000bot@gmail.com, or preferably a branded domain email if available
+- Support email: saul@asksaul.ai
 - Support phone: TODO choose GHL/LC outbound number shown in Trust Center
 - GHL location: RxCVQeGoQ3RTJbbLG5gY
 
@@ -164,7 +164,7 @@ HELP, INFO, SUPPORT
 ## HELP message
 
 ```text
-AskSaul: For help, email saul3000bot@gmail.com or visit https://asksaul.ai/contact. Reply STOP to opt out.
+AskSaul: For help, email saul@asksaul.ai or visit https://asksaul.ai/contact. Reply STOP to opt out.
 ```
 
 ## Content boundaries for approval and deliverability

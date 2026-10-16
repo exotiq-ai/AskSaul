@@ -94,7 +94,7 @@ export default function RevenueLeakReportPage() {
                   <Link href="/voice-agents/roi" className="rounded-xl bg-[#00D4AA] px-6 py-3 text-sm font-bold text-[#052017] transition hover:bg-[#00A888]">
                     Open ROI calculator →
                   </Link>
-                  <a href="mailto:Saul@asksaul.ai?subject=Book a Saul Voice Agent Demo" className="font-mono text-sm font-semibold text-[#007A63]">
+                  <a href="mailto:saul@asksaul.ai?subject=Book a Saul Voice Agent Demo" className="font-mono text-sm font-semibold text-[#007A63]">
                     Book a demo by email
                   </a>
                 </div>
@@ -143,7 +143,7 @@ export default function RevenueLeakReportPage() {
               <p className="mt-4 max-w-2xl text-base leading-7 text-white/75">Book a demo. We will map your call flow, estimate the revenue leak, and show where the ROI is hiding.</p>
               <div className="mt-8 grid gap-4 border-t border-white/15 pt-6 font-mono text-sm sm:grid-cols-4">
                 <div><span className="block text-[10px] uppercase tracking-widest text-white/45">Text Saul</span>(720) 292-7554</div>
-                <div><span className="block text-[10px] uppercase tracking-widest text-white/45">Email</span><a className="text-[#00D4AA]" href="mailto:Saul@asksaul.ai">Saul@asksaul.ai</a></div>
+                <div><span className="block text-[10px] uppercase tracking-widest text-white/45">Email</span><a className="text-[#00D4AA]" href="mailto:saul@asksaul.ai">saul@asksaul.ai</a></div>
                 <div><span className="block text-[10px] uppercase tracking-widest text-white/45">Gregory</span>(970) 343-9634</div>
                 <div><span className="block text-[10px] uppercase tracking-widest text-white/45">Web</span>AskSaul.ai</div>
               </div>
