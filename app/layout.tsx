@@ -5,6 +5,7 @@ import ChatWidget from "@/components/chat/ChatWidget";
 import AnalyticsScripts from "@/components/analytics/AnalyticsScripts";
 import ConversionTracker from "@/components/analytics/ConversionTracker";
 import StructuredData from "@/components/seo/StructuredData";
+import { DEFAULT_OG_IMAGE, PAGES, SITE_NAME, SITE_URL } from "@/lib/seo";
 
 const syne = Syne({
   subsets: ["latin"],
@@ -28,57 +29,52 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://asksaul.ai"),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "AskSaul.ai | Practical AI Systems for SMB Workflows",
+    default: PAGES["/"].title,
     template: "%s | AskSaul.ai",
   },
-  description:
-    "Practical AI assistants, voice agents, websites, apps, and automation systems for businesses that need faster response, cleaner follow-up, and less manual work. Built in Denver, CO.",
+  description: PAGES["/"].description,
+  applicationName: "AskSaul.ai",
+  category: "technology",
   keywords: [
-    "AI automation",
-    "OpenClaw setup",
-    "AI assistant",
+    "AI receptionist",
+    "AI receptionist for HVAC",
+    "AI receptionist for roofing",
+    "missed call answering service",
+    "after-hours answering service Denver",
+    "AI voice agent",
+    "local SEO Front Range",
+    "AI search optimization",
+    "AI automation for small business",
     "web development Denver",
-    "marketing automation",
-    "marketing automation platform",
-    "custom AI chatbot",
   ],
-  authors: [{ name: "Gregory Ringler" }],
+  authors: [{ name: "Gregory Ringler", url: `${SITE_URL}/about` }],
   creator: "Gregory Ringler",
+  publisher: "Ask Saul Inc.",
+  formatDetection: { telephone: true, email: true, address: false },
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://asksaul.ai",
-    siteName: "AskSaul.ai",
-    title: "AskSaul.ai | Practical AI Systems for SMB Workflows",
-    description:
-      "Get an Automation Map for AI assistants, voice agents, websites, apps, and follow-up systems that take real work off your team.",
-    images: [
-      {
-        url: "/opengraph-image",
-        width: 1200,
-        height: 630,
-        alt: "AskSaul.ai | AI, Automation & Web Development",
-      },
-    ],
+    siteName: SITE_NAME,
+    title: PAGES["/"].social,
+    description: PAGES["/"].description,
+    images: [DEFAULT_OG_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
-    title: "AskSaul.ai | Practical AI Systems for SMB Workflows",
-    description:
-      "Get an Automation Map for AI assistants, voice agents, websites, apps, and follow-up systems.",
-    images: ["/twitter-image"],
+    title: PAGES["/"].social,
+    description: PAGES["/"].description,
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
   },
+  // No site-wide canonical: each page declares its own (lib/seo.ts). A canonical
+  // here was inherited by every page and pointed them all at the homepage.
   alternates: {
-    canonical: "https://asksaul.ai",
-    types: {
-      "application/rss+xml": "/blog/feed.xml",
-    },
+    types: { "application/rss+xml": "/blog/feed.xml" },
   },
 };
 

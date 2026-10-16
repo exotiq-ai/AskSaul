@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Shield, Bot, Workflow, Mic } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
@@ -12,6 +11,9 @@ import TierCards from "./TierCards";
 import SecuritySection from "./SecuritySection";
 import PlanComparison from "@/components/ai-automation/PlanComparison";
 import FAQSchema from "@/components/seo/FAQSchema";
+import { pageMetadata } from "@/lib/seo";
+import PageSeoSchema from "@/components/seo/PageSeoSchema";
+import { serviceSchema } from "@/components/seo/schema";
 
 const INDUSTRIES = [
   {
@@ -170,11 +172,7 @@ function IndustryUseCases() {
   );
 }
 
-export const metadata: Metadata = {
-  title: "AI & Automation",
-  description:
-    "Self-hosted AI assistants built on OpenClaw. Security-hardened, custom-tuned, and done for you. Compare capability tiers and build your proposal for a scoped quote.",
-};
+export const metadata = pageMetadata("/ai-automation");
 
 const TIERS = [
   {
@@ -329,6 +327,7 @@ export default function AIAutomationPage() {
   return (
     <>
       <FAQSchema questions={FAQ_ITEMS} />
+      <PageSeoSchema path="/ai-automation" extra={[serviceSchema({ path: "/ai-automation", name: "Self-hosted AI assistants and automation", serviceType: "AI assistant deployment", description: "Security-hardened AI assistants built on OpenClaw that live in Telegram, WhatsApp, Slack, or Discord, set up and supported for small teams.", local: false })]} />
       <Navbar />
       <main id="main-content">
         {/* Hero */}

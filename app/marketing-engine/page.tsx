@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, X, Bot, Zap, BarChart3, MessageSquare, Star, Phone, Calendar, Mail, Target, Users } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
@@ -9,18 +8,11 @@ import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 import Accordion from "@/components/ui/Accordion";
 import FAQSchema from "@/components/seo/FAQSchema";
+import { pageMetadata } from "@/lib/seo";
+import PageSeoSchema from "@/components/seo/PageSeoSchema";
+import { serviceSchema } from "@/components/seo/schema";
 
-export const metadata: Metadata = {
-  title: "Saul Marketing",
-  description:
-    "Your entire marketing stack in one platform. CRM, email, SMS, funnels, reputation management, and AI-powered follow-up. Replace 5+ tools and stop losing leads.",
-  openGraph: {
-    title: "Saul Marketing | AskSaul.ai",
-    description:
-      "Your entire marketing stack in one platform with AI built in. Replace 5+ tools, stop losing leads, and actually follow up.",
-    url: "https://asksaul.ai/marketing-engine",
-  },
-};
+export const metadata = pageMetadata("/marketing-engine");
 
 const PLATFORM_FEATURES = [
   {
@@ -164,6 +156,7 @@ export default function MarketingEnginePage() {
   return (
     <>
       <FAQSchema questions={FAQ_ITEMS} />
+      <PageSeoSchema path="/marketing-engine" extra={[serviceSchema({ path: "/marketing-engine", name: "Saul Marketing", serviceType: "Marketing automation", description: "CRM, email and SMS follow-up, funnels, scheduling, and review management in one platform with an AI assistant working the pipeline.", local: false })]} />
       <Navbar />
       <main id="main-content">
         {/* Hero */}

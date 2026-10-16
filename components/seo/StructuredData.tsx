@@ -1,110 +1,101 @@
-interface StructuredDataProps {
-  includeService?: boolean;
-}
+import { BRAND } from "@/lib/constants";
+import { SITE_URL } from "@/lib/seo";
+import { FOUNDER_ID, LOCAL_ID, ORG_ID, areaServed } from "./schema";
 
-export default function StructuredData({
-  includeService = false,
-}: StructuredDataProps) {
-  const graph: Record<string, unknown>[] = [
+const SERVICES = [
+  { name: "AI receptionist for roofing and HVAC", path: "/voice-agents" },
+  { name: "Free Missed-Call & Visibility Audit", path: "/audit" },
+  { name: "AI voice agent for dumpster rental and waste companies", path: "/voice-agents/waste" },
+  { name: "Self-hosted AI assistants and automation", path: "/ai-automation" },
+  { name: "Website and web app development", path: "/web-development" },
+  { name: "Saul Marketing: CRM, email, SMS, and reviews", path: "/marketing-engine" },
+];
+
+/** Site-wide entities every page links to by @id. */
+export default function StructuredData() {
+  const graph = [
     {
       "@type": "WebSite",
-      "@id": "https://asksaul.ai/#website",
+      "@id": `${SITE_URL}/#website`,
       name: "AskSaul.ai",
-      url: "https://asksaul.ai",
-      publisher: {
-        "@type": "Organization",
-        "@id": "https://asksaul.ai/#org",
-      },
+      alternateName: "AskSaul",
+      url: SITE_URL,
+      inLanguage: "en-US",
+      publisher: { "@id": ORG_ID },
     },
     {
       "@type": "Organization",
-      "@id": "https://asksaul.ai/#org",
+      "@id": ORG_ID,
       name: "AskSaul.ai",
-      url: "https://asksaul.ai",
-      logo: "https://asksaul.ai/images/logo.png",
+      legalName: "Ask Saul Inc.",
+      url: SITE_URL,
+      logo: { "@type": "ImageObject", url: `${SITE_URL}/logo.png`, width: 512, height: 512 },
+      image: `${SITE_URL}/opengraph-image`,
       description:
-        "Done-for-you AI assistants, custom websites, and marketing automation for businesses that are done duct-taping their tech together.",
-      founder: {
-        "@type": "Person",
-        "@id": "https://asksaul.ai/#founder",
-        name: "Gregory Ringler",
-      },
-      address: {
-        "@type": "PostalAddress",
-        addressLocality: "Denver",
-        addressRegion: "CO",
-        addressCountry: "US",
-      },
-      contactPoint: {
-        "@type": "ContactPoint",
-        telephone: "+1" + "970" + "343" + "9634",
-        email: "saul@asksaul.ai",
-        contactType: "customer service",
-      },
+        "AskSaul builds AI receptionists, follow-up automation, AI assistants, and websites for small businesses, with a focus on Front Range Colorado roofing and HVAC shops.",
+      slogan: "We make your phone ring. Saul makes sure it gets answered.",
+      email: BRAND.email,
+      telephone: "+19703439634",
+      founder: { "@id": FOUNDER_ID },
+      foundingLocation: { "@type": "Place", name: "Denver, Colorado" },
+      knowsAbout: [
+        "AI receptionists",
+        "AI voice agents",
+        "Missed call recovery",
+        "Local SEO",
+        "Google Business Profile optimization",
+        "AI search optimization",
+        "Marketing automation",
+        "GoHighLevel",
+        "Web development",
+      ],
+      contactPoint: [
+        { "@type": "ContactPoint", contactType: "sales", telephone: "+19703439634", email: "gregory@asksaul.ai", areaServed: "US", availableLanguage: "English" },
+        { "@type": "ContactPoint", contactType: "customer service", email: BRAND.email, telephone: "+17202927554", areaServed: "US", availableLanguage: "English" },
+      ],
     },
     {
-      "@type": "LocalBusiness",
-      "@id": "https://asksaul.ai/#local",
+      "@type": "ProfessionalService",
+      "@id": LOCAL_ID,
       name: "AskSaul.ai",
-      url: "https://asksaul.ai",
-      telephone: "+1" + "970" + "343" + "9634",
-      email: "saul@asksaul.ai",
-      address: {
-        "@type": "PostalAddress",
-        addressLocality: "Denver",
-        addressRegion: "CO",
-        addressCountry: "US",
-      },
+      url: SITE_URL,
+      parentOrganization: { "@id": ORG_ID },
+      image: `${SITE_URL}/opengraph-image`,
+      logo: `${SITE_URL}/logo.png`,
+      telephone: "+19703439634",
+      email: BRAND.email,
+      address: { "@type": "PostalAddress", addressLocality: "Denver", addressRegion: "CO", addressCountry: "US" },
+      geo: { "@type": "GeoCoordinates", latitude: 39.7392, longitude: -104.9903 },
+      areaServed,
       priceRange: "$$",
-      description:
-        "AI assistants, web development, and marketing automation for small and medium businesses.",
-      areaServed: "United States",
+      hasOfferCatalog: {
+        "@type": "OfferCatalog",
+        name: "AskSaul services",
+        itemListElement: SERVICES.map((s) => ({
+          "@type": "Offer",
+          itemOffered: { "@type": "Service", name: s.name, url: `${SITE_URL}${s.path}` },
+        })),
+      },
     },
     {
       "@type": "Person",
-      "@id": "https://asksaul.ai/#founder",
+      "@id": FOUNDER_ID,
       name: "Gregory Ringler",
       jobTitle: "Founder",
-      url: "https://asksaul.ai/about",
-      worksFor: {
-        "@type": "Organization",
-        "@id": "https://asksaul.ai/#org",
-        name: "AskSaul.ai",
-      },
-      address: {
-        "@type": "PostalAddress",
-        addressLocality: "Denver",
-        addressRegion: "CO",
-      },
+      url: `${SITE_URL}/about`,
+      image: `${SITE_URL}/images/gregory-ringler.jpg`,
+      email: "gregory@asksaul.ai",
+      worksFor: { "@id": ORG_ID },
+      homeLocation: { "@type": "Place", name: "Denver, Colorado" },
+      knowsAbout: ["AI voice agents", "Automation", "Next.js", "Local SEO", "Small business operations"],
     },
   ];
-
-  if (includeService) {
-    graph.push({
-      "@type": "Service",
-      "@id": "https://asksaul.ai/#service-ai-automation",
-      name: "AI & Automation Setup",
-      provider: {
-        "@type": "Organization",
-        "@id": "https://asksaul.ai/#org",
-        name: "AskSaul.ai",
-      },
-      description:
-        "Self-hosted AI assistant deployments and workflow automation for small businesses. Every project scoped and priced per spec.",
-      areaServed: "United States",
-    });
-  }
-
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@graph": graph,
-  };
 
   return (
     <script
       type="application/ld+json"
       dangerouslySetInnerHTML={{
-        __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+        __html: JSON.stringify({ "@context": "https://schema.org", "@graph": graph }).replace(/</g, "\\u003c"),
       }}
     />
   );

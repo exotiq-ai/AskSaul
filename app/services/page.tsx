@@ -1,16 +1,13 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { Bot, Code2, TrendingUp, ArrowRight } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import Button from "@/components/ui/Button";
+import { pageMetadata } from "@/lib/seo";
+import PageSeoSchema from "@/components/seo/PageSeoSchema";
 
-export const metadata: Metadata = {
-  title: "Services",
-  description:
-    "AI assistants, custom websites, and marketing automation built for businesses that are done duct-taping their tech together.",
-};
+export const metadata = pageMetadata("/services");
 
 const LANES = [
   {
@@ -75,6 +72,7 @@ const LANES = [
 export default function ServicesPage() {
   return (
     <>
+      <PageSeoSchema path="/services" />
       <Navbar />
       <main id="main-content">
         {/* Hero */}

@@ -14,6 +14,8 @@ import {
   getRelatedPosts,
   type ContentBlock,
 } from "@/lib/blog-data";
+import { SITE_URL, breadcrumbs, seoMetadata } from "@/lib/seo";
+import { breadcrumbSchema } from "@/components/seo/schema";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -95,15 +97,14 @@ export async function generateMetadata({
     return { title: "Post Not Found" };
   }
 
-  return {
-    title: post.title,
-    description: post.excerpt,
-    openGraph: {
-      title: `${post.title} | AskSaul.ai`,
-      description: post.excerpt,
-      url: `https://asksaul.ai/blog/${post.slug}`,
-    },
-  };
+  return seoMetadata({
+    path: `/blog/${post.slug}`,
+    title: post.title.length > 60 ? post.title : `${post.title} | AskSaul.ai`,
+    description: post.excerpt.length > 160 ? `${post.excerpt.slice(0, 157).replace(/\s+\S*$/, "")}...` : post.excerpt,
+    social: post.title,
+    type: "article",
+    publishedTime: new Date(post.date).toISOString(),
+  });
 }
 
 // ---------------------------------------------------------------------------
@@ -121,20 +122,27 @@ export default async function BlogPostPage({ params }: Props) {
   const relatedPosts = getRelatedPosts(slug);
   const headings = post.content.filter((b) => b.type === "heading");
 
+  const postUrl = `${SITE_URL}/blog/${post.slug}`;
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    headline: post.title,
-    description: post.excerpt,
-    author: { "@type": "Person", name: "Gregory Ringler" },
-    publisher: {
-      "@type": "Organization",
-      name: "AskSaul.ai",
-      url: "https://asksaul.ai",
-    },
-    datePublished: post.date,
-    url: `https://asksaul.ai/blog/${post.slug}`,
-    mainEntityOfPage: `https://asksaul.ai/blog/${post.slug}`,
+    "@graph": [
+      {
+        "@type": "BlogPosting",
+        "@id": `${postUrl}#article`,
+        headline: post.title,
+        description: post.excerpt,
+        articleSection: post.category,
+        image: `${SITE_URL}/opengraph-image`,
+        author: { "@id": `${SITE_URL}/#founder` },
+        publisher: { "@id": `${SITE_URL}/#org` },
+        datePublished: new Date(post.date).toISOString(),
+        dateModified: new Date(post.date).toISOString(),
+        url: postUrl,
+        mainEntityOfPage: postUrl,
+        inLanguage: "en-US",
+      },
+      breadcrumbSchema(breadcrumbs(`/blog/${post.slug}`, post.title)),
+    ],
   };
 
   return (
@@ -319,7 +327,7 @@ export default async function BlogPostPage({ params }: Props) {
       {/* JSON-LD BlogPosting */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
     </>
   );

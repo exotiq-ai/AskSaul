@@ -1,16 +1,14 @@
-import type { Metadata } from "next";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { pageMetadata } from "@/lib/seo";
+import PageSeoSchema from "@/components/seo/PageSeoSchema";
 
-export const metadata: Metadata = {
-  title: "Privacy Policy",
-  description:
-    "How AskSaul.ai collects, uses, and protects your information. A subsidiary of Ask Saul Inc..",
-};
+export const metadata = pageMetadata("/privacy");
 
 export default function PrivacyPage() {
   return (
     <>
+      <PageSeoSchema path="/privacy" />
       <Navbar />
       <main className="pt-24 pb-16 px-4">
         <div className="max-w-3xl mx-auto">

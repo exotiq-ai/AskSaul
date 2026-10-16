@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -21,22 +20,12 @@ import AnimatedSection from "@/components/ui/AnimatedSection";
 import FAQSchema from "@/components/seo/FAQSchema";
 import PageSchema from "@/components/seo/PageSchema";
 import VoiceAgentLeadForm from "@/components/voice-agents/VoiceAgentLeadForm";
+import { pageMetadata } from "@/lib/seo";
 
 const PROVIDER_DEMO_PHONE_DISPLAY = "(970) 401-7285";
 const PROVIDER_DEMO_PHONE_TEL = "tel:" + "+1" + "970" + "401" + "7285";
 
-export const metadata: Metadata = {
-  title: "AI Voice Agent for Dumpster Rental & Waste Companies",
-  description:
-    "Saul answers dumpster rental and waste calls 24/7, captures quote details, checks service area, collects debris and delivery info, and sends qualified leads to your CRM.",
-  alternates: { canonical: "https://asksaul.ai/voice-agents/waste" },
-  openGraph: {
-    title: "AI Voice Agent for Dumpster Rental & Waste Companies | AskSaul",
-    description:
-      "Built for roll-off dumpster, junk removal, and waste operators that need better missed-call capture and quote intake.",
-    url: "https://asksaul.ai/voice-agents/waste",
-  },
-};
+export const metadata = pageMetadata("/voice-agents/waste");
 
 const DEMOS = [
   {

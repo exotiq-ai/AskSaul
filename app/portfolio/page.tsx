@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { ExternalLink, Code2, ArrowRight } from "lucide-react";
@@ -9,18 +8,9 @@ import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 import { PORTFOLIO_PROJECTS } from "@/lib/constants";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Portfolio",
-  description:
-    "Custom websites, web apps, and AI-powered platforms built by Gregory Ringler. Real projects, shipped to production.",
-  openGraph: {
-    title: "Portfolio | AskSaul.ai",
-    description:
-      "Custom websites, web apps, and AI-powered platforms built by Gregory Ringler.",
-    url: "https://asksaul.ai/portfolio",
-  },
-};
+export const metadata = pageMetadata("/portfolio");
 
 export default function PortfolioPage() {
   return (

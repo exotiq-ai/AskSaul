@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
@@ -7,22 +6,15 @@ import AnimatedSection from "@/components/ui/AnimatedSection";
 import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
 import { CASE_STUDIES } from "@/lib/case-studies";
+import { pageMetadata } from "@/lib/seo";
+import PageSeoSchema from "@/components/seo/PageSeoSchema";
 
-export const metadata: Metadata = {
-  title: "Case Studies",
-  description:
-    "Real deployments, real timelines, real results. See what AskSaul has shipped for AI-native startups, local service businesses, and enterprise partners.",
-  openGraph: {
-    title: "Case Studies | AskSaul.ai",
-    description:
-      "Real deployments, real timelines, real results.",
-    url: "https://asksaul.ai/case-studies",
-  },
-};
+export const metadata = pageMetadata("/case-studies");
 
 export default function CaseStudiesPage() {
   return (
     <>
+      <PageSeoSchema path="/case-studies" />
       <Navbar />
       <main id="main-content">
         <section className="pt-24 pb-12 px-4 dot-pattern">

@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { Mail, Phone, MapPin, Clock, Calendar } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
@@ -8,21 +7,13 @@ import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import ContactForm from "@/components/contact/ContactForm";
+import { pageMetadata } from "@/lib/seo";
+import PageSeoSchema from "@/components/seo/PageSeoSchema";
 
 const BOOKING_URL =
   "https://api.leadconnectorhq.com/widget/bookings/bookwithusdigitalmarketing-3d837e4b-c899-44ff-b612-275f498c2128";
 
-export const metadata: Metadata = {
-  title: "Contact",
-  description:
-    "Get in touch with Gregory Ringler. AskSaul.ai builds AI systems, websites, and automation for small businesses. Based in Denver, CO. Responding within 24 hours.",
-  openGraph: {
-    title: "Contact | AskSaul.ai",
-    description:
-      "Get in touch with Gregory Ringler. Currently accepting new clients. Based in Denver, CO.",
-    url: "https://asksaul.ai/contact",
-  },
-};
+export const metadata = pageMetadata("/contact");
 
 const CONTACT_DETAILS = [
   {
@@ -54,6 +45,7 @@ const CONTACT_DETAILS = [
 export default function ContactPage() {
   return (
     <>
+      <PageSeoSchema path="/contact" />
       <Navbar />
       <main id="main-content">
         {/* Hero */}

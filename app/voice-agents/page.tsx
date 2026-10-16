@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight, Check, X } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
@@ -16,18 +15,11 @@ import {
   TryToBreakIt,
   VoiceHero,
 } from "@/components/voice-agents/blocks";
+import { pageMetadata } from "@/lib/seo";
+import PageSeoSchema from "@/components/seo/PageSeoSchema";
+import { serviceSchema } from "@/components/seo/schema";
 
-export const metadata: Metadata = {
-  title: "AI Receptionist for Front Range Roofing & HVAC",
-  description:
-    "We make your phone ring. Saul makes sure it gets answered. An AI receptionist plus Google visibility for Front Range roofing and HVAC shops. Founding Client Program: 10 shops, closes Dec 31.",
-  openGraph: {
-    title: "We make your phone ring. Saul makes sure it gets answered.",
-    description:
-      "AI receptionist + local visibility for Front Range roofing and HVAC shops. 10 founding spots, closes Dec 31.",
-    url: "https://asksaul.ai/voice-agents",
-  },
-};
+export const metadata = pageMetadata("/voice-agents");
 
 const FAQS = [
   {
@@ -72,6 +64,7 @@ export default function VoiceAgentsPage() {
   return (
     <>
       <FAQSchema questions={FAQS} />
+      <PageSeoSchema path="/voice-agents" extra={[serviceSchema({ path: "/voice-agents", name: "AI receptionist and local visibility for roofing and HVAC", serviceType: "AI receptionist", description: "Saul answers after-hours and overflow calls, takes the job details, and books or routes by the owner's rules, plus Google Business Profile, local SEO, and AI search work.", audience: "Roofing and HVAC contractors" })]} />
       <Navbar />
       <main id="main-content" className="overflow-x-clip">
         <VoiceHero
