@@ -38,6 +38,7 @@ export default function ContactPreferences() {
   } = useFormContext<ProposalFormData>();
 
   const preferredContact = watch("preferredContact");
+  const wantsVoiceAgent = (watch("services") ?? []).includes("voice-agent");
   const timeline = watch("timeline");
   const budget = watch("budget");
 
@@ -200,7 +201,9 @@ export default function ContactPreferences() {
         <textarea
           id="notes"
           rows={3}
-          placeholder="Context, constraints, a deadline, a specific outcome you need. Whatever is relevant."
+            placeholder={wantsVoiceAgent
+              ? "Your trade and city, how you handle calls today, what gets missed, and what Saul should do next: qualify, route, or book."
+              : "What gets stuck, what it costs your team, and the outcome you want first. Add any deadline or constraints."}
           className="w-full px-4 py-3 rounded-lg bg-graphite border border-wire text-cloud placeholder:text-dim focus:outline-none focus:ring-2 focus:ring-cyan/40 focus:border-cyan/60 transition-colors resize-none"
           {...register("notes")}
         />

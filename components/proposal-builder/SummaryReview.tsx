@@ -145,7 +145,7 @@ export default function SummaryReview({ data, onEdit }: SummaryReviewProps) {
       )}
 
       <p className="text-xs text-dim text-center">
-        Review everything above. When it looks right, submit and Saul will get to work.
+        Check your details, then send your request. Gregory will review it and email your scoped proposal within 24 hours. You&apos;re not committing to a package or payment.
       </p>
     </div>
   );

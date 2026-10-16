@@ -106,9 +106,9 @@ export default function AuditRequestForm() {
     return (
       <div className="rounded-[2rem] border border-cyan/30 bg-cyan/10 p-8 text-center sm:p-10">
         <CheckCircle2 className="mx-auto mb-5 h-10 w-10 text-cyan" />
-        <h2 className="font-display text-3xl font-bold text-cloud">Your audit is on the way.</h2>
+        <h2 className="font-display text-3xl font-bold text-cloud">Your audit request is in.</h2>
         <p className="mx-auto mt-3 max-w-md leading-relaxed text-slate">
-          We&apos;ll run the checks and email you the report. Want to talk it through sooner?
+          Gregory will review your shop and email a one-page report with the top 3 fixes. If we need more details or need to confirm timing, we&apos;ll reply to your email. You keep the report either way.
         </p>
         <a
           href={BOOKING_URL}
@@ -116,7 +116,7 @@ export default function AuditRequestForm() {
           rel="noopener noreferrer"
           className="mt-7 inline-flex rounded-xl bg-cyan px-6 py-3.5 font-semibold text-obsidian"
         >
-          Book a 20-minute call
+          Book a 15-minute call
         </a>
       </div>
     );
@@ -129,7 +129,8 @@ export default function AuditRequestForm() {
       className="rounded-[2rem] border border-wire bg-carbon/80 p-6 shadow-[0_24px_80px_rgba(0,0,0,0.35)] sm:p-8"
     >
       <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-cyan">Free audit request</p>
-      <h2 className="mb-7 font-display text-2xl font-bold text-cloud sm:text-3xl">Where should we send it?</h2>
+      <h2 className="mb-3 font-display text-2xl font-bold text-cloud sm:text-3xl">Where should we send your report?</h2>
+      <p className="mb-7 text-sm leading-relaxed text-slate">Tell us which shop to check. Gregory reviews the findings and emails your report. This form requests the audit; it doesn&apos;t generate an instant score.</p>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Input id="audit-name" label="Your name" autoComplete="name" value={form.name} error={errors.name} onChange={(e) => update("name", e.target.value)} />
@@ -189,7 +190,7 @@ export default function AuditRequestForm() {
       <Button type="submit" variant="primary" size="lg" disabled={submitting} className="mt-7 w-full">
         {submitting ? "Sending..." : "Get my free audit"}
       </Button>
-      <p className="mt-3 text-center text-xs text-dim">You keep it either way. No pitch attached.</p>
+      <p className="mt-3 text-center text-xs text-dim">Free, with no obligation. No test call without your permission.</p>
     </form>
   );
 }
