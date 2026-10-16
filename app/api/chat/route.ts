@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
     businessName: result.data.businessName,
     intent: result.data.handoffIntent ?? result.data.initialIntent ?? "send-context",
     tags: payload.tags,
-    summary: lastUserMessage,
+    summary: result.data.summary ?? lastUserMessage,
     bookingUrl,
   });
   if (!alertResult.ok) console.warn("[chat/route] internal alert failed:", alertResult);

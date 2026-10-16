@@ -279,22 +279,33 @@ export const CHAT_HANDOFF_INTENTS = [
   "automation-map",
   "book-demo",
   "send-context",
+  "founding-spot",
 ] as const;
 
-export const chatLeadSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  email: z.string().email("Valid email is required"),
-  phone: z.string().optional(),
-  businessName: z.string().optional(),
-  sourcePath: z.string().optional(),
-  chatTranscript: z.array(
-    z.object({
-      role: z.enum(["user", "assistant"]),
-      content: z.string(),
-    })
-  ),
-  initialIntent: z.string().optional(),
-  handoffIntent: z.enum(CHAT_HANDOFF_INTENTS).optional(),
-});
+export const chatLeadSchema = z
+  .object({
+    name: z.string().min(1, "Name is required"),
+    email: z.union([z.string().email("Valid email is required"), z.literal("")]).optional(),
+    phone: z.string().optional(),
+    businessName: z.string().optional(),
+    trade: z.string().optional(),
+    city: z.string().optional(),
+    summary: z.string().max(1000).optional(),
+    sourcePath: z.string().optional(),
+    chatTranscript: z
+      .array(
+        z.object({
+          role: z.enum(["user", "assistant"]),
+          content: z.string().max(4000),
+        })
+      )
+      .max(80),
+    initialIntent: z.string().optional(),
+    handoffIntent: z.enum(CHAT_HANDOFF_INTENTS).optional(),
+  })
+  .refine((d) => Boolean(d.email) || Boolean(d.phone?.trim()), {
+    message: "An email or phone number is required",
+    path: ["email"],
+  });
 
 export type ChatLeadData = z.infer<typeof chatLeadSchema>;

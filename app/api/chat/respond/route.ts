@@ -25,18 +25,18 @@ Keep replies under 120 words unless the user asks for detail. Include one clear 
 function fallbackReply(message: string): string {
   const lower = message.toLowerCase();
   if (lower.includes("waste") || lower.includes("dumpster") || lower.includes("roll") || lower.includes("junk")) {
-    return "Yes. Saul can handle dumpster rental, roll-off, junk removal, and hauling calls by asking for ZIP, debris type, size/timing, and contact details, then sending a clean lead summary to GHL or your CRM. Best next step: test the live demos on /voice-agents/waste or send Gregory this chat context for a waste-agent demo.";
+    return "Saul handles dumpster and roll-off calls: ZIP check, debris type, size, timing, and a clean lead summary to your CRM. You can test the live demos at /voice-agents/waste, or call Gregory at 970.343.9634.";
   }
-  if (lower.includes("price") || lower.includes("cost") || lower.includes("charge")) {
-    return "Pricing depends on the workflow, integrations, and how much Saul should own. Websites start around $5K, smaller AI setups can start lower, and voice/CRM systems are scoped by call flow and handoff complexity. The fastest accurate next step is the Automation Map at /build-your-proposal.";
+  if (lower.includes("price") || lower.includes("cost") || lower.includes("how much")) {
+    return "For roofing and HVAC shops: Saul Night Manager (answering only) is from $1,750/mo, Phone Rings + Phone Answered (Google visibility plus Saul) is $3,500 to $4,500/mo, and Full Engine (adds Google Ads management) is $5,000+/mo. Founding clients get the build on us and a 12-month rate lock. Details at /voice-agents#founding.";
   }
-  if (lower.includes("voice") || lower.includes("call") || lower.includes("phone")) {
-    return "Saul voice agents are built for missed calls, after-hours intake, qualification, and CRM/GHL handoff. You can test the waste-industry examples at /voice-agents/waste, or send Gregory this chat context if you want a demo for your own business.";
+  if (lower.includes("audit")) {
+    return "The free Missed-Call & Visibility Audit checks your Google profile, reviews vs your top 3 competitors, AI search, and your website on a phone, then gives you the top 3 fixes. Request it at /audit. You keep it either way.";
   }
-  if (lower.includes("website") || lower.includes("web")) {
-    return "AskSaul builds conversion-focused websites and apps when the site needs to do more than look good: intake, quote flows, booking, CRM handoff, and SEO. See /web-development or start with /build-your-proposal.";
+  if (lower.includes("founding") || lower.includes("roof") || lower.includes("hvac") || lower.includes("call") || lower.includes("phone")) {
+    return "Saul answers the calls your crew can't, says up front it's an AI, takes the job details, and books or routes by your rules. The Founding Client Program is open to 10 Front Range roofing and HVAC shops until Dec 31. See /voice-agents#founding, or hear Saul at (970) 401-7285.";
   }
-  return "I can help map the right AskSaul path. Tell me what is leaking right now: missed calls, slow follow-up, repetitive admin, weak website conversion, or tools that do not talk to each other. If you want the fastest structured next step, use /build-your-proposal.";
+  return "I'm having trouble connecting right now. You can hear Saul on the phone at (970) 401-7285, get the Automation Map at /build-your-proposal, or reach Gregory directly at 970.343.9634.";
 }
 
 function suggestedActionsFor(message: string, reply: string): ChatAction[] {

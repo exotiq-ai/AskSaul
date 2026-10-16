@@ -7,9 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "postbuild": "next-sitemap"
+    "postbuild": "next-sitemap",
+    "agent:provision": "node --env-file-if-exists=.env.local scripts/sales-agent/provision.mjs",
+    "agent:eval": "node --env-file-if-exists=.env.local --experimental-strip-types --no-warnings scripts/sales-agent/eval.mjs"
   },
   "dependencies": {
+    "@elevenlabs/client": "1.26.0",
     "@hookform/resolvers": "^5.2.2",
     "framer-motion": "^12.38.0",
     "lucide-react": "^1.7.0",

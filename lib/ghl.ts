@@ -254,19 +254,25 @@ export function buildContactPayload(data: ContactFormData) {
 export function buildChatPayload(data: ChatLeadData) {
   const handoffIntent = data.handoffIntent ?? data.initialIntent ?? "send-context";
   const isWasteLead = handoffIntent === "waste-demo";
+  const isFoundingLead = handoffIntent === "founding-spot";
+  const isPhoneAgentLead = isWasteLead || isFoundingLead;
+  const trade = data.trade?.trim().toLowerCase();
 
   return {
     source: "asksaul-chat-assistant",
     timestamp: new Date().toISOString(),
-    lead_project: isWasteLead ? "ask_saul_phone_agents" : "asksaul_chat",
+    lead_project: isPhoneAgentLead ? "ask_saul_phone_agents" : "asksaul_chat",
     contact: {
       name: data.name,
-      email: data.email,
+      email: data.email ?? "",
       phone: data.phone ?? "",
     },
     business: {
       name: data.businessName ?? "",
+      industry: data.trade ?? "",
+      serviceArea: data.city ?? "",
     },
+    notes: data.summary ?? "",
     chatTranscript: data.chatTranscript,
     initialIntent: data.initialIntent ?? handoffIntent,
     handoffIntent,
@@ -284,13 +290,11 @@ export function buildChatPayload(data: ChatLeadData) {
       "chat-handoff",
       ...(handoffIntent === "book-demo" ? ["booking-requested"] : []),
       ...(handoffIntent === "automation-map" ? ["automation-map-interest"] : []),
-      ...(isWasteLead
-        ? [
-            "voice-agent-lead",
-            "phone-agent-prospect",
-            "waste-voice-agent-interest",
-            "lead-project:ask_saul_phone_agents",
-          ]
+      ...(isFoundingLead ? ["founding-spot-interest"] : []),
+      ...(trade ? [`vertical:${trade.replace(/[^a-z0-9]+/g, "-")}`] : []),
+      ...(isWasteLead ? ["waste-voice-agent-interest"] : []),
+      ...(isPhoneAgentLead
+        ? ["voice-agent-lead", "phone-agent-prospect", "lead-project:ask_saul_phone_agents"]
         : []),
     ],
   };
