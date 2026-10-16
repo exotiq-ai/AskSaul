@@ -5,7 +5,7 @@ Last updated: 2026-06-08
 AskSaul.ai is a Denver-based service by Gregory Ringler that builds practical AI systems for businesses: AI assistants, workflow automation, AI voice agents, conversion websites/apps, and marketing automation.
 
 Primary site: https://asksaul.ai
-Contact: saul3000bot@gmail.com · 970.343.9634
+Contact: saul@asksaul.ai · 970.343.9634
 
 Key public URLs:
 - https://asksaul.ai/

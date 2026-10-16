@@ -337,7 +337,7 @@ function PrintSheet({ state, internal }: { state: RoiState; internal: boolean })
             <ReceiptRow label={`Saul · ${m.pkg.name} (${m.pkg.fit} · live in ${m.pkg.deploy})`} value={`− ${fmtDollar(m.price)} /mo`} />
             <ReceiptRow label="Your net gain" value={`${fmtDollar(m.net)} /mo · ${fmtDollar(m.net * 12)} /yr · ${fmtNumber(m.roiX, 1)}× return`} tone="cyan" strong />
           </div>
-          <div className={styles.printCta}><b>Hear Saul before you decide.</b><span>Book a demo — we will map your call flow and show you exactly where the leak is.</span><small>TEXT SAUL: (720) 292-7554 · EMAIL: Saul@asksaul.ai · GREGORY: (970) 343-9634 · WEB: AskSaul.ai</small></div>
+          <div className={styles.printCta}><b>Hear Saul before you decide.</b><span>Book a demo — we will map your call flow and show you exactly where the leak is.</span><small>TEXT SAUL: (720) 292-7554 · EMAIL: saul@asksaul.ai · GREGORY: (970) 343-9634 · WEB: AskSaul.ai</small></div>
         </div>
         <div className={styles.printMeta}><span>SAUL SOLVES. YOU WIN.</span><span>ASKSAUL.AI{internal ? " · PAGE 01 / 02" : ""}</span></div>
       </section>

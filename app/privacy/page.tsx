@@ -261,10 +261,10 @@ export default function PrivacyPage() {
             <p>
               You may update or correct your information by contacting{" "}
               <a
-                href="mailto:saul3000bot@gmail.com"
+                href="mailto:saul@asksaul.ai"
                 className="text-cyan hover:text-cyan/80 transition-colors"
               >
-                saul3000bot@gmail.com
+                saul@asksaul.ai
               </a>
               .
             </p>
@@ -275,10 +275,10 @@ export default function PrivacyPage() {
             <p>
               You may request deletion by contacting{" "}
               <a
-                href="mailto:saul3000bot@gmail.com"
+                href="mailto:saul@asksaul.ai"
                 className="text-cyan hover:text-cyan/80 transition-colors"
               >
-                saul3000bot@gmail.com
+                saul@asksaul.ai
               </a>
               . Requests processed within 30 days, subject to legal retention
               requirements.
@@ -299,10 +299,10 @@ export default function PrivacyPage() {
               California, Colorado, Virginia, and Connecticut residents may have
               additional rights. Contact{" "}
               <a
-                href="mailto:saul3000bot@gmail.com"
+                href="mailto:saul@asksaul.ai"
                 className="text-cyan hover:text-cyan/80 transition-colors"
               >
-                saul3000bot@gmail.com
+                saul@asksaul.ai
               </a>{" "}
               with your request and state of residence.
             </p>
@@ -329,10 +329,10 @@ export default function PrivacyPage() {
             <p>
               <strong className="text-cloud">Email:</strong>{" "}
               <a
-                href="mailto:saul3000bot@gmail.com"
+                href="mailto:saul@asksaul.ai"
                 className="text-cyan hover:text-cyan/80 transition-colors"
               >
-                saul3000bot@gmail.com
+                saul@asksaul.ai
               </a>
             </p>
             <p>

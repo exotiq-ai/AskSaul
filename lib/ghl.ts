@@ -616,7 +616,7 @@ async function sendAskSaulLeadEmail(
     return { ok: true, skipped: true, reason: "Lead email already sent" };
   }
 
-  const fromEmail = process.env.ASKSAUL_GHL_FROM_EMAIL || process.env.RESEND_FROM_EMAIL || "saul3000bot@gmail.com";
+  const fromEmail = process.env.ASKSAUL_GHL_FROM_EMAIL || process.env.RESEND_FROM_EMAIL || "saul@asksaul.ai";
   const fromName = process.env.ASKSAUL_GHL_FROM_NAME || process.env.RESEND_FROM_NAME || "Saul from AskSaul.ai";
   const copy = buildLeadEmailCopy(record);
 

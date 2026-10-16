@@ -13,4 +13,4 @@ Key URLs:
 - /marketing-engine — CRM, follow-up, and marketing automation
 
 Full LLM context: https://asksaul.ai/llms-full.txt
-Contact: saul3000bot@gmail.com · 970.343.9634
+Contact: saul@asksaul.ai · 970.343.9634

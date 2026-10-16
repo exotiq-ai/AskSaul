@@ -38,7 +38,7 @@ export default function StructuredData({
       contactPoint: {
         "@type": "ContactPoint",
         telephone: "+1" + "970" + "343" + "9634",
-        email: "saul3000bot@gmail.com",
+        email: "saul@asksaul.ai",
         contactType: "customer service",
       },
     },
@@ -48,7 +48,7 @@ export default function StructuredData({
       name: "AskSaul.ai",
       url: "https://asksaul.ai",
       telephone: "+1" + "970" + "343" + "9634",
-      email: "saul3000bot@gmail.com",
+      email: "saul@asksaul.ai",
       address: {
         "@type": "PostalAddress",
         addressLocality: "Denver",
