@@ -3,6 +3,7 @@ import type {
   ContactFormData,
   ChatLeadData,
   VoiceAgentLeadData,
+  AuditRequestData,
 } from "./validation";
 
 const ASK_SAUL_LOCATION_ID = "RxCVQeGoQ3RTJbbLG5gY";
@@ -331,6 +332,47 @@ export function buildVoiceAgentLeadPayload(data: VoiceAgentLeadData) {
       "website-lead",
       "voice-agent-lead",
       "phone-agent-prospect",
+      "lead-project:ask_saul_phone_agents",
+    ],
+  };
+}
+
+export function buildAuditRequestPayload(data: AuditRequestData) {
+  const nameParts = data.name.trim().split(/\s+/);
+  const trade = data.trade.toLowerCase();
+
+  return {
+    source: "asksaul-audit-page",
+    timestamp: new Date().toISOString(),
+    lead_project: "ask_saul_phone_agents",
+    contact: {
+      firstName: nameParts[0] ?? "",
+      lastName: nameParts.slice(1).join(" ") || "",
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+    },
+    business: {
+      name: data.businessName,
+      industry: data.trade,
+      serviceArea: data.city,
+      website: data.website ?? "",
+    },
+    notes: [
+      "Free Missed-Call & Visibility Audit request.",
+      data.website ? `Website: ${data.website}.` : "No website given.",
+      `After-hours test call OK: ${data.afterHoursTestOk ? "yes" : "no"}.`,
+    ].join(" "),
+    consent: {
+      smsConsent: data.smsConsent ?? false,
+      marketingSmsOptIn: false,
+    },
+    tags: [
+      "ask-saul",
+      "website-lead",
+      "audit-request",
+      "phone-agent-prospect",
+      `vertical:${trade}`,
       "lead-project:ask_saul_phone_agents",
     ],
   };

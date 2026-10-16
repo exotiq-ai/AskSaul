@@ -256,6 +256,22 @@ export const voiceAgentLeadSchema = z.object({
 
 export type VoiceAgentLeadData = z.input<typeof voiceAgentLeadSchema>;
 
+// ─── Free Missed-Call & Visibility Audit ─────────────────────────────────────
+
+export const auditRequestSchema = z.object({
+  name: z.string().min(2, "Name is required"),
+  businessName: z.string().min(1, "Business name is required"),
+  email: z.string().email("Valid email is required"),
+  phone: z.string().min(1, "Phone number is required"),
+  trade: z.enum(["Roofing", "HVAC", "Other"], { message: "Pick your trade" }),
+  city: z.string().min(1, "Pick your main city"),
+  website: z.string().optional(),
+  afterHoursTestOk: z.boolean().default(false),
+  smsConsent: z.boolean().default(false),
+});
+
+export type AuditRequestData = z.input<typeof auditRequestSchema>;
+
 // ─── Chat Widget ─────────────────────────────────────────────────────────────
 
 export const CHAT_HANDOFF_INTENTS = [

@@ -84,10 +84,12 @@ function TextArea({ id, label, placeholder, value, error, onChange }: TextAreaPr
 
 interface VoiceAgentLeadFormProps {
   vertical?: "general" | "waste";
+  defaultServiceType?: string;
 }
 
-export default function VoiceAgentLeadForm({ vertical = "general" }: VoiceAgentLeadFormProps) {
-  const [form, setForm] = useState<VoiceAgentLeadData>(initialForm);
+export default function VoiceAgentLeadForm({ vertical = "general", defaultServiceType }: VoiceAgentLeadFormProps) {
+  const startingForm: VoiceAgentLeadData = { ...initialForm, serviceType: defaultServiceType ?? initialForm.serviceType };
+  const [form, setForm] = useState<VoiceAgentLeadData>(startingForm);
   const [errors, setErrors] = useState<FieldErrors>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -121,7 +123,7 @@ export default function VoiceAgentLeadForm({ vertical = "general" }: VoiceAgentL
       }
 
       setSubmitted(true);
-      setForm(initialForm);
+      setForm(startingForm);
     } catch {
       setSubmitError(
         `Something went wrong saving this. Please call Saul at (970) 401-7285 or email ${BRAND.email}.`
