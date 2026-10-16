@@ -1,0 +1,54 @@
+import { type NextRequest } from "next/server";
+import { auditRequestSchema } from "@/lib/validation";
+import { buildAuditRequestPayload, getAskSaulBookingUrl, sendToGHL } from "@/lib/ghl";
+import { sendInternalLeadAlert } from "@/lib/internal-alerts";
+
+export async function POST(request: NextRequest) {
+  let body: unknown;
+
+  try {
+    body = await request.json();
+  } catch {
+    return Response.json({ error: "Invalid JSON" }, { status: 400 });
+  }
+
+  const result = auditRequestSchema.safeParse(body);
+
+  if (!result.success) {
+    return Response.json(
+      { error: "Validation failed", issues: result.error.issues },
+      { status: 422 }
+    );
+  }
+
+  const payload = buildAuditRequestPayload(result.data);
+  const bookingUrl = getAskSaulBookingUrl();
+
+  let ghlResult: Awaited<ReturnType<typeof sendToGHL>>;
+  try {
+    ghlResult = await sendToGHL(payload);
+  } catch (err) {
+    console.error("[audit/route] GHL webhook error:", err);
+    return Response.json(
+      { error: "We could not save this request. Please call Saul or try again." },
+      { status: 502 }
+    );
+  }
+
+  const alertResult = await sendInternalLeadAlert({
+    route: "/audit",
+    source: payload.source,
+    leadProject: payload.lead_project,
+    name: result.data.name,
+    email: result.data.email,
+    phone: result.data.phone,
+    businessName: result.data.businessName,
+    intent: "audit-request",
+    tags: payload.tags,
+    summary: `${result.data.trade} in ${result.data.city}. ${payload.notes}`,
+    bookingUrl,
+  });
+  if (!alertResult.ok) console.warn("[audit/route] internal alert failed:", alertResult);
+
+  return Response.json({ success: true, bookingUrl, ghl: ghlResult, alert: alertResult });
+}

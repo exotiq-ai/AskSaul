@@ -42,6 +42,10 @@ function classifyClick(target: Element): EventPayload | null {
     return { category: "conversion", action: "automation_map_click", label, href, path };
   }
 
+  if (href?.includes("/audit")) {
+    return { category: "conversion", action: "audit_click", label, href, path };
+  }
+
   if (href?.includes("#founding")) {
     return { category: "conversion", action: "founding_claim_click", label, href, path };
   }
@@ -104,7 +108,9 @@ export default function ConversionTracker() {
       const path = window.location.pathname;
       const action = path.includes("build-your-proposal")
         ? "automation_map_submit"
-        : path.includes("voice-agents")
+        : path.startsWith("/audit")
+          ? "audit_form_submit"
+          : path.includes("voice-agents")
           ? "voice_agent_form_submit"
           : "contact_form_submit";
 

@@ -3,6 +3,7 @@ import type {
   ContactFormData,
   ChatLeadData,
   VoiceAgentLeadData,
+  AuditRequestData,
 } from "./validation";
 
 const ASK_SAUL_LOCATION_ID = "RxCVQeGoQ3RTJbbLG5gY";
@@ -336,6 +337,50 @@ export function buildVoiceAgentLeadPayload(data: VoiceAgentLeadData) {
   };
 }
 
+export function buildAuditRequestPayload(data: AuditRequestData) {
+  const nameParts = data.name.trim().split(/\s+/);
+  const trade = data.trade.toLowerCase();
+
+  return {
+    source: "asksaul-audit-page",
+    timestamp: new Date().toISOString(),
+    lead_project: "ask_saul_phone_agents",
+    contact: {
+      firstName: nameParts[0] ?? "",
+      lastName: nameParts.slice(1).join(" ") || "",
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+    },
+    business: {
+      name: data.businessName,
+      industry: data.trade,
+      serviceArea: data.city,
+      website: data.website ?? "",
+    },
+    notes: [
+      "Free Missed-Call & Visibility Audit request.",
+      data.website ? `Website: ${data.website}.` : "No website given.",
+      `After-hours test call OK: ${data.afterHoursTestOk ? "yes" : "no"}.`,
+    ].join(" "),
+    audit: {
+      afterHoursTestOk: data.afterHoursTestOk ?? false,
+    },
+    consent: {
+      smsConsent: data.smsConsent ?? false,
+      marketingSmsOptIn: false,
+    },
+    tags: [
+      "ask-saul",
+      "website-lead",
+      "audit-request",
+      "phone-agent-prospect",
+      `vertical:${trade}`,
+      "lead-project:ask_saul_phone_agents",
+    ],
+  };
+}
+
 // ─── GHL Delivery ────────────────────────────────────────────────────────────
 
 export type GhlLeadCaptureResult = {
@@ -651,6 +696,8 @@ function buildLeadEmailCopy(record: Record<string, unknown>): { subject: string;
     text(record.notes) ? `Notes: ${text(record.notes)}` : undefined,
   ].filter(Boolean) as string[];
 
+  if (source.includes("audit")) return buildAuditEmailCopy(record, name);
+
   const subject = source.includes("voice-agent") ? "Got your AskSaul voice-agent request" : "Got your AskSaul assessment";
   const textBody = [
     `Hi ${name},`,
@@ -673,6 +720,44 @@ function buildLeadEmailCopy(record: Record<string, unknown>): { subject: string;
     .join("\n");
 
   return { subject, text: textBody, html };
+}
+
+function buildAuditEmailCopy(record: Record<string, unknown>, name: string): { subject: string; html: string; text: string } {
+  const business = isRecord(record.business) ? record.business : {};
+  const audit = isRecord(record.audit) ? record.audit : {};
+  const businessName = text(business.name) || "your shop";
+  const city = text(business.serviceArea);
+  const cityLabel = city && city !== "Other" ? city : "your city";
+
+  const checks = [
+    "Your Google Business Profile, item by item",
+    `Your reviews vs the top 3 shops in ${cityLabel}`,
+    "Whether ChatGPT, Gemini, and Google's AI answers recommend you",
+    "Your website on a phone: speed, click-to-call, contact form",
+    audit.afterHoursTestOk === true ? "One after-hours test call, so you hear what a homeowner hears" : undefined,
+    "The top 3 fixes we'd make first",
+  ].filter(Boolean) as string[];
+
+  const textBody = [
+    `Hi ${name},`,
+    "",
+    `Got your audit request for ${businessName}. Here's what we'll check:`,
+    checks.map((line) => `- ${line}`).join("\n"),
+    "",
+    "Every line comes from a check we actually run. The one-page report comes to this inbox, and you keep it either way. No pitch attached.",
+    "",
+    `Want to hear Saul in the meantime? Call the demo line at ${DEMO_PHONE_DISPLAY}. Questions? Reply here or text (720) 292-7554.`,
+    "",
+    "Talk soon,",
+    "Saul from AskSaul.ai",
+  ].join("\n");
+
+  const html = textBody
+    .split("\n\n")
+    .map((block) => `<p>${escapeHtml(block).replace(/\n/g, "<br />")}</p>`)
+    .join("\n");
+
+  return { subject: "Your free Missed-Call & Visibility Audit", text: textBody, html };
 }
 
 function normalizeForGhl(payload: unknown, locationId: string): {
@@ -869,6 +954,7 @@ function inferInterestLevel(record: Record<string, unknown>): string {
 }
 
 function sourceToBookingSource(source: string): string {
+  if (source.includes("audit")) return "website_audit_form";
   if (source.includes("voice-agent")) return "website_voice_agent_form";
   if (source.includes("chat")) return "website_chat";
   if (source.includes("automation-map")) return "website_automation_map";
