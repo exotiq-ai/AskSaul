@@ -20,6 +20,12 @@ function fakeGhl(initialTags = []) {
     const body = options.body ? JSON.parse(options.body) : {};
     if (path === "/contacts/upsert") {
       contacts.push(body);
+      // LeadConnector replaces the whole tag list when it is included in an
+      // upsert. Model this so delivery markers cannot disappear unnoticed.
+      if (Array.isArray(body.tags)) {
+        tags.clear();
+        body.tags.forEach((tag) => tags.add(tag));
+      }
       return Response.json({ contact: { id: "same-customer" } });
     }
     if (path === "/contacts/same-customer" && !options.method?.includes("POST")) {
@@ -55,6 +61,8 @@ test("one customer receives a distinct confirmation for a map and an audit, whil
   await sendToGHL(proposal());
   await sendToGHL(audit());
   assert.equal(ghl.emails.length, 2);
+  assert.equal(ghl.tags.has("ask-saul-automation-map-confirmation-sent"), true);
+  assert.equal(ghl.tags.has("ask-saul-audit-confirmation-sent"), true);
   assert.match(ghl.emails[0].subject, /Automation Map/);
   assert.match(ghl.emails[1].subject, /Audit/);
 });
@@ -113,4 +121,21 @@ test("a rejected confirmation email is not marked sent and can be retried", asyn
   globalThis.fetch = successfulFetch;
   await sendToGHL(audit());
   assert.equal(ghl.emails.length, 1);
+});
+
+test("audit-first customers keep both delivery markers after a later map request", async () => {
+  const ghl = fakeGhl();
+  await sendToGHL(audit());
+  await sendToGHL(proposal());
+  await sendToGHL(audit());
+  assert.equal(ghl.emails.length, 2);
+  assert.equal(ghl.tags.has("ask-saul-audit-confirmation-sent"), true);
+  assert.equal(ghl.tags.has("ask-saul-automation-map-confirmation-sent"), true);
+});
+
+test("form capture preserves unrelated CRM tags", async () => {
+  const ghl = fakeGhl(["active-client", "manual-review-required"]);
+  await sendToGHL(proposal());
+  assert.equal(ghl.tags.has("active-client"), true);
+  assert.equal(ghl.tags.has("manual-review-required"), true);
 });

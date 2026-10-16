@@ -1,6 +1,6 @@
 # Proposal and audit readiness
 
-Updated October 16, 2026. Work branch: `codex/asksaul-proposal-audit-copy`.
+Updated October 16, 2026. Released in [PR #8](https://github.com/exotiq-ai/AskSaul/pull/8), production commit `d8e8b68`.
 
 ## Scope
 
@@ -14,12 +14,17 @@ The Automation Map remains a general-services intake. Its phone-agent guidance a
 
 ## Verification
 
-- `npm test`: 7 regression tests passed, including cross-flow confirmations, same-flow retries, current CRM terms, failed-email retries, consent, and legacy chat suppression.
+- `npm test`: 9 regression tests passed, including cross-flow confirmations, same-flow retries, current CRM terms, failed-email retries, consent, unrelated tag preservation, both submission orders, and legacy chat suppression.
 - Changed files pass ESLint and `tsc --noEmit`.
 - `npm run build`: passed (Next.js 16.2.7, 61 generated pages).
 - Independent review: no blocking security or logic issues.
 - Gregory separately reported a successful live voice-chat → lead → GHL → Telegram notification test before this change.
-- Live proposal and audit submissions: pending verification. Gregory authorized using his name and customer email. Keep the personal test address out of repository handoffs, clearly label test submissions, and leave SMS and after-hours test-call consent off. Production integration keys are intentionally unavailable in deploy previews.
+- Deploy preview passed. Proposal and audit layouts were checked at 390px with no horizontal overflow. The audit form correctly rejects an empty submission. Production integration keys remain unavailable in deploy previews.
+- Production deployment `6ad240658e15768d865b6894` was verified ready at commit `d8e8b68` before testing.
+- **Live API submissions passed at 15:39 UTC (09:39 MDT), October 16:** one Automation Map and one audit request, using Gregory's explicitly authorized customer identity. Both returned HTTP 200 with `success: true`, reused the existing CRM test contact and opportunity, accepted distinct acknowledgment emails, and returned `alert.ok: true` for the internal Telegram notification path. No duplicate contact/opportunity was created. SMS was skipped and after-hours test-call consent was false.
+- CRM readback verified both outbound email records and the replacement of retired pay-per-close/no-contract terms with the scoped Founding Client Program terms. It also exposed a pre-existing integration issue: contact upserts replace all tags when tags are included, erasing earlier confirmation markers. Follow-up changes append route tags separately, preserving email delivery markers and unrelated CRM tags. Live retry verification is pending the follow-up release.
+- Delivery boundary: GHL accepted both emails and assigned message IDs; receipt in the customer's Gmail inbox was not independently verified because the connected Gmail account is a different address. The live submissions exercised the deployed API handlers; browser checks covered form progression, review, copy, validation, and mobile layout without submitting extra duplicates.
+- Private test receipts and screenshots are saved outside the repo in the local Codex task output folder. Personal customer contact details are omitted from this handoff.
 
 ## Fulfillment boundary
 
