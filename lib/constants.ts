@@ -139,6 +139,9 @@ export const SAUL_MARKETING_PRICING = {
   monthly: 1000,
 };
 
+export const DEMO_PHONE_DISPLAY = "(970) 401-7285";
+export const DEMO_PHONE_HREF = "tel:+19704017285";
+
 export const BOOKING_URL =
   "https://api.leadconnectorhq.com/widget/bookings/bookwithusdigitalmarketing-3d837e4b-c899-44ff-b612-275f498c2128";
 

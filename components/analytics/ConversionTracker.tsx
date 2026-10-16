@@ -42,6 +42,10 @@ function classifyClick(target: Element): EventPayload | null {
     return { category: "conversion", action: "automation_map_click", label, href, path };
   }
 
+  if (href?.includes("#founding")) {
+    return { category: "conversion", action: "founding_claim_click", label, href, path };
+  }
+
   if (href?.includes("/voice-agents/waste")) {
     return { category: "conversion", action: "waste_page_click", label, href, path };
   }

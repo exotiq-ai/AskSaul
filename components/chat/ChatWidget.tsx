@@ -299,7 +299,7 @@ export default function ChatWidget() {
   return (
     <>
       {!isOpen && (
-        <div className="fixed bottom-6 right-6 z-50">
+        <div className="chat-launcher fixed bottom-6 right-6 z-50">
           <span className="absolute inset-0 rounded-full bg-cyan/30 animate-ping" aria-hidden="true" />
           <button
             onClick={() => setIsOpen(true)}
